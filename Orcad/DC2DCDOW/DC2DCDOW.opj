@@ -1,0 +1,110 @@
+(ExpressProject "DC2DCDOW"
+  (ProjectVersion "19981106")
+  (ProjectType "PCB")
+  (Folder "Design Resources"
+    (Folder "Library")
+    (NoModify)
+    (File ".\dc2dcdow.dsn"
+      (Type "Schematic Design"))
+    (BuildFileAddedOrDeleted "x")
+    (CompileFileAddedOrDeleted "x")
+    (DRC_Scope "0")
+    (DRC_Action "0")
+    (DRC_Create_Warnings "FALSE")
+    (DRC_Check_Ports "FALSE")
+    (DRC_Check_Off-Page_Connectors "FALSE")
+    (DRC_Identical_References "TRUE")
+    (DRC_Type_Mismatch "TRUE")
+    (DRC_Report_Ports_and_Off-page_Connectors "FALSE")
+    (DRC_SDT_Compatibility "FALSE")
+    (DRC_Report_Off-grid_Objects "FALSE")
+    (DRC_Check_Unconnected_Nets "TRUE")
+    (DRC_Check_for_Misleading_TAP "FALSE")
+    (DRC_Visible_Power_pins "FALSE")
+    (DRC_Report_Netnames "FALSE")
+    (DRC_View_Output "FALSE")
+    (DRC_Report_File
+       "E:\NGUYEN THANH SON\WORK\ORCAD\CONTROLIR\DC2DCDOW\DC2DCDOW.DRC")
+    (Netlist_TAB "3")
+    (LAYOUT_Netlist_File "DC2DCDOW.MNL")
+    (LAYOUT_PCB_Footprint "{PCB Footprint}")
+    (TRUE)
+    (LAYOUT_Units "0"))
+  (Folder "Outputs"
+    (File ".\dc2dcdow.drc"
+      (Type "Report"))
+    (File ".\dc2dcdow.mnl"
+      (Type "LAYOUT Netlist File")))
+  (Folder "Referenced Projects")
+  (PartMRUSelector
+    (IND
+      (FullPartName "IND.Normal")
+      (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
+      (DeviceIndex "0"))
+    (RES
+      (FullPartName "RES.Normal")
+      (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
+      (DeviceIndex "0"))
+    (LED
+      (FullPartName "LED.Normal")
+      (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
+      (DeviceIndex "0"))
+    (GND
+      (LibraryName "C:\ORCAD\ORCAD_10.5\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    ("CAP NP"
+      (FullPartName "CAP NP.Normal")
+      (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
+      (DeviceIndex "0"))
+    ("VAR R"
+      (FullPartName "VAR R.Normal")
+      (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
+      (DeviceIndex "0"))
+    (LM358
+      (FullPartName "LM358.Normal")
+      (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
+      (DeviceIndex "0"))
+    (CON2
+      (FullPartName "CON2.Normal")
+      (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
+      (DeviceIndex "0"))
+    ("DIODE SCHOTTKY"
+      (FullPartName "DIODE SCHOTTKY.Normal")
+      (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
+      (DeviceIndex "0"))
+    ("CAP P"
+      (FullPartName "CAP P.Normal")
+      (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
+      (DeviceIndex "0"))
+    (LM2576ADJ/TO263
+      (FullPartName "LM2576ADJ/TO263.Normal")
+      (LibraryName "C:\ORCAD\ORCAD_10.5\TOOLS\CAPTURE\LIBRARY\REGULATOR.OLB")
+      (DeviceIndex "0")))
+  (LastUsedLibraryBrowseDirectory "C:\OrCAD\OrCAD_10.5\tools\capture\library")
+  (GlobalState
+    (FileView
+      (Path "Design Resources")
+      (Path "Design Resources"
+         "D:\Work\Orcad\orcad-nts-BK\DC2DCDOW\dc2dcdow.dsn")
+      (Path "Design Resources"
+         "D:\Work\Orcad\orcad-nts-BK\DC2DCDOW\dc2dcdow.dsn" "SCHEMATIC1")
+      (Path "Outputs")
+      (Select "Design Resources"
+         "D:\Work\Orcad\orcad-nts-BK\DC2DCDOW\dc2dcdow.dsn" "SCHEMATIC1" "PAGE1"))
+    (HierarchyView)
+    (Doc
+      (Type "COrCapturePMDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -30 0 200 0 435"))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 2 3 -1 -1 -4 -30 44 1308 58 594")
+        (Scroll "228 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path "D:\WORK\ORCAD\ORCAD-NTS-BK\DC2DCDOW\DC2DCDOW.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "PAGE1")))
+  (MPSSessionName "SongPhi"))
