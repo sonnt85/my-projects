@@ -92,8 +92,8 @@
       (Type "COrSchematicDoc")
       (Frame
         (Placement "44 2 3 -1 -1 -8 -30 -171 995 173 646")
-        (Scroll "5466 2666")
-        (Zoom "248")
+        (Scroll "0 0")
+        (Zoom "31")
         (Occurrence "/"))
       (Path "E:\NGUYEN THANH SON\WORK\ORCAD\KITDANANG\KITDANANG.DSN")
       (Schematic "SCHEMATIC1")
