@@ -1,0 +1,109 @@
+C51 COMPILER V9.01   I2C                                                                   05/29/2011 16:28:04 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE I2C
+OBJECT MODULE PLACED IN i2c.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE i2c.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #define   i2c__c
+   2          unsigned        long    coubywi=0,couerr=0;
+   3          char data       loighi;
+   4          #include        <i2c.h>
+   5          unsigned char i2c_start(void){ 
+   6   1              setsdaout();
+   7   1              setsclout();
+   8   1              // if(!sclint() )return 0;
+   9   1              sclout(0);
+  10   1              
+  11   1              sdaout(1);
+  12   1              sclout(1);
+  13   1              
+  14   1              sdaout(0);
+  15   1              sclout(0);
+  16   1              
+  17   1              setsdaint();
+  18   1              return 1;
+  19   1      }
+  20          void i2c_init(void){//chu yeu khoi tao cac chan vao ra
+  21   1        setupi2c();
+  22   1      }
+  23          void i2c_stop(void){
+  24   1              setsdaout();
+  25   1              setsclout();
+  26   1              
+  27   1              sclout(0);
+  28   1              
+  29   1              sdaout(0);
+  30   1              sclout(1);
+  31   1              
+  32   1              sdaout(1);                  
+  33   1              setsdaint();
+  34   1              setsclint();
+  35   1      }
+  36          unsigned char i2c_read(char ack){
+  37   1              char x, d=0;
+  38   1              setsdaint(); 
+  39   1              setsclout();
+  40   1              for(x=0; x<8; x++){
+  41   2                      d <<= 1;
+  42   2                      /*   do {
+  43   2                      sclout(1);
+  44   2                      }
+  45   2                      while(sclint()==0);    // wait for any SCL clock stretching    */
+  46   2                      sclout(1);    
+  47   2                                                           
+  48   2                      if(sdaint()) d |= 1;
+  49   2                      sclout(0)
+  50   2              } 
+*** ERROR C141 IN LINE 50 OF I2C.C: syntax error near '}'
+  51   1              setsdaout(); 
+  52   1              if(ack) {sdaout(0);}
+  53   1              else {sdaout(1); }
+  54   1              sclout(1);
+C51 COMPILER V9.01   I2C                                                                   05/29/2011 16:28:04 PAGE 2   
+
+  55   1              
+  56   1              sclout(0);
+  57   1              
+  58   1              setsdaint();
+  59   1              return d;
+  60   1      }
+  61          unsigned char i2c_write(unsigned char d){
+  62   1              char x;
+  63   1              static bit b;
+  64   1              setsdaout();
+  65   1              setsclout();
+  66   1              for(x=0;x<8; x++){
+  67   2                      if(d&0x80) {sdaout(1); }
+  68   2                      else sdaout(0);
+  69   2                      sclout(1);
+  70   2                      
+  71   2                      d <<= 1;
+  72   2                      sclout(0);      
+  73   2              }
+  74   1              setsdaint();
+  75   1              sclout(1);
+  76   1              coubywi++;
+  77   1              
+  78   1              b = sdaint();          // possible ACK bit
+  79   1              sclout(0);
+  80   1              if(b){
+  81   2                      if(!(loighi&bocheckloighi_)){
+  82   3                              couerr++;
+  83   3                              coubywi--;
+  84   3      /*                      lcd_clr(lines);
+  85   3                              lcd_puts("Ghi EEprom Loi!!\nSBGL/TSBG=");
+  86   3                              lcd_vsprintf("%lu/%lu",couerr,coubywi);
+  87   3                              bell=lockbell;
+  88   3                              ring=0;
+  89   3                              delay_ms(2000);
+  90   3                              bell=offbell;
+  91   3                              ring=1;*/
+  92   3                      }
+  93   2              }
+  94   1              return !b;         //=1co ack. =o
+  95   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

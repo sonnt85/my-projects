@@ -1,0 +1,261 @@
+A51 MACRO ASSEMBLER  DIV32TO16                                                            08/30/2010 01:06:32 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN div32to16.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE div32to16.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;DIV32U is called to divide (unsigned) a 32-bit dividend using a
+                       2     ; 16-bit divisor.
+                       3     ;
+                       4     ;DIV32U solves for quotient and remainder the equation:
+                       5     ;
+                       6     ; dividend = divisor*quotient + remainder
+                       7     ;
+                       8     ;Call:
+                       9     ;  r7,r6,r5,r4 = dividend
+                      10     ;  r1,r0 = divisor
+                      11     ;  lcall DIV32U
+                      12     ;
+                      13     ;Return:
+                      14     ; r5,r4 = quotient
+                      15     ; r7,r6 = remainder
+                      16     ; c flag set to 1 if overflow occured
+                      17     ; All registers, acc, b and two caller-assigned direct memory bytes
+                      18     ;   (q0 and q1)have been changed.
+                      19     ; Data pointer has not been disturbed
+                      20     ;
+                      21     ;Note:
+                      22     ; (1)Overflow is a divide by zero or any value that will cause
+                      23     ;    the quotient to be greater than 16 bits.
+                      24     ; (2)Most significant (ms) register always listed first when comma separates
+                      25     ;    two in a comment. Example: r3,r2 (r3 contains the ms bits)
+                      26     ; (3) The algorithm used in this code borrows heavily from work posted
+                      27     ;   by John C. Wren who said he got it from a C complier.   
+                      28     ;
+                      29     ;Original author: John Veazey, Ridgecrest, CA, 18 APR 99
+                      30     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      31     ;
+----                  32     dseg
+0000                  33     q0:   ds    1
+0001                  34     q1:   ds    1
+----                  35     cseg
+0000                  36     DIV32U:
+                      37     ;
+                      38     ;Clear the working quotient
+                      39     ;
+0000 E4               40           clr   a
+0001 F501             41           mov   q1,a
+0003 F500             42           mov   q0,a
+                      43     ;
+                      44     ;Clear the msb's of a 32-bit working divisor (r3,r2,r1,r0)
+                      45     ;
+0005 FB               46           mov   r3,a
+0006 FA               47           mov   r2,a
+                      48     ;
+                      49     ;b counts the number of places+1 the divisor was initially
+                      50     ; shifted left to align its ms bit set with the ms bit set
+                      51     ; in the dividend
+                      52     ;
+0007 75F001           53           mov   b,#1
+                      54     ;
+                      55     ;Make an error return if trying to divide by zero
+                      56     ;
+000A E9               57           mov   a,r1
+000B 48               58           orl   a,r0
+A51 MACRO ASSEMBLER  DIV32TO16                                                            08/30/2010 01:06:32 PAGE     2
+
+000C 7003             59           jnz   du100
+000E 020099           60           ljmp  du920       ;Make the error return
+                      61     ;
+                      62     ;Just return with quotient and remainder zero if dividend is zero
+                      63     ;
+0011                  64     du100:
+0011 EF               65           mov   a,r7
+0012 4E               66           orl   a,r6
+0013 4D               67           orl   a,r5
+0014 4C               68           orl   a,r4
+0015 7004             69           jnz   du200
+0017 FF               70           mov   r7,a
+0018 FE               71           mov   r6,a
+0019 807C             72           jmp   du910       ;Make a normal return
+                      73     ;
+                      74     ;Align the msb set in the demoninator with the msb set in the
+                      75     ; numerator. Increment the shift count in b each time a shift left
+                      76     ; is performed.
+                      77     ;
+001B                  78     du200:
+001B EB               79           mov   a,r3        ;Stop if msb set
+001C C3               80           clr   c
+001D 33               81           rlc   a     
+001E 4028             82           jc    du600 
+0020 9F               83           subb  a,r7        ;Compare r3 & r7, (c clear)
+0021 6004             84           jz    du210       ; jump if r3=r7
+0023 5023             85           jnc   du600       ; jump if r3>r7
+0025 8010             86           sjmp  du240       ; r3<r7
+0027                  87     du210:
+0027 EE               88           mov   a,r6        ;r3=r7, so compare r2 & r6
+0028 9A               89           subb  a,r2
+0029 401D             90           jc    du600       ; jump if r2>r6
+002B 700A             91           jnz   du240       ; jump if r2<r6
+002D ED               92           mov   a,r5        ;r2=r6, so compare r1 & r5
+002E 99               93           subb  a,r1
+002F 4017             94           jc    du600       ; jump if r1>r5
+0031 7004             95           jnz   du240       ; jump if r1<r5
+0033 EC               96           mov   a,r4        ;r1=r5, so compare r0 & r4
+0034 98               97           subb  a,r0
+0035 4011             98           jc    du600       ; jump if r0>r4
+0037                  99     du240:
+0037 C3              100           clr   c           ;Now shift the denominator
+0038 E8              101           mov   a,r0        ; left 1 bit position
+0039 33              102           rlc   a
+003A F8              103           mov   r0,a
+003B E9              104           mov   a,r1
+003C 33              105           rlc   a
+003D F9              106           mov   r1,a
+003E EA              107           mov   a,r2
+003F 33              108           rlc   a
+0040 FA              109           mov   r2,a
+0041 EB              110           mov   a,r3
+0042 33              111           rlc   a
+0043 FB              112           mov   r3,a
+0044 05F0            113           inc   b           ;Increment b counter and
+0046 80D3            114           sjmp  du200       ; continue
+                     115     ;
+                     116     ;Compare the shifted divisor with the remainder (what's
+                     117     ; left of the dividend)
+                     118     ;
+0048                 119     du600:
+0048 EF              120           mov   a,r7
+0049 C3              121           clr   c
+004A 9B              122           subb  a,r3
+004B 4023            123           jc    du720       ;jump if r3>r7
+004D 7010            124           jnz   du700       ;jump if r3<r7
+A51 MACRO ASSEMBLER  DIV32TO16                                                            08/30/2010 01:06:32 PAGE     3
+
+004F EE              125           mov   a,r6
+0050 9A              126           subb  a,r2
+0051 401D            127           jc    du720       ;jump if r2>r6
+0053 700A            128           jnz   du700       ;jump if r2<r6
+0055 ED              129           mov   a,r5
+0056 99              130           subb  a,r1
+0057 4017            131           jc    du720       ;jump if r1>r5
+0059 7004            132           jnz   du700       ;jump if r1<r5
+005B EC              133           mov   a,r4
+005C 98              134           subb  a,r0
+005D 4011            135           jc    du720       ;jump if r0>r4
+                     136     ;
+                     137     ;Divisor is equal or smaller, so subtract it off and
+                     138     ; get a 1 for the quotient
+                     139     ;
+005F                 140     du700:
+005F EC              141           mov   a,r4
+0060 C3              142           clr   c
+0061 98              143           subb  a,r0
+0062 FC              144           mov   r4,a
+0063 ED              145           mov   a,r5
+0064 99              146           subb  a,r1
+0065 FD              147           mov   r5,a
+0066 EE              148           mov   a,r6
+0067 9A              149           subb  a,r2
+0068 FE              150           mov   r6,a
+0069 EF              151           mov   a,r7
+006A 9B              152           subb  a,r3
+006B FF              153           mov   r7,a
+006C C3              154           clr   c
+006D B3              155           cpl   c           ;Get a 1 for the quotient
+006E 8001            156           sjmp  du730
+                     157     ;
+                     158     ;Divisor is greater, get a 0 for the quotient
+                     159     ;
+0070                 160     du720:
+0070 C3              161           clr   c
+                     162     ;
+                     163     ;Shift 0 or 1 into quotient
+                     164     ;
+0071                 165     du730:
+0071 E500            166           mov   a,q0
+0073 33              167           rlc   a
+0074 F500            168           mov   q0,a
+0076 E501            169           mov   a,q1
+0078 33              170           rlc   a
+0079 F501            171           mov   q1,a
+007B 401C            172           jc    du920       ;overflow - make the error return
+                     173     ;
+                     174     ;Now shift the denominator right 1, decrement the counter
+                     175     ; in b until b = 0
+                     176     ;
+007D                 177     du740:
+007D C3              178           clr   c
+007E EB              179           mov   a,r3
+007F 13              180           rrc   a
+0080 FB              181           mov   r3,a
+0081 EA              182           mov   a,r2
+0082 13              183           rrc   a
+0083 FA              184           mov   r2,a
+0084 E9              185           mov   a,r1
+0085 13              186           rrc   a
+0086 F9              187           mov   r1,a
+0087 E8              188           mov   a,r0
+0088 13              189           rrc   a
+0089 F8              190           mov   r0,a
+A51 MACRO ASSEMBLER  DIV32TO16                                                            08/30/2010 01:06:32 PAGE     4
+
+008A D5F0BB          191           djnz  b,du600
+                     192     ;
+                     193     ;Move quotient and remainder
+                     194     ;
+008D ED              195           mov   a,r5
+008E FF              196           mov   r7,a
+008F EC              197           mov   a,r4
+0090 FE              198           mov   r6,a
+0091 E501            199           mov   a,q1
+0093 FD              200           mov   r5,a
+0094 E500            201           mov   a,q0
+0096 FC              202           mov   r4,a
+                     203     ;
+                     204     ;Make the normal return
+                     205     ;
+0097                 206     du910:
+0097 C3              207           clr   c
+0098 22              208           ret
+                     209     ;
+                     210     ;Make the error return
+                     211     ;
+0099                 212     du920:
+0099 C3              213           clr   c
+009A B3              214           cpl   c
+009B 22              215           ret
+                     216     ;End of DIV32U
+*** WARNING #A41 IN 216 (div32to16.asm, LINE 216): MISSING 'END' STATEMENT
+A51 MACRO ASSEMBLER  DIV32TO16                                                            08/30/2010 01:06:32 PAGE     5
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+DIV32U . . . . . .  C ADDR   0000H   A   
+DU100. . . . . . .  C ADDR   0011H   A   
+DU200. . . . . . .  C ADDR   001BH   A   
+DU210. . . . . . .  C ADDR   0027H   A   
+DU240. . . . . . .  C ADDR   0037H   A   
+DU600. . . . . . .  C ADDR   0048H   A   
+DU700. . . . . . .  C ADDR   005FH   A   
+DU720. . . . . . .  C ADDR   0070H   A   
+DU730. . . . . . .  C ADDR   0071H   A   
+DU740. . . . . . .  C ADDR   007DH   A   
+DU910. . . . . . .  C ADDR   0097H   A   
+DU920. . . . . . .  C ADDR   0099H   A   
+Q0 . . . . . . . .  D ADDR   0000H   A   
+Q1 . . . . . . . .  D ADDR   0001H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  1 WARNING(S), 0 ERROR(S)

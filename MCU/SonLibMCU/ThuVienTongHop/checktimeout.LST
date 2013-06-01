@@ -1,0 +1,71 @@
+C51 COMPILER V9.01   CHECKTIMEOUT                                                          05/29/2011 16:28:02 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE CHECKTIMEOUT
+OBJECT MODULE PLACED IN checktimeout.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE checktimeout.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #define checktimeout__c 
+   2          #define checktimeout__
+   3          jmp_buf         env;//poienv dung duy nhat trong ham ngat ko can thiet vi sac xuat dung chung bang 0 vi chi khi p
+             -han dau ham getir thi ngat moi dc goi
+*** ERROR C129 IN LINE 3 OF CHECKTIMEOUT.C: missing ';' before 'env'
+   4          unsigned        char data flagenv=0; //chua cac bit bao tung time oute da bat
+   5          #include        <checktimeout.h >
+*** ERROR C301 IN LINE 4 OF 24c3264.h: identifier expected
+   6          void retiao(){
+   7                  #pragma asm
+   8                  sjmp backupaddlongjmp;
+   9                  goiretiao:
+  10                  reti;
+  11                  backupaddlongjmp:
+  12                  acall goiretiao;
+  13                  #pragma endasm;
+  14          }
+  15          unsigned        char checktimeout(){//ham tra lai gia tri flagenv
+  16                  unsigned char temp,i ;
+  17                  if(flagenv){
+  18                          for(i=0;i<soenv;i++){ //soenv =8
+  19                                  if(trongsoset[i]& flagenv){ //kiem tra flag co bat hay ko
+  20                                          temp=eeprom_read(adee_env(i+1)-1);//doc bo dem de tang gia tri
+  21                                          ++temp;eeprom_write(adee_env(i+1)-1,temp);//luu gia tri bo dem moi sau khi tang
+  22                                          if(temp==notimeout){//kiem tra xem = notimeout hay ko
+  23                                                  flagenv&=(~trongsoset[i]);// neu co xoa ngay co tuong ung khi gap lenh nhay
+  24                                                  eeprom_reads(adee_env(i),sizeof(env),env);//lay gia tri luu tru thong tin nhay vao bien poienv
+  25                                                  retiao();//ham goi tu ngat nen fai co reti ao
+  26                                                  longjmp(env,i);//nhay di toi vi tri da dinh trong poienv
+  27                                          }
+  28                                  }
+  29                          }
+  30                  }else   flagstatus&=(~flagtimeout_); //chi khi flagenv=0 ko co timeout nao duoc dat thi ham nay moi xoa co 
+             -nay
+  31                  return flagenv;//co timeout de check flagenv dag duoc bat, chua co longjmp nao duoc bat
+  32          }
+  33          
+  34          unsigned char settimeout(unsigned char vitri,unsigned char giatri){//env la bien toan cuc truyen dia chi
+  35                  unsigned char temp; 
+  36                  if(vitri&0x80){vitri&=(~0x80); eeprom_writes(adee_env(vitri),sizeof(env),env);}//ghi vi tri nhat vao eppr
+             -om neu nhu env duoc truyen ngay tu vi tri goi
+  37                  temp=eeprom_read(adee_env(vitri+1)-1);//doc thong tin bo dem luu vao temp de return =0 tuong duong flag t
+             -at
+  38                  eeprom_write(adee_env(vitri+1)-1,giatri);//viet gia tri bo so dem moi moi vao eppro
+  39                  vitri=trongsoset[vitri];
+  40                  flagstatus|=flagtimeout_;
+  41                  flagenv|=vitri;//set co tai vi tri truong ung
+  42                  return temp;//co timeout de check flagenv dag duoc bat, chua co longjmp nao duoc bat
+  43          }
+  44          
+  45          unsigned char gettimeout(unsigned char vitri){//lay gia tri bo dem timeou neu 
+  46                  return eeprom_read(adee_env(vitri+1)-1);
+  47          }
+  48          
+  49          void writeenvtoeeprom(unsigned char vitri){
+C51 COMPILER V9.01   CHECKTIMEOUT                                                          05/29/2011 16:28:02 PAGE 2   
+
+  50                  eeprom_writes(adee_env(vitri),sizeof(env),env);//an phim thoat thi ctrinh se nhay ve day chi nhat tu ham 
+             -getkey
+  51          }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  2 ERROR(S)

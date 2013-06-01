@@ -1,0 +1,89 @@
+C51 COMPILER V9.01   DELAY                                                                 04/17/2012 14:13:44 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DELAY
+OBJECT MODULE PLACED IN delay.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE delay.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <delay.h>
+   2          #include <intrins.h>
+   3          void delay_bcycle(unsigned char reg)                  //toi da 256+3=259 chu ky may
+   4          {
+   5   1          while(reg){ _nop_();_nop_();reg--;};   //tre cycle*8+5 chu ky may
+   6   1      }
+   7          
+   8          void delay_1000cycle()                 //bot mot vai chu ky do no bi ham khac goi
+   9          {
+  10   1        delay_cycle(1000-4);                  //ham nay dung neu ham delay_cycle() thiet ke chuan
+*** WARNING C275 IN LINE 10 OF DELAY.C: expression with possibly no effect
+  11   1      }
+  12          
+  13          void delay_n1000cycle(unsigned char reg)
+  14          {
+  15   1       while(reg){ delay_1000cycle();reg--;};
+  16   1      }
+  17          
+  18          void delay_1ms()
+  19          {
+  20   1        delay_cycle(us2cycles(1000)-4);
+*** WARNING C275 IN LINE 20 OF DELAY.C: expression with possibly no effect
+  21   1      }
+  22          
+  23          void delay_ms(unsigned int ms)
+  24          {
+  25   1        while(ms)
+  26   1        {
+  27   2          delay_1ms();
+  28   2          ms--;
+  29   2        }
+  30   1      }
+  31          
+  32          void delay_test(unsigned int ms)
+  33          {
+  34   1        while(--ms);
+  35   1      }
+  36          
+  37          
+  38          /*{      
+  39          //tre tinh theo miligiay, toi da 65535ms 
+  40            TH1=(unsigned int)(xtal/12.0*(65536+24)-xtal/12.0*x)>>8;
+  41            TL1=(unsigned char)(xtal/12.0*(65536+24)-xtal/12.0*x);
+  42            TMOD|=0x10; // che do 1 16 bit co tran
+  43            TF1=0;
+  44            TR1=1;
+  45            while(!TF1);
+  46            TF1=0;
+  47            TR1=0;
+  48          }
+  49          /*unsigned int demus(void)       //ham tao tre don vi thoi gian micro giay (174-->
+  50          {
+  51                  TMOD=TMOD|0x90; //chon che do dinh thoi 16 bit CUA TIME 1 dieu khien ngoai gate1=1,ct=0 dung xung dong ho
+             - trong, m01m00=1 che do 16 bit 
+  52                  TH1=0;
+C51 COMPILER V9.01   DELAY                                                                 04/17/2012 14:13:44 PAGE 2   
+
+  53                  TL1=0;
+  54                  TF1=0;  //xoa co tran TF0
+  55                  TR1=1; //cho bo dem time 1 duoc chay
+  56          //      ET1=1;// cho phep ngat time 1
+  57                  while(T1==1);           //T1 thay bang chan nao do cua vi dieu khien, co the do xug + hoac am
+  58                  TR1=0;
+  59                  TF1=0;
+  60                  return (((unsigned int)TH1<<8)+((unsigned int)TL1));   return 0;
+  61          }       */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     70    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

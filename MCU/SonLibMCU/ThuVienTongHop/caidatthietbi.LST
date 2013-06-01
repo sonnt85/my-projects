@@ -1,0 +1,525 @@
+C51 COMPILER V9.01   CAIDATTHIETBI                                                         05/29/2011 16:28:02 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE CAIDATTHIETBI
+OBJECT MODULE PLACED IN caidatthietbi.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE caidatthietbi.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #define   caidatthietbi__c
+   2          #include  <caidatthietbi.h >
+   3          #include  <typedef.h>
+*** WARNING C322 IN LINE 174 OF typedef.h: unknown identifier
+*** ERROR C129 IN LINE 282 OF TYPEDEF.H: missing ';' before 'code'
+   4          #include <allfuntion.h>
+*** ERROR C301 IN LINE 4 OF 24c3264.h: identifier expected
+*** WARNING C322 IN LINE 16 OF delay.h: unknown identifier
+*** WARNING C315 IN LINE 9 OF digi2text.h: unknown #directive 'endifs'
+*** WARNING C317 IN LINE 8 OF checktimeout.h: attempt to redefine macro 'adee_env'
+   5           code char code   *huongdanonoffbit="Dung OK,Bat,Tat Huy";//2 dong
+   6           code char code   *huongdantanggiam="Dung OK,Tang,Giam";//2 dong
+   7          
+   8          void caidatthietbi(unsigned long codecai,char thietbicai){
+   9          unsigned char i,j;
+  10          if(!codecai)return;//cai lai het tat ca ve mac dinh
+  11          for (i=0;i<sothietbi;i++){//su ly thiet bi thong qua thietbiFtemp0 roi ghi vao eeprom ung voi thiet bi do
+  12          if(getbit(&codecai,setup1thietbi_))i=thietbicai;
+  13          eeprom_reads(adee_thietbi(i),sizeof(thietbitemp),&thietbitemp);//luu thong tin thiet bi vua cai dat
+  14          if(getbit(&codecai,kihobake_))thietbitemp.kihobake=0;
+  15          if(getbit(&codecai,sttbatkem_))thietbitemp.sttbatkem=0;
+  16          if(getbit(&codecai,recou_))thietbitemp.couton=0;//reset bo dem neu co lenh
+  17          if(getbit(&codecai,status_))thietbitemp.status=0; //trang thai thiet bi dang bat hoac tat 
+  18          if(getbit(&codecai,bitagi_))thietbitemp.bitagi=1;//cho phet tang thoi gian hen gio tat
+  19          if(getbit(&codecai,bigigi_))thietbitemp.bigigi=1;//cho phep giam thoi gian hen gio tat
+  20          if(getbit(&codecai,ktimetatdacbiet_))settime(thietbitemp.ktimetatdacbiet,0,5,0); //thoi gian tat dac biet 
+             -la 5phut
+  21          if(getbit(&codecai,bita_))thietbitemp.bita=1;// cho phep su dung dieu khien tat thiet bi
+  22          if(getbit(&codecai,biba_))thietbitemp.biba=1; //cho phep dung dieu khien bat thiet bi 
+  23          if(getbit(&codecai,lockauto_))thietbitemp.lockauto=0;// cho phep tu tat bat thiet bi
+  24          if(getbit(&codecai,nactime_))settime(thietbitemp.nactime,0,5,0);//mac dinh moi nac thoi gian la 5 phut
+  25          if(getbit(&codecai,tudongtat_))thietbitemp.tudongtat=1;
+  26          if(getbit(&codecai,mdktimetat_))settime(thietbitemp.mdktimetat,2,0,0);
+  27          if(getbit(&codecai,batkembaodong_))thietbitemp.batkembaodong=0;
+  28          if(getbit(&codecai,ambaotat_))thietbitemp.ambaotat=0;  
+  29          if(getbit(&codecai,cambatnhieu_))thietbitemp.cambatnhieu=0;    
+  30          if(getbit(&codecai,sothutudat_)) {
+  31                thietbitemp.sothutudat=i;// ANH XA DAT DE CHO DE NHO CHI DUNG DUY NHAT 1 LAN DAU
+  32                eeprom_write((adee_tangthietbi(0,0)+i),i);// cac gia tri trong con tro mang tro dung thu tu
+  33                }
+  34          if(getbit(&codecai,hengio_))
+  35                for(j=0;j<solanhengio;j++){// dung hengiotemp su ly hen gio roi ghi lai vao thiet bi do ko fai con t
+             -ro(toc do cao)
+  36                          hengiotemp= thietbitemp.hengio[j];
+  37                          if(getbit(&codecai,kichhoat_))hengiotemp.kichhoat=1;    //mac dinh cho phep hen gio nhung chua hen
+  38                          if(getbit(&codecai,battat_)){
+  39                                  if(j)hengiotemp.battat=1;else hengiotemp.battat=0; // 0 la tat 1 la bat
+  40                                  if(getbit(&codecai,autooff_))hengiotemp.autooff=1; //mac dinh cho tu dong tat
+  41                          }
+  42                          if(getbit(&codecai,battheophut_)){
+  43                                  memset(hengiotemp.cacphut,0,sizeof(hengiotemp.cacphut));
+  44                                  setbit((hengiotemp.cacphut),battheophut) ;      //cho bat theo put
+  45                          }
+  46                          if(getbit(&codecai,battheogio_)){
+  47                                  memset(hengiotemp.cacgio,0,sizeof(hengiotemp.cacgio));
+C51 COMPILER V9.01   CAIDATTHIETBI                                                         05/29/2011 16:28:02 PAGE 2   
+
+  48                                  setbit((hengiotemp.cacgio),battheogio) ; //bat theo gio
+  49                          }
+  50                          if(getbit(&codecai,battheothu_)){
+  51                                  memset(hengiotemp.cacthu,0,sizeof(hengiotemp.cacthu));
+  52                                  clearbit((hengiotemp.cacthu),battheothu) ;      //ko bat theo thu
+  53                          }
+  54                          if(getbit(&codecai,battheongay_)){
+  55                                  memset(hengiotemp.cacngay,0,sizeof(hengiotemp.cacngay));
+  56                                  clearbit((hengiotemp.cacngay),battheongay) ;//ko bat theo ngay
+  57                          }
+  58                          if(getbit(&codecai,battheothang_)){
+  59                                  memset(hengiotemp.cacthang,0,sizeof(hengiotemp.cacthang));
+  60                                  clearbit((hengiotemp.cacthang),battheothang); //khong bat theo thang
+  61                          }
+  62          
+  63                          if(getbit(&codecai,tgtatdacbiet_)){
+  64                                  setbit(&hengiotemp,vitritgtatdacbiet) ; //mac dinh bat time dac biet     5 phut
+  65                      }    
+  66          
+  67                          if(getbit(&codecai,battheonam_)){
+  68                                  memset(hengiotemp.cacnam,0,sizeof(hengiotemp.cacnam));
+  69                                  clearbit((hengiotemp.cacnam),battheonam) ;         //ko bat theo nam
+  70                          }
+  71                          if(getbit(&codecai,baobat_))hengiotemp.baobat=0;//ko do chuong khi tu bat
+  72                          if(getbit(&codecai,baotat_))hengiotemp.baotat=0;//ko do chuong khi tat
+  73                          thietbitemp.hengio[j]=hengiotemp;//ghi nguoc thong tin lai vi hengiotemp ko fai la con tro
+  74               } 
+  75             setclearbit(out4094,i,thietbitemp.status);
+  76             eeprom_writes(adee_thietbi(i),sizeof(thietbitemp),&thietbitemp);//luu thong tin thiet bi vua cai dat
+  77             if(getbit(&codecai,setup1thietbi_))i=sothietbi-1;//thoat ngay khi cai song thiet bi can cai
+  78          
+  79          }
+  80          
+  81          }
+  82          
+  83          unsigned char inputstttb(){
+  84              unsigned char sodat1,id1,temp;
+  85              lcd_clr(lines);
+  86              lcd_puts("Chon Tang: ");
+  87              id1=(getkeyab(tang0,tang0+sotang-1,phimtm_|minmax_))-tang0;
+  88          
+  89                  if(id1==(sotang-1)){temp=sothietbi-sothietbi1tang*(sotang-1);}else temp=sothietbi1tang; 
+  90          
+  91                  lcd_putchar('\n');
+  92                  lcd_puts("Chon TTTB: ");
+  93              sodat1=getkeyab(0,temp-1,phimtm_|minmax_);//so dat 1 chua sthu tu trong tang maphim =id1
+  94              
+  95              sodat1=sothietbi1tang*id1+sodat1;//sodat1=&id1 // so dat 1 chua dia chi con tro tro toi thiet bi, chin
+             -h la gia tri &id1
+  96              id1=eeprom_read(adee_tangthietbi(0,0)+sodat1);//id1=&sodat1
+  97              return id1;
+  98          }
+  99          
+ 100          unsigned char inputincdec(int *var, int max ){//bam ok ham thoat da chon var tra lai ofset
+ 101              char tempchar,temp1=0,temp2=max-*var,vtlcd=lcd_wait();//temp2 chua gia tri max cua tem1 hay 
+ 102             while(1){            //*var!=0 thi loi
+ 103                 lcd_goto(vtlcd);
+ 104                 lcd_vsprintf("%-4u",(int)*var);//in gia tri hien tai bien 
+ 105                     tempchar=ir_getkeytimeout(binhthuong,0);
+ 106                     if(tempchar==next){ ++temp1 ;if( ++(*var)>max){(*var)=max-temp2;temp1=0;}}
+ 107                     else if(tempchar==prev){--temp1;if(--(*var)<(max-temp2)){(*var)=max;temp1=temp2;}} 
+ 108                     else if(tempchar==ok) return temp1; 
+C51 COMPILER V9.01   CAIDATTHIETBI                                                         05/29/2011 16:28:02 PAGE 3   
+
+ 109                     else if(tempchar==khongchon) return thoatlap; 
+ 110                     else bell=offbell;
+ 111             }
+ 112          }
+ 113          
+ 114          unsigned char inputonoffbit(void *mang,unsigned char vitri ){     // tra lai gia tri cai dat cho bit    
+ 115              unsigned char maphim,vtlcd=lcd_wait(),tempbit=getbit(mang,vitri); 
+ 116                  while(1) {  
+ 117                       lcd_goto(vtlcd);
+ 118                       lcd_vsprintf("%bu",(uchar)getbit(mang,vitri)); //in bit vua nhap 0 hoac 1
+ 119                       maphim=ir_getkeytimeout(binhthuong,ljmp0);
+ 120                       if(maphim==bat)     {setbit(mang,vitri);}  
+ 121                       else if(maphim==tat){clearbit(mang,vitri);}
+ 122                       else if(maphim==ok) return getbit(mang,vitri);
+ 123                       else if(maphim==khongchon){ setclearbit(mang,vitri,tempbit);return thoatlap; }
+ 124                           else bell=offbell;
+ 125               }
+ 126          }
+ 127          //((void (code *) (void)) 0x0000) ();
+ 128          //con tro dat code-tro toi cac fan tu off mag xau
+ 129          code char code *datadis[]=        {" Nam",     " Thang",    " Ngay",     " Thu",     " Gio",     " Phut" }
+             - ;
+ 130          unsigned char code addmang[]={&(hengiotemp.cacnam)-&hengiotemp,&(hengiotemp.cacthang)-&hengiotemp,
+ 131                                    &(hengiotemp.cacngay)-&hengiotemp,&(hengiotemp.cacthu)-&hengiotemp,
+ 132                                                            &(hengiotemp.cacgio)-&hengiotemp,&(hengiotemp.cacphut)-&hengiotemp};
+ 133          
+ 134          unsigned char code vitribitkichhoat[]={battheonam,battheothang,battheongay,battheothu,battheogio,battheoph
+             -ut}          ;
+ 135          unsigned char code minnhap[]=         { 0,1 ,1 ,1,0 ,0}   ;
+ 136          unsigned char code maxnhap[]=         {15,11,30,6,23,59}          ;//offset
+ 137          
+ 138          void caidathengio(void *mangg){                                 //i la chi so mang text
+ 139              int valdoi;
+ 140                  unsigned char i,temp1;
+ 141                  unsigned char *mang;
+ 142                  for(i=0;i<sizeof(minnhap);i++){
+ 143                          mang=(unsigned char *)mangg+addmang[i]; 
+ 144                      lcd_clr(lines);
+ 145                      lcd_puts("Cai Dat ");
+ 146                          if(getbit(mangg,vitribattat)) lcd_puts("Bat");else lcd_puts("Tat");;//lu vi tri sau ky tu tat theo nam
+ 147                      lcd_puts(" Theo");lcd_puts(datadis[i]);//lu vi tri sau ky tu tat theo nam
+ 148                          if(!checkhome())lcd_putchar(' ');
+ 149                          temp1=lcd_wait();
+ 150                          lcd_putchar('\n');
+ 151                      lcd_puts(huongdanonoffbit); //in huong dan dung phim tat bat bit
+ 152                          lcd_goto(temp1);
+ 153                          //toi day ok
+ 154                      if(inputonoffbit(mang,vitribitkichhoat[i])){
+ 155                                  while(1){
+ 156                                      if(!i)valdoi=timesys.date.nam;else valdoi=minnhap[i]; 
+ 157                                          lcd_clr(lines);//xoa man
+ 158                                          lcd_gotoxy(0,1);
+ 159                                          lcd_puts(huongdantanggiam); //1 dong
+ 160                                          lcd_putsxy("Nhap",0,0);lcd_puts(datadis[i]);
+ 161                                          if(getbit(mangg,vitribattat)) lcd_puts(" Bat ");else lcd_puts(" Tat ");//lu vi tri sau ky tu tat theo 
+             -nam
+ 162                                          if((temp1=inputincdec(&valdoi,valdoi+maxnhap[i]+1))==thoatlap)break;
+ 163                                          else if(temp1==maxnhap[i]+1){
+ 164                                                     lcd_clr(lines);
+ 165                                                     lcd_puts("Da Xoa Tat Ca");lcd_puts(datadis[i]); lcd_puts(" Hen. Nhan Phim Bat Ky De Tiep Tuc");
+ 166                                                  
+ 167                                                     for(temp1=minnhap[i];temp1<=(minnhap[i]+maxnhap[i]);temp1++){//chuan da check
+C51 COMPILER V9.01   CAIDATTHIETBI                                                         05/29/2011 16:28:02 PAGE 4   
+
+ 168                                                     clearbit(mang,temp1);
+ 169                                                     }
+ 170                                                     waitsig(delay_);
+ 171                                                     continue;
+ 172                                                   }
+ 173                                          temp1+=minnhap[i]; 
+ 174                                          lcd_clr(2);
+ 175                                          lcd_clr(3);
+ 176                                          lcd_clr(1);//xoa man
+ 177                                          lcd_puts(huongdanonoffbit);//2 dong
+ 178                                          lcd_puts(" De Cai Dat Cho Gia Tri Tren ");
+ 179                                          if(inputonoffbit(mang,temp1)==thoatlap) break;    //truyen ham
+ 180                      }
+ 181                      }
+ 182                  }
+ 183          }
+ 184          void caidattungthietbi(){
+ 185          unsigned char i,tempchar,id1,temvitricai;
+ 186          enum {lockauto_i,bitagi_i,bigigi_i,bita_i,biba_i,tudongtat_i,couton_i,nactime_i,mdktimetat_i,ktimetatdacbi
+             -et_i,tgtatdacbiet_i,thutugoc_,\
+ 187          kihobake_i ,sttbatkem_i,hengiotat_i,hengiobat_i,batkembaodong_i,ambaotat_i,cambatnhieu_i,thoatcaidat_i,qua
+             -ylaitruocdo_i};
+ 188          
+ 189          code unsigned char code *txtcaithietbi[quaylaitruocdo_i+1]={"EnAuto Check Tat Bat","Cho Phep Tang Gio Tat"
+             -,"Cho Phep Giam Gio Tat","Cho Phep Tat",\
+ 190          "Cho Phep Bat","Tu Dong Tat Khi Bat Bang Dieu Khien Khi Bat","Cai Dat Bo Dem So Lan Bat","Gia Tri Phim Tan
+             -g Giam","Khoang Tat Mac Dinh Khi Bat Thiet Bi",\
+ 191          "Khoang Tat Dac Biet Thiet Bi Tu Bat","Bat Lay ThoiGian Tat DacBiet Khi AutoOn","Cho Ve Mac Dinh STT Thiet
+             - Bi",\
+ 192          "Cho Phep Thiet Bi Khac Bat Kem Khi Thiet Bi Duoc Bat" ,"Cai Dat So Cua Thiet Bi Bat Kem","Cai Dat Hen Gio
+             - 0 [Mac Dinh La Hen Gio Tat]","Cai Dat Hen Gio 1 [Mac Dinh La Hen Gio bat]",\
+ 193          "Cho Phep Bat Kem Bao Dong","Am Bao Thiet Bi Da Tu Tat[Dung DK Bat]","Khong Cho Bat Qua Nhieu Dac Biet BNL
+             -","Thoat Cai Dat","Chon Lai Thiet Bi Can Cai Dat"};
+ 194          temvitricai=0;
+ 195          while(1){  
+ 196                          chonthietbi:
+ 197                          id1=inputstttb();//bat buoc fai nhap dung tang stt thiet bi    
+ 198                          bochonthietbi:
+ 199                          eeprom_reads(adee_thietbi(id1),sizeof(thietbitemp),&thietbitemp);//chep thong tin thiet bi vao thietbite
+             -mp de chinh sua
+ 200                          lcd_clr(lines);
+ 201                          lcd_puts("Nhan Phim Tang Giam\nDe Lua Chon Cai Dat");//c
+ 202                          waitsig(delay_);
+ 203                          i=temvitricai;
+ 204                          while(1){
+ 205                          lcd_clr(lines);
+ 206                          lcd_puts(txtcaithietbi[i]);
+ 207                          lcd_vsprintf(" %bu[%bu,%bu]-%bu",id1,(uchar)((uchar)thietbitemp.sothutudat/(uchar)sothietbi1tang),(uchar
+             -)(thietbitemp.sothutudat%sothietbi1tang),i );
+ 208                          tempchar=ir_getkeytimeout(binhthuong,0);
+ 209                          if(tempchar==next){if(++i==quaylaitruocdo_i+1)i=0;}
+ 210                          else if(tempchar==prev){if(--i==0xFF)i=quaylaitruocdo_i;} 
+ 211                          else if(tempchar==ok) break;
+ 212                          else bell=offbell;
+ 213                          }
+ 214                          lcd_clr(lines);
+ 215                          lcd_puts(txtcaithietbi[i]);
+ 216                          if(!checkhome())lcd_putchar(' ');
+ 217                          tempchar=lcd_wait();//lay toa do hien tai
+ 218                          lcd_putchar('\n'); //loi ko xuong dong
+ 219                          lcd_puts(huongdanonoffbit);//con tro dang o duoi cung ben phai sau dong down
+ 220                          lcd_goto(tempchar);
+C51 COMPILER V9.01   CAIDATTHIETBI                                                         05/29/2011 16:28:02 PAGE 5   
+
+ 221             switch (temvitricai=i){
+ 222                          case lockauto_i:inputonoffbit(&hengiotemp,vitrilockauto); 
+ 223                          break;
+ 224                          case bitagi_i:inputonoffbit(&thietbitemp,vitribitagi);
+ 225                          break;
+ 226                          case bigigi_i:inputonoffbit(&thietbitemp,vitribigigi);
+ 227                          break;
+ 228                          case bita_i:inputonoffbit(&thietbitemp,vitribita);
+ 229                          break;
+ 230                          case biba_i:inputonoffbit(&thietbitemp,vitribiba);
+ 231                          break;
+ 232                          case tudongtat_i:inputonoffbit(&thietbitemp,vitritudongtat);
+ 233                          break;
+ 234                          case batkembaodong_i:inputonoffbit(&thietbitemp,vitribatkembaodong);
+ 235                          break;
+ 236                          case ambaotat_i:inputonoffbit(&thietbitemp,vitriambaotat);
+ 237                          break;
+ 238                          case cambatnhieu_i:inputonoffbit(&thietbitemp,vitricambatnhieu);
+ 239                          break;
+ 240                          case tgtatdacbiet_i:inputonoffbit(&thietbitemp,vitritgtatdacbiet);
+ 241                          break;
+ 242                          case couton_i:
+ 243                                  lcd_clr(lines);
+ 244                                  lcd_puts("Gia Tri Cu Bo Dem So Lan Bat ");
+ 245                                  lcd_vsprintf("%u\n",(uint)thietbitemp.couton);  //gia tri cu
+ 246                                  lcd_puts("Gia Tri Moi ");thietbitemp.couton=getkeyab(0,65535,phimtm_|minmax_);//gia tri moi nhap vao
+ 247                          break;
+ 248                          case nactime_i:
+ 249                              lcd_clr(lines);
+ 250                                  lcd_puts("Gia Tri Phim Tang Giam Cu ");
+ 251                                  lcd_vsprintf("%bu\"%bu\'",(uchar)thietbitemp.nactime.gio,(uchar)thietbitemp.nactime.phut);
+ 252                                  lcd_puts("\nNhap Gia Tri Phim Tang Giam Moi");
+ 253                                  waitsig(delay_) ;
+ 254                                  settimeugetkey(getkeyab,&thietbitemp.nactime);
+ 255                          break;
+ 256                          case ktimetatdacbiet_i:
+ 257                              lcd_clr(lines);
+ 258                                  lcd_puts("Khoang Thoi Gian Tat Dac Biet Khi AutoOn Thiet Bi ");
+ 259                                  lcd_vsprintf("%bu\"%bu\'",(uchar)thietbitemp.ktimetatdacbiet.gio,(uchar)thietbitemp.ktimetatdacbiet.phu
+             -t);
+ 260                              lcd_puts("\nNhap Gia Tri Moi");
+ 261                                  waitsig(delay_) ;
+ 262                                  settimeugetkey(getkeyab,&thietbitemp.ktimetatdacbiet);
+ 263                          break;
+ 264                          
+ 265                          case mdktimetat_i:
+ 266                              lcd_clr(lines);
+ 267                                  lcd_puts("Khoang Thoi Gian Tat Mac Dinh Khi Bat Thiet Bi ");
+ 268                                  lcd_vsprintf("%bu\"%bu\'",(uchar)thietbitemp.mdktimetat.gio,(uchar)thietbitemp.mdktimetat.phut);
+ 269                              lcd_puts("\nNhap Gia Tri Moi");
+ 270                                  waitsig(delay_) ;
+ 271                                  settimeugetkey(getkeyab,&thietbitemp.mdktimetat);
+ 272                          break;
+ 273                          case thutugoc_: caidatthietbi(0x10000000L>>sothutudat_,0);
+ 274                          break;
+ 275                          case hengiotat_i: i=0;goto tiep;
+ 276                          break;
+ 277                          case hengiobat_i:i=1;goto tiep ;
+ 278                          break;
+ 279                          case kihobake_i: inputonoffbit(&thietbitemp,vitrikihobake);
+ 280                          break;
+ 281                          case sttbatkem_i: 
+C51 COMPILER V9.01   CAIDATTHIETBI                                                         05/29/2011 16:28:02 PAGE 6   
+
+ 282                              lcd_clr(lines);
+ 283                                  lcd_puts("Thiet Bi Bat Kem Ban Dau ");
+ 284                             
+ 285                             for(i=0;i<sothietbi;i++){
+ 286                                          if( eeprom_read((adee_tangthietbi(0,0))+i)==thietbitemp.sttbatkem){
+ 287                                                  lcd_vsprintf("[%bu,%bu]",
+ 288                                                  (uchar)(i/(uchar)sothietbi1tang),
+ 289                                                  (uchar)(i%sothietbi1tang));
+ 290                                                  break;//thoat vong for
+ 291                                      }
+ 292                             }
+ 293          
+ 294          
+ 295                                  lcd_puts("\nNhap Thiet Bi Moi");
+ 296                                  waitsig(delay_);
+ 297                              thietbitemp.sttbatkem=inputstttb();
+ 298                          break;
+ 299                          case quaylaitruocdo_i: goto chonthietbi;
+ 300                          case thoatcaidat_i: return;
+ 301              }                    //ID1 LA CUA thietbitemp.sttbatkem
+ 302              eeprom_writes(adee_thietbi(id1),sizeof(thietbitemp),&thietbitemp);//chep thong tin thiet bi da chinh s
+             -ua luu tru
+ 303                  lcd_clr(lines);
+ 304              lcd_puts(txtthanhcong); 
+ 305              bell=bellsucsesful;
+ 306                  delay_ms(1000);
+ 307              goto bochonthietbi;
+ 308              tiep:; //cai dat ngay thang nam thu hen gio
+ 309           //   hengiotemp=thietbitemp.hengio[i];//lu vao bien nay de su ly
+ 310              lcd_clr(lines);
+ 311                  lcd_putsxy(huongdanonoffbit,0,1);
+ 312              lcd_putsxy("Loai Hen Gio Bat ",0,0);
+ 313              
+ 314              inputonoffbit(&(thietbitemp.hengio[i]),vitribattat ) ;  
+ 315          
+ 316              lcd_clr(lines);
+ 317                  lcd_putsxy(huongdanonoffbit,0,1);
+ 318              lcd_putsxy("Bat Hen Gio ",0,0);
+ 319              if(thietbitemp.hengio[i].battat) lcd_puts("Bat ");else lcd_puts("Tat ");
+ 320              inputonoffbit(&(thietbitemp.hengio[i]),vitrikichhoat ) ;  
+ 321          
+ 322          if(thietbitemp.hengio[i].battat) {//hen giio tat ko co muc nay  
+ 323              lcd_clr(lines);
+ 324                  lcd_putsxy(huongdanonoffbit,0,2);
+ 325              lcd_putsxy("Bat Autooff Khi Tu Dong Bat ",0,0);
+ 326              inputonoffbit(&(thietbitemp.hengio[i]),vitriautooff ) ;  
+ 327          
+ 328              lcd_clr(lines);
+ 329                  lcd_putsxy(huongdanonoffbit,0,2);
+ 330              lcd_putsxy("Bat Thoi Gian Tat Dac Biet Khi Tu Dong Bat ",0,0);
+ 331              inputonoffbit(&(thietbitemp.hengio[i]),vitritgtatdacbiet ) ;  
+ 332          
+ 333              }
+ 334          
+ 335                  lcd_clr(lines);
+ 336                  lcd_putsxy(huongdanonoffbit,0,1);
+ 337              lcd_putsxy("Am Bao Khi Tu Bat ",0,0);
+ 338              inputonoffbit(&(thietbitemp.hengio[i]),vitribaobat ) ;  
+ 339          
+ 340                  lcd_clr(lines);
+ 341                  lcd_putsxy(huongdanonoffbit,0,1);
+ 342              lcd_putsxy("Am Bao Khi Tu Tat ",0,0);
+C51 COMPILER V9.01   CAIDATTHIETBI                                                         05/29/2011 16:28:02 PAGE 7   
+
+ 343              inputonoffbit(&(thietbitemp.hengio[i]),vitribaotat ) ;  
+ 344          
+ 345              eeprom_writes(adee_thietbi(id1),sizeof(thietbitemp),&thietbitemp);//chep thong tin thiet bi da chinh s
+             -ua luu tru
+ 346          
+ 347                  lcd_clr(lines);
+ 348                  lcd_puts(txtthanhcong);
+ 349                  bell=bellsucsesful;
+ 350                  delay_ms(1000);
+ 351          
+ 352              if(!(thietbitemp.hengio[i].kichhoat)) {lcd_clr(lines);lcd_puts("Chuc Nang Hen Gio Da Khong Duoc Kich H
+             -oat\nNhan Phim Bat Ky De Tiep Tuc Cai Dat.");waitsig(delay_);goto bochonthietbi;}
+ 353          
+ 354                  caidathengio(&thietbitemp.hengio[i]);   //toi day moi xog
+ 355              eeprom_writes(adee_thietbi(id1),sizeof(thietbitemp),&thietbitemp);
+ 356                  lcd_clr(lines);
+ 357                  lcd_puts(txtthanhcong); 
+ 358                  bell=bellsucsesful;
+ 359                  delay_ms(1000);
+ 360                  goto bochonthietbi;
+ 361              }
+ 362          }    
+ 363          void datsothietbi(){          
+ 364                    unsigned char id,tang,temp;
+ 365                while(1){ 
+ 366                            while(1){
+ 367                             lcd_clr(lines);
+ 368                             eeprom_reads(adee_thietbi(id),sizeof(thietbitemp),&thietbitemp);
+ 369                             lcd_vsprintf("OK: Chon Thiet Bi Dat So %bu[%bu,%bu]-",id,
+ 370                             (uchar)((uchar)thietbitemp.sothutudat/(uchar)sothietbi1tang),
+ 371                             (uchar)(thietbitemp.sothutudat%sothietbi1tang));
+ 372                              for(tang=0;tang<sothietbi;tang++){
+ 373                                          if( eeprom_read((adee_tangthietbi(0,0))+tang)==id){
+ 374                                                  lcd_vsprintf("(%bu,%bu)-",
+ 375                                                  (uchar)(tang/(uchar)sothietbi1tang),
+ 376                                                  (uchar)(tang%sothietbi1tang));
+ 377                                          }
+ 378                             }
+ 379                             nhaythietbi(id);
+ 380                             temp=ir_getkeytimeout(binhthuong,0);
+ 381                             if     (temp==next){if(++id==sothietbi)id=0;}
+ 382                             else if(temp==prev){if(--id==0xFF)id=sothietbi-1;} 
+ 383                             else if(temp==ok) break;
+ 384                             else bell=offbell;
+ 385                    }
+ 386                        lcd_clr(lines);
+ 387                    lcd_puts("Nhan OK:Thoat, Menu Cai Dat Nhu Thong So, Phim Khac: Tiep Tuc");
+ 388                            lcd_vsprintf("%bu[%bu,%bu]",id,
+ 389                            (uchar)((uchar)thietbitemp.sothutudat/(uchar)sothietbi1tang),
+ 390                            (uchar)(thietbitemp.sothutudat%sothietbi1tang));
+ 391          
+ 392                            if((temp=ir_getkeytimeout(binhthuong,ljmp0))==ok)return;
+ 393                            else if(temp==khongchon){tang=thietbitemp.sothutudat/(uchar)sothietbi1tang;
+ 394                                  temp=thietbitemp.sothutudat%sothietbi1tang;goto tat;
+ 395                            }
+ 396                    lcd_clr(lines);
+ 397                            lcd_vsprintf("SoVatLy %bu[%bu,%bu]\n",id,
+ 398                            (uchar)((uchar)thietbitemp.sothutudat/(uchar)sothietbi1tang),
+ 399                            (uchar)(thietbitemp.sothutudat%sothietbi1tang));
+ 400          
+ 401                            lcd_clr(3);
+ 402                            lcd_putsxy("Dat Thanh Tang ",0,1);
+C51 COMPILER V9.01   CAIDATTHIETBI                                                         05/29/2011 16:28:02 PAGE 8   
+
+ 403                            
+ 404                    tang=getkeyab(tang0,tang0+sotang-1,phimtm_|minmax_)-tang0;//ma phim chua tang muon su ly
+ 405                        if(tang==(sotang-1)){temp=sothietbi-sothietbi1tang*(sotang-1);}else temp=sothietbi1tang; 
+ 406                    lcd_clr(3);
+ 407                            lcd_putsxy("Dat Thanh STT ",0,2);
+ 408                    temp=getkeyab(0,temp-1,phimtm_|minmax_);//so dat 1 chua sthu tu trong tang maphim =id1
+ 409                            
+ 410                            thietbitemp.sothutudat=tang*sothietbi1tang+temp;
+ 411                            tat:
+ 412                            eeprom_write((adee_tangthietbi(tang,temp)),id);
+ 413                            eeprom_writes(adee_thietbi(id),sizeof(thietbitemp),&thietbitemp);
+ 414                    lcd_clr(lines);
+ 415                    lcd_puts(txtthanhcong); 
+ 416                    setbell(bellsucsesful);
+ 417                }
+ 418          }
+ 419          void doisothietbi(){          
+ 420                    unsigned char sodat1,id1,sodat2,id2;
+ 421                while(1){ 
+ 422                        lcd_clr(lines);
+ 423                    lcd_puts(" Nhan OK De Thoat, Nhan Phim Khac De Tiep Tuc Doi So Thiet Bi");
+ 424                            if(ir_getkeytimeout(binhthuong,ljmp0)==ok)return;
+ 425                            waitsig(delay_);
+ 426           
+ 427                    lcd_clr(lines);
+ 428                    lcd_puts("Tang Can Doi ");
+ 429                    maphim=(getkeyab(tang0,tang0+sotang-1-tang0,phimtm_|minmax_))-tang0;//ma phim chua tang muon su 
+             -ly
+ 430                            lcd_putchar('\n');
+ 431                    lcd_puts("So Thu Tu Can Doi ");
+ 432                    sodat1=getkeyab(0,sothietbi1tang-1,phimtm_|minmax_);//so dat 1 chua sthu tu trong tang maphim =i
+             -d1
+ 433                    
+ 434                    sodat1=sothietbi1tang*maphim+sodat1;//sodat1=&id1 // so dat 1 chua so thu tu that cua thiet bi, 
+             -chinh la gia tri id1
+ 435                    id1=eeprom_read(adee_tangthietbi(0,0)+sodat1);//id1=&sodat1
+ 436                    
+ 437                    eeprom_reads(adee_thietbi(id1),sizeof(thietbitemp),&thietbitemp);//chep thong tin thiet bi vao t
+             -hietbitemp de chinh sua
+ 438                    nhaythietbi(id1); //cho nhay thiet bi id1 nham biet no la thiet bi nao
+ 439          
+ 440           //         lcd_clr(lines);
+ 441                    lcd_puts("\nChuyen Sang Tang->");
+ 442                    maphim=(getkeyab(tang0,tang0+sotang-1-tang0,phimtm_|minmax_));
+ 443                            lcd_putchar('\n');
+ 444                    lcd_puts("Sang So Thu Tu->");
+ 445                    sodat2=getkeyab(0,sothietbi1tang-1,phimtm_|minmax_);
+ 446                   
+ 447                    sodat2=sothietbi1tang*maphim+sodat2;//sodat2=&id2
+ 448                    thietbitemp.sothutudat=sodat2;//sodat1'=sodat2
+ 449                   
+ 450                    eeprom_writes(adee_thietbi(id1),sizeof(thietbitemp),&thietbitemp);//sao luu thong tin thiet bi 1
+             - da chinh sua          
+ 451            //thietbitemp da xong nhiem vu voi thiet bi 1 co the dung soa chep thiet bi 2
+ 452                    id2=eeprom_read(adee_tangthietbi(0,0)+sodat2);//id2=&sodat2
+ 453                    nhaythietbi(id2); //cho nhay thiet bi id1 nham biet no la thiet bi nao
+ 454          
+ 455                    eeprom_reads(adee_thietbi(id2),sizeof(thietbitemp),&thietbitemp);//chep thong tin thiet bi vao t
+             -hietbitemp de chinh sua
+ 456                    thietbitemp.sothutudat=sodat1;//sodat2'=id1(sodat1)
+ 457                    eeprom_writes(adee_thietbi(id2),sizeof(thietbitemp),&thietbitemp);//chep thong tin thiet bi vao 
+             -thietbitemp de chinh sua
+C51 COMPILER V9.01   CAIDATTHIETBI                                                         05/29/2011 16:28:02 PAGE 9   
+
+ 458          
+ 459                    eeprom_write((adee_tangthietbi(0,0)+sodat1),id2);//id1=id2
+ 460                    eeprom_write((adee_tangthietbi(0,0)+sodat2),id1);//id2=id1
+ 461            lcd_clr(lines);
+ 462            lcd_puts(txtthanhcong); 
+ 463            setbell(bellsucsesful);
+ 464                }
+ 465              }  
+*** WARNING C316 IN LINE 465 OF caidatthietbi.c: unterminated conditionals
+
+C51 COMPILATION COMPLETE.  5 WARNING(S),  2 ERROR(S)

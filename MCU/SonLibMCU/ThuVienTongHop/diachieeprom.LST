@@ -1,0 +1,22 @@
+C51 COMPILER V9.01   DIACHIEEPROM                                                          08/03/2012 10:24:04 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DIACHIEEPROM
+OBJECT MODULE PLACED IN E:\Nguyen Thanh Son\WORK\Code VDK_MoPhong\8051\KeilC\Library\ThuVienTongHop\diachieeprom.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe E:\Nguyen Thanh Son\WORK\Code VDK_MoPhong\8051\KeilC\Library\ThuVienTongHop
+                    -\diachieeprom.h
+
+line level    source
+
+   1          #ifndef  __diachieeprom__
+   2          #define #ifndef  __diachieeprom__
+*** ERROR C301 IN LINE 2 OF E:\Nguyen Thanh Son\WORK\Code VDK_MoPhong\8051\KeilC\Library\ThuVienTongHop\diachieeprom.h: 
+             -identifier expected
+   3          
+   4          #define adee_env(i)       ((i)*(sizeof(jmp_buf)+1))//them 1 la bien dem
+   5          
+   6          
+   7          #endif
+   8          
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

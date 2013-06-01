@@ -1,0 +1,164 @@
+C51 COMPILER V9.01   SULYTHOIGIAN                                                          05/29/2011 16:28:07 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE SULYTHOIGIAN
+OBJECT MODULE PLACED IN sulythoigian.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sulythoigian.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #define   sulythoigian__c
+   2          //#include <stdlib.h>  //ham nay da kiem tra, rat chuan
+   3          #include        <sulythoigian.h>
+   4          unsigned char code      songaytrongthang[12]={31,28,31,30,31,30,31,31,30,31,30,31}; //so ngay trong thang cua n
+             -hung nam binh thuong
+   5          unsigned char data  gio,phut,giay,thu,ngay,thang,thoigianmoi=0;
+   6          unsigned int  nam;
+   7          
+   8          unsigned char nhichkim(thoigian *poithoi){
+   9   1              unsigned        int             vartam=0;
+  10   1              long                            templ;
+  11   1              unsigned        char    flag=0;
+  12   1              unsigned        char    ngaymaxtrongthang;
+  13   1      
+  14   1              #define         p(x)    (poithoi->time.x)    
+  15   1              #define         pd(x)   (poithoi->date.x)       
+  16   1              #define   vartam1  ngaymaxtrongthang
+  17   1      
+  18   1              p(giay)=0; //ko xet den giay
+  19   1              giay=0;
+  20   1              if((pd(thang)>12)||(pd(thang)==0))pd(thang)=1;
+  21   1              if((pd(ngay)>31)||(pd(ngay)==0))pd(ngay)=1;
+  22   1              if(p(gio)>23)p(gio)=0;
+  23   1              if(p(phut)>59)p(phut)=0;
+  24   1              if(pd(nam)<2011)pd(nam)=2011;
+  25   1              
+  26   1              flag=((pd(thang)==2)&&((((pd(nam))%400)==0)||((((pd(nam))%4)==0)&&(((pd(nam))%100)!=0))));
+  27   1              thoigianmoi|=phutmoi_;
+  28   1              if((++p(phut))==60){
+  29   2                      p(phut)=0;
+  30   2                      thoigianmoi|=giomoi_;
+  31   2                      if((++p(gio))==24){
+  32   3                              p(gio)=0;
+  33   3                              thoigianmoi|=ngaymoi_;
+  34   3                              if(flag){ngaymaxtrongthang=29;}else {ngaymaxtrongthang=songaytrongthang[pd(thang)-1];}
+  35   3                              if((++pd(ngay))>ngaymaxtrongthang){
+  36   4                                      pd(ngay)=1;
+  37   4                                      thoigianmoi|=thangmoi_;
+  38   4                                      if((++pd(thang)==13)){
+  39   5                                              pd(thang)=1;
+  40   5                                              pd(nam)++;
+  41   5                                              thoigianmoi|=nammoi_;   
+  42   5                                      }
+  43   4                              }
+  44   3                      }
+  45   2              }
+  46   1              vartam=0;
+  47   1              for(vartam1=0;vartam1<(pd(thang)-1);vartam1++){vartam=vartam+songaytrongthang[vartam1];}
+  48   1              if(flag){vartam++;};
+  49   1              templ=pd(nam)-1;
+  50   1              return((templ + templ/4 - templ/100 + templ/400 + p(gio)+vartam)%7+1  );
+  51   1      }
+  52          
+  53          void clearthoigianmoi(unsigned char var){
+  54   1              thoigianmoi&=(~var);
+C51 COMPILER V9.01   SULYTHOIGIAN                                                          05/29/2011 16:28:07 PAGE 2   
+
+  55   1      }
+  56          unsigned char date2thu(def_date *valdate){
+  57   1              unsigned char i;
+  58   1              unsigned int  vartam=0;
+  59   1              unsigned long templ;
+  60   1              
+  61   1              for(i=0;i<(valdate->thang-1);i++){vartam+=songaytrongthang[i];};
+  62   1              i=((valdate->thang==2)&&((((valdate->nam)%400)==0)||((((valdate->nam)%4)==0)&&(((valdate->nam)%100)!=0)))
+             -);
+  63   1              vartam+=i;
+  64   1              templ=valdate->nam-1;
+  65   1              return((templ + templ/4 - templ/100 + templ/400 + valdate->ngay+vartam)%7+1)  ;                                                                         
+  66   1      }
+  67          
+  68          void  congtrutime(def_time *poitime,def_time *poitimethem, char dauconggio){    
+  69   1              //cong hoac tru  (c0nggio=1 la cong conggio=-1 la tru) them thoi gian tro boi *poitimethem vaothoi gian t
+             -ro boi poitime
+  70   1              //oke datest
+  71   1              long temp;
+  72   1              temp=(long)poitime->giay+60*poitime->phut+(long)60*60*poitime->gio+
+  73   1              dauconggio*((long)poitimethem->giay+60*poitimethem->phut+(long)60*60*poitimethem->gio);
+  74   1              if(temp<0)temp=temp+(long)24*60*60;//cong them 1 ngay cho duong kim van o vi tri do
+  75   1              poitime->giay=temp%60;
+  76   1              temp=temp/60;
+  77   1              poitime->phut=temp%60;
+  78   1              poitime->gio=(temp/60)%24;     
+  79   1      }
+  80          #ifdef nhapgiolcd
+                      #include <lcd.h> 
+                      void setthoigianugetkey(unsigned int (*f)(unsigned int ,unsigned int,unsigned char ),thoigian *trothoi){ 
+                              //unsigned int (*ftemp)(unsigned int ,unsigned int,unsigned char )=f;
+                              demphut=0;
+                              lcd_clr(lines);
+                              lcd_puts("Nhap Gio:");  
+                              trothoi->time.gio=f(0,23,phimtm_|minmax_);demphut=0;
+                              
+                              //--------------------------------------   
+                              lcd_clr(lines);
+                              lcd_puts("Nhap Phut:");  
+                              trothoi->time.phut=f(0,59,phimtm_|minmax_);; //ham tro toi phut co van de ,tai sao lai vay??????????????
+             -????????????
+                              
+                              //-------------------------------   
+                              lcd_clr(lines);
+                              lcd_puts("Nhap Ngay:");  
+                              trothoi->date.ngay=f(1,31,phimtm_|minmax_);demphut=0;
+                              //-------------------------------   
+                              lcd_clr(lines);
+                              lcd_puts("Nhap Thang:");  
+                              (*trothoi).date.thang=f(1,12,phimtm_|minmax_);demphut=0;
+                              
+                              //-------------------------------   
+                              lcd_clr(lines);
+                              lcd_puts("Nhap Nam:");  
+                              trothoi->date.nam=f(1985,2201,phimtm_|minmax_);demphut=0;
+                              eeprom_writes(adee_thoigian(0),sizeof(timesys),&timesys);//backup thoi gian he thong ham nay de phong ne
+             -u chuong trinh goi ham nay nhap 
+                              demphut=0;
+                              giay=0;
+                      }
+                      
+                      void settimeugetkey(unsigned int (*f)(unsigned int ,unsigned int,unsigned char ),def_time   *poitime){
+C51 COMPILER V9.01   SULYTHOIGIAN                                                          05/29/2011 16:28:07 PAGE 3   
+
+                          lcd_clr(lines);
+                          lcd_puts("Nhap Gio:");  
+                          poitime->gio=f(0,23,phimtm_|minmax_);
+                        
+                      //-------------------------------   
+                          lcd_clr(lines);
+                          lcd_puts("Nhap Phut:");  
+                          poitime->phut=f(0,59,phimtm_|minmax_);
+                          lcd_clr(lines);
+                          lcd_puts(txtthanhcong); 
+                      }
+                      
+                      void hienthithoigian(thoigian *trothoi){ 
+                              getthoigian(*trothoi,gio,phut,giay,ngay,thang,nam);
+                              sprintf(lcd_buff,"T%bu-%02bu:%02bu",date2thu(&(trothoi->date)),(uchar)gio,(uchar)phut);
+                              lcd_putsxy(lcd_buff,nuli-strlen(lcd_buff),lines-2);
+                              sprintf(lcd_buff,"%bu/%bu/%4u",(uchar)ngay,(uchar)thang,(uint)nam);
+                              lcd_putsxy(lcd_buff,nuli-strlen(lcd_buff),lines-1);
+                      }
+              #endif
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1387    ----
+   CONSTANT SIZE    =     12    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9      32
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

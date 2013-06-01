@@ -1,0 +1,37 @@
+C51 COMPILER V9.01   DELAY                                                                 05/29/2011 16:28:03 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DELAY
+OBJECT MODULE PLACED IN delay.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE delay.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #define   delay__c
+   2          #include  <delay.h>
+*** WARNING C322 IN LINE 16 OF delay.h: unknown identifier
+   3          void delay_bcycle(unsigned char reg){                  //toi da 256+3=259 chu ky may
+   4   1              while(reg){ _nop_();_nop_();reg--;};   //tre cycle*8+5 chu ky may
+   5   1      }
+   6          
+   7          void delay_1000cycle(){                 //bot mot vai chu ky do no bi ham khac goi
+   8   1               delay_cycle(1000-4);                  //ham nay dung neu ham delay_cycle() thiet ke chuan
+*** WARNING C275 IN LINE 8 OF DELAY.C: expression with possibly no effect
+   9   1      }
+  10          
+  11          void delay_n1000cycle(unsigned char reg){
+  12   1       while(reg){ delay_1000cycle();reg--;};
+  13   1      }  
+  14          void delay_1ms(){
+  15   1        delay_cycle(us2cycles(1000)-4);
+*** ERROR C202 IN LINE 15 OF DELAY.C: 'xtal': undefined identifier
+  16   1      }
+  17          
+  18          void delay_ms(unsigned int ms){
+  19   1        while(ms){
+  20   2          delay_1ms();
+  21   2          ms--;
+  22   2        }
+  23   1      }
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  1 ERROR(S)

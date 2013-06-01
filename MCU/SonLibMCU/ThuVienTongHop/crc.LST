@@ -1,0 +1,70 @@
+C51 COMPILER V9.01   CRC                                                                   05/29/2011 16:28:02 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE CRC
+OBJECT MODULE PLACED IN crc.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE crc.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /////////////////////// Driver to generate CRC //////////////////////////
+   2          ////                                                                 ////
+   3          ////  generate_8bit_crc(poda, length, pattern)                       ////
+   4          ////        Generates 8 bit crc from the poda using the pattern.     ////
+   5          ////                                                                 ////
+   6          ////  generate_16bit_crc(poda, length, pattern)                      ////
+   7          ////        Generates 16 bit crc from the poda using the pattern.    ////
+   8          ////                                                                 ////
+   9          ////  generate_32bit_crc(poda, length, pattern)                      ////
+  10          ////        Generates 32 bit crc from the poda using the pattern.    ////
+  11          ////                                                                 ////
+  12          /////////////////////////////////////////////////////////////////////////
+  13          #include  <allfuntion.h>
+*** WARNING C322 IN LINE 174 OF typedef.h: unknown identifier
+*** ERROR C129 IN LINE 282 OF TYPEDEF.H: missing ';' before 'code'
+*** ERROR C301 IN LINE 4 OF 24c3264.h: identifier expected
+*** WARNING C322 IN LINE 16 OF delay.h: unknown identifier
+*** WARNING C315 IN LINE 9 OF digi2text.h: unknown #directive 'endifs'
+*** WARNING C317 IN LINE 8 OF checktimeout.h: attempt to redefine macro 'adee_env'
+  14          #include  <crc.h>
+  15          #if (crcxx==8)
+              unsigned char generate_8bit_crc(char* poda, unsigned char length, unsigned char pattern){
+                      unsigned char  j,i,crc;
+                      crc=init_crc;
+                      for(j=0;j<length;j++)    {
+                              crc^=poda[j];
+                              for(i=0;i<8;++i)if(crc&1){crc=(crc>>1)^pattern;}else crc>>=1; 
+                      }
+                      return crc;
+              }
+              #elif (crcxx==16)
+  26          unsigned int generate_16bit_crc(char * poda, unsigned char length, unsigned int pattern){
+  27                  unsigned int  crc;
+  28                  unsigned char i,j;
+  29                  crc=init_crc;
+  30                  for(j=0;j<length;j++){
+  31                          crc^=poda[j];
+  32                          for(i=0;i<8;++i)if(crc&1){crc=(crc>>1)^pattern;}else crc>>=1; 
+  33                  }
+  34                  return crc;
+  35          }
+  36           
+  37          
+  38          #elif (crcxx==32)
+              unsigned long generate_32bit_crc(char* poda, unsigned char length, unsigned long pattern){
+                  unsigned char  j,i;
+                  unsigned long  crc;
+                  crc=init_crc;
+                  for(j=0;j<length;j++){
+                    crc^=poda[j];
+                    for(i=0;i<8;++i)if(crc&1){crc=(crc>>1)^pattern;}else crc>>=1; 
+                  }
+                  return crc;   
+              }
+              #else
+C51 COMPILER V9.01   CRC                                                                   05/29/2011 16:28:02 PAGE 2   
+
+              #endif
+*** WARNING C316 IN LINE 50 OF crc.c: unterminated conditionals
+
+C51 COMPILATION COMPLETE.  5 WARNING(S),  2 ERROR(S)

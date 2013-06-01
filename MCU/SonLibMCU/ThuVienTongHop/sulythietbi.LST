@@ -1,0 +1,148 @@
+C51 COMPILER V9.01   SULYTHIETBI                                                           05/29/2011 16:28:07 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE SULYTHIETBI
+OBJECT MODULE PLACED IN sulythietbi.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sulythietbi.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #define  sulythietbi__c
+   2          #include  < sulythietbi.h>
+   3          #include  <allfuntion.h>
+*** WARNING C322 IN LINE 174 OF typedef.h: unknown identifier
+*** ERROR C129 IN LINE 282 OF TYPEDEF.H: missing ';' before 'code'
+*** ERROR C301 IN LINE 4 OF 24c3264.h: identifier expected
+*** WARNING C322 IN LINE 16 OF delay.h: unknown identifier
+*** WARNING C315 IN LINE 9 OF digi2text.h: unknown #directive 'endifs'
+*** WARNING C317 IN LINE 8 OF checktimeout.h: attempt to redefine macro 'adee_env'
+   4          #include  < typedef.h>
+   5          #include  < 24c3264.h>
+   6          #include  <outputdevice.h>
+   7          #include  <sulymangbit.h>
+   8          #include <sulythoigian.h>
+   9          #include  <string.h>
+  10          #include  <stdio.h>
+  11          #include  <lcd.h>
+  12          char hthgtd;
+  13          void sulytudongthietbi(){
+  14                  unsigned char i,j,chang=0;
+  15                  timesys0=timesys;//copy thong tin thoi gian hien tai vao timesys0
+  16                  if(!(timesys0.time.phut%5 )){
+  17                          ; //5 phut bat lcd 1 lan
+  18                          lcd_clr(lines);lcd_puts("Busy! Checking Auto On, Off, Arlam..v.v..");hienthithoigian(&timesys0);
+  19                          if((cousensorct==nosensor)&&((flagstatus&tattat_)||(timesys0.time.gio<=7)||(timesys0.time.gio>=23)))cous
+             -ensorct=er(adee_cousen(0));
+  20                  }
+  21                  if(!cousensorct){//su ly hien thi coi bao dong
+  22                                  lcd_clr(lines);
+  23                                  lcd_puts("Ai Oi Nho Lay Cau Nay, Mot Dem An Trom Bang Nam Nam Cay.. ^_^ ^_^ ^_^ ");
+  24                              bell=baodotnhap;
+  25                  }
+  26          flagstatus|=tattat_;    
+  27          for(i=0;i<sothietbi;i++){
+  28              eeprom_reads(adee_thietbi(i),sizeof(thietbitemp0),&thietbitemp0);//luu thong tin 1 thiet bi vao mang t
+             -hietbitemp de su ly
+  29                  if(thietbitemp0.status)flagstatus&=(~tattat_); //co kiem tra co phai tat ca cac thiet bi tat hay ko
+  30              if(thoigianmoi&giomoi_){chang=1;setclearbit(out4094,i,thietbitemp0.status);}//update lai thong tin tat
+             - ca cac thiet bi
+  31              if(((thietbitemp0.tudongtat)||(hengiotemp0.autooff))&&(!memcmp(&thietbitemp0.timetat,&timesys0.time,si
+             -zeof(timesys0.time)))){       //tu dong tat do bat bang dieu khien
+  32                          chang=1;
+  33                                  thietbitemp0.status=0;
+  34                                  clearbit(out4094,i);
+  35                                  if(thietbitemp0.ambaotat)bell=bellarlam;
+  36                              if(!hthgtd){lcd_clr(lines);hthgtd=1;}
+  37                              lcd_vsprintf("(%bu,%bu)T-",
+  38                                  (uchar)(thietbitemp0.sothutudat/sothietbi1tang),(uchar)(thietbitemp0.sothutudat%sothietbi1tang));
+  39                  }  //check hen go tat do bat thiet bi bang dk hoac b
+  40                  if((!cousensorct)&&(thietbitemp0.batkembaodong)&&(!thietbitemp0.status)){//su ly tat bat thiet bi kem bao
+             - dong va hen gio tat sau khi bat
+  41                                  thietbitemp0.status=1;
+  42                                  setbit(out4094,i);
+  43                              thietbitemp0.timetat=timesys0.time;//cai dat hen gio tat 
+  44                      congtrutime(&thietbitemp0.timetat,&mdtatbaodong,1);//
+C51 COMPILER V9.01   SULYTHIETBI                                                           05/29/2011 16:28:07 PAGE 2   
+
+  45                                  chang=1; //bao cho ben duoi luu trang thai moi thiet bi
+  46                  }
+  47              
+  48                  if(thietbitemp0.lockauto) continue;//thiet bi i khoa tu dong thi chuyen sang i+1
+  49            
+  50            for(j=0;j<solanhengio;j++){
+  51               hengiotemp0=thietbitemp0.hengio[j];//luu thoi thong tin thoi gian hen gio vao bien thoi gian temp0
+  52          //   if(thoigianmoi&nammoi_)hengiotemp0.cacnam<<=1;//do cac nam o day la index tinh tu offset nam hien tai
+             -, 
+  53               if(!hengiotemp0.kichhoat) continue; //chua kich hoat hen gio thi thoat ra kiem tra hen gio j+1  
+  54           
+  55               if(getbit((hengiotemp0.cacphut),battheophut)){if (!getbit(hengiotemp0.cacphut,timesys0.time.phut))con
+             -tinue;}
+  56               if(getbit((hengiotemp0.cacgio),battheogio))  {if (!getbit(hengiotemp0.cacgio,timesys0.time.gio))conti
+             -nue;}
+  57               if(getbit((hengiotemp0.cacthu),battheothu))  {if (!getbit(hengiotemp0.cacthu,date2thu(&timesys0.date)
+             -))continue;else goto checkthang;}
+  58               if(getbit((hengiotemp0.cacngay),battheongay)){if (!getbit(hengiotemp0.cacngay,timesys0.date.ngay))con
+             -tinue;}
+  59                   checkthang:
+  60               if(getbit((hengiotemp0.cacthang),battheothang)){if (!getbit(hengiotemp0.cacthang,timesys0.date.thang)
+             -)continue;} 
+  61               if(getbit((hengiotemp0.cacnam),battheonam))    {if (!getbit(hengiotemp0.cacnam,timesys0.date.nam))con
+             -tinue;}
+  62          //   checkonoff:
+  63               if(hengiotemp0.baobat&&(( hengiotemp0.battat &&(!thietbitemp0.status))||((!hengiotemp0.battat)&&thiet
+             -bitemp0.status))) setbell(bellarlam);
+  64                   chang=thietbitemp0.status;
+  65               setclearbit(out4094,i,thietbitemp0.status=hengiotemp0.battat);
+  66                   //hen gio tat neu la hen go bat
+  67                   if((hengiotemp0.autooff)&&hengiotemp0.battat&&(!chang)){ //kiem tra tu dong tat khi hen gio bat theo gio
+             - mac dinh neu thiet bi dang bat thi thoi
+  68                          thietbitemp0.timetat=timesys.time; //dang bat san thi ko hen them gio tat
+  69                          if(hengiotemp0.tgtatdacbiet)congtrutime(&thietbitemp0.timetat,&thietbitemp0.ktimetatdacbiet,1);
+  70                  else congtrutime(&thietbitemp0.timetat,&thietbitemp0.mdktimetat,1);//timesys0
+  71                   }
+  72               if(!hthgtd){lcd_clr(lines);hthgtd=1;}
+  73               lcd_vsprintf("[%bu,%bu]",(uchar)(thietbitemp0.sothutudat/sothietbi1tang),(uchar)(thietbitemp0.sothutu
+             -dat%sothietbi1tang));
+  74                   if(hengiotemp0.battat)lcd_puts("B-"); else lcd_puts("T-"); 
+  75                   chang=1; 
+  76                   //thietbitemp0.hengio[j]=hengiotemp0; thua
+  77             }                                                                                                            
+  78            if(chang){eeprom_writes(adee_thietbi(i),sizeof(thietbitemp0),&thietbitemp0); chang=0;}//luu thong tin th
+             -iet bi da thay doi 
+  79           }
+  80            hthgtd=0;
+  81            if(!cousensorct){cousensorct=er(adee_cousen(0));}     //khoi dong bo dem cho bo bao dong neu da check het
+  82            clearthoigianmoi(phutmoi_|giomoi_|ngaymoi_|thangmoi_|nammoi_);
+  83            //kiem tra xong tat ca cac thiet bi
+  84            if(PCON&POF_){ //mat nguon thi restor trang thai moi thu can thiet
+  85                    PCON&=(~POF_);
+  86                    lcd_clr(lines);lcd_puts("Mat Dien. He Thong Da Tu Dong Cai Dat Cac Thong So Can Thiet");delay_ms(5000);
+  87                    eeprom_reads(adee_out4094,sizeof(out4094),out4094);//restore trang thai thiet bi output vao eeprom co d
+             -ia chi adee_tatbat
+  88            }//ko mat nguon thi cackup he thong
+  89            else {
+  90                    eeprom_writes(adee_thoigian(0),sizeof(timesys),&timesys);// backup thoi gian he thong
+  91                    eeprom_writes(adee_out4094,sizeof(out4094),out4094);//backup trang thai thiet bi
+  92                    outputdevice(out4094);//xuat trang thai moi cua cac thiet bi ra ngoai
+  93            }
+  94          }
+C51 COMPILER V9.01   SULYTHIETBI                                                           05/29/2011 16:28:07 PAGE 3   
+
+  95          void nhaythietbi(unsigned char stttb){
+  96            unsigned char i,j=0,k=getbit(out4094,stttb);
+  97            bell=lockbell;
+  98            for (i=0;i<10;i++){
+  99              j=!j;
+ 100              ring=j;
+ 101              setclearbit(out4094,stttb,j);
+ 102              outputdevice(out4094);
+ 103              delay_ms(200);
+ 104            }
+ 105           setclearbit(out4094,stttb,k);
+ 106           bell=offbell;
+ 107          
+ 108          }
+ 109           
+*** WARNING C316 IN LINE 109 OF sulythietbi.c: unterminated conditionals
+
+C51 COMPILATION COMPLETE.  5 WARNING(S),  2 ERROR(S)

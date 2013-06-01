@@ -1,0 +1,756 @@
+; .\MT888.SRC generated from: MT888.C
+; COMPILER INVOKED BY:
+;        C:\Keil\C51\BIN\C51.EXE MT888.C BROWSE DEBUG OBJECTEXTEND SRC(.\MT888.SRC)
+
+$NOMOD51
+
+NAME	MT888
+
+P0	DATA	080H
+P1	DATA	090H
+P2	DATA	0A0H
+P3	DATA	0B0H
+AC	BIT	0D0H.6
+T0	BIT	0B0H.4
+T1	BIT	0B0H.5
+EA	BIT	0A8H.7
+T2	BIT	090H.0
+IE	DATA	0A8H
+P0_0	BIT	080H.0
+P1_0	BIT	090H.0
+P0_1	BIT	080H.1
+P2_0	BIT	0A0H.0
+P1_1	BIT	090H.1
+P0_2	BIT	080H.2
+P3_0	BIT	0B0H.0
+P2_1	BIT	0A0H.1
+P1_2	BIT	090H.2
+P0_3	BIT	080H.3
+P3_1	BIT	0B0H.1
+P2_2	BIT	0A0H.2
+P1_3	BIT	090H.3
+P0_4	BIT	080H.4
+P3_2	BIT	0B0H.2
+P2_3	BIT	0A0H.3
+P1_4	BIT	090H.4
+P0_5	BIT	080H.5
+EXF2	BIT	0C8H.6
+RD	BIT	0B0H.7
+P3_3	BIT	0B0H.3
+P2_4	BIT	0A0H.4
+P1_5	BIT	090H.5
+P0_6	BIT	080H.6
+P3_4	BIT	0B0H.4
+P2_5	BIT	0A0H.5
+P1_6	BIT	090H.6
+P0_7	BIT	080H.7
+P3_5	BIT	0B0H.5
+ES	BIT	0A8H.4
+P2_6	BIT	0A0H.6
+P1_7	BIT	090H.7
+P3_6	BIT	0B0H.6
+P2_7	BIT	0A0H.7
+IP	DATA	0B8H
+P3_7	BIT	0B0H.7
+RI	BIT	098H.0
+CY	BIT	0D0H.7
+INT0	BIT	0B0H.2
+INT1	BIT	0B0H.3
+TI	BIT	098H.1
+RCAP2H	DATA	0CBH
+PS	BIT	0B8H.4
+SP	DATA	081H
+T2EX	BIT	090H.1
+OV	BIT	0D0H.2
+RCAP2L	DATA	0CAH
+C_T2	BIT	0C8H.1
+WR	BIT	0B0H.6
+RCLK	BIT	0C8H.5
+TCLK	BIT	0C8H.4
+SBUF	DATA	099H
+PCON	DATA	087H
+SCON	DATA	098H
+TMOD	DATA	089H
+TCON	DATA	088H
+IE0	BIT	088H.1
+IE1	BIT	088H.3
+B	DATA	0F0H
+CP_RL2	BIT	0C8H.0
+ACC	DATA	0E0H
+ET0	BIT	0A8H.1
+ET1	BIT	0A8H.3
+TF0	BIT	088H.5
+ET2	BIT	0A8H.5
+TF1	BIT	088H.7
+TF2	BIT	0C8H.7
+RB8	BIT	098H.2
+TH0	DATA	08CH
+EX0	BIT	0A8H.0
+IT0	BIT	088H.0
+TH1	DATA	08DH
+EX1	BIT	0A8H.2
+TB8	BIT	098H.3
+IT1	BIT	088H.2
+TH2	DATA	0CDH
+P	BIT	0D0H.0
+SM0	BIT	098H.7
+TL0	DATA	08AH
+SM1	BIT	098H.6
+TL1	DATA	08BH
+SM2	BIT	098H.5
+TL2	DATA	0CCH
+PT0	BIT	0B8H.1
+RS0	BIT	0D0H.3
+PT1	BIT	0B8H.3
+RS1	BIT	0D0H.4
+PT2	BIT	0B8H.5
+TR0	BIT	088H.4
+TR1	BIT	088H.6
+TR2	BIT	0C8H.2
+PX0	BIT	0B8H.0
+PX1	BIT	0B8H.2
+DPH	DATA	083H
+DPL	DATA	082H
+EXEN2	BIT	0C8H.3
+nhacmay	BIT	090H.0
+REN	BIT	098H.4
+T2MOD	DATA	0C9H
+T2CON	DATA	0C8H
+RXD	BIT	0B0H.0
+TXD	BIT	0B0H.1
+daocuc	BIT	090H.1
+F0	BIT	0D0H.5
+F1	BIT	0D0H.1
+PSW	DATA	0D0H
+?PR?main?MT888       SEGMENT CODE 
+?DT?main?MT888       SEGMENT DATA OVERLAYABLE 
+?PR?int_MT?MT888     SEGMENT CODE 
+?PR?_setup_MT?MT888  SEGMENT CODE 
+?DT?_setup_MT?MT888  SEGMENT DATA OVERLAYABLE 
+?PR?ReadDT_MT?MT888  SEGMENT CODE 
+?BI?ReadDT_MT?MT888  SEGMENT BIT OVERLAYABLE 
+?PR?_WriteDT_MT?MT888                    SEGMENT CODE 
+?BI?_WriteDT_MT?MT888                    SEGMENT BIT OVERLAYABLE 
+?PR?_tranmisDTMF?MT888                   SEGMENT CODE 
+?DT?_tranmisDTMF?MT888                   SEGMENT DATA OVERLAYABLE 
+?PR?recDTMF?MT888    SEGMENT CODE 
+?PR?_Number2bcd?MT888                    SEGMENT CODE 
+?DT?_Number2bcd?MT888                    SEGMENT DATA OVERLAYABLE 
+?C_INITSEG           SEGMENT CODE 
+?BI?MT888            SEGMENT BIT 
+?DT?MT888            SEGMENT DATA 
+	EXTRN	CODE (delaymsg)
+	EXTRN	CODE (?C_STARTUP)
+	EXTRN	CODE (?C?ULDIV)
+	EXTRN	CODE (?C?CSTOPTR)
+	PUBLIC	bcrab
+	PUBLIC	bcrabk
+	PUBLIC	bnhacmay
+	PUBLIC	?_Number2bcd?BYTE
+	PUBLIC	_Number2bcd
+	PUBLIC	recDTMF
+	PUBLIC	?_tranmisDTMF?BYTE
+	PUBLIC	_tranmisDTMF
+	PUBLIC	?_WriteDT_MT?BIT
+	PUBLIC	_WriteDT_MT
+	PUBLIC	?ReadDT_MT?BIT
+	PUBLIC	ReadDT_MT
+	PUBLIC	_setup_MT
+	PUBLIC	int_MT
+	PUBLIC	main
+
+	RSEG  ?BI?ReadDT_MT?MT888
+?ReadDT_MT?BIT:
+        dat?342:   DBIT   1
+
+	RSEG  ?DT?main?MT888
+?main?BYTE:
+    tempcra?040:   DS   1
+
+	RSEG  ?BI?_WriteDT_MT?MT888
+?_WriteDT_MT?BIT:
+        dat?445:   DBIT   1
+
+	RSEG  ?DT?_tranmisDTMF?MT888
+?_tranmisDTMF?BYTE:
+       digi?546:   DS   4
+	ORG  4
+        scs?547:   DS   1
+	ORG  6
+        str?548:   DS   10
+	ORG  16
+          j?549:   DS   1
+	ORG  5
+       temp?550:   DS   1
+
+	RSEG  ?DT?_setup_MT?MT888
+?_setup_MT?BYTE:
+       crab?241:   DS   1
+
+	RSEG  ?DT?_Number2bcd?MT888
+?_Number2bcd?BYTE:
+        tpr?752:   DS   3
+	ORG  3
+        scs?753:   DS   2
+	ORG  5
+          x?754:   DS   4
+	ORG  9
+       temp?755:   DS   4
+	ORG  13
+          k?756:   DS   1
+	ORG  14
+        pdu?757:   DS   1
+
+	RSEG  ?BI?MT888
+       bnhacmay:   DBIT   1
+
+	RSEG  ?DT?MT888
+         bcrabk:   DS   1
+          bcrab:   DS   1
+
+	RSEG  ?C_INITSEG
+	DB	0C1H, bnhacmay + 000H	; bit-init
+
+; #include <REGX52.H>
+; #include <MT888_NTS.H>
+; #include <DelayUSMS_NTS.h>
+; //#define SPK P0_1
+; #define dedt  110
+; #define tredapmay  221				  //toi thieu 210ms
+; 
+; //#define dgbitthap
+; #define sbis(sfr,bit) ((sfr)|(1<<(bit)))
+; #define cbis(sfr,bit) ((sfr)&(~(1<<(bit))))
+; #define tidtmf  10
+; //unsigned char code phimso[]={10,1,2,3,4,5,6,7,8,9,
+; void WriteDT_MT(unsigned char temp,bit dat);
+; unsigned char ReadDT_MT(bit dat);
+; bit bnhacmay=0;
+; sbit nhacmay=P1^0 ;
+; sbit daocuc=P1^1 ;
+; //#pragma OT(11)
+;  
+; enum {BURST,TEST,SND,CNR,TOUT,CPNDTMF,IRQ,RSEL} bcrab; 
+; union 
+; {
+; 		struct  
+; 		{
+; 		  unsigned char  BURST:1  ;
+; 		  unsigned char  TEST :1  ;
+; 	      unsigned char  SND  :1  ;	  
+; 		  unsigned char  CNR  :1  ;
+; 		  unsigned char  TOUT :1  ;
+; 		  unsigned char  CPNDTMF:1;
+; 		  unsigned char  IRQ:1	  ;
+; 		  unsigned char  RSEL:1	  ;
+; 		}abbit;
+; 		unsigned char abreg;
+; 
+; }bcrabk;
+; 
+; void main(void)
+
+	RSEG  ?PR?main?MT888
+main:
+	USING	0
+			; SOURCE LINE # 38
+; { 
+			; SOURCE LINE # 39
+; //bit btemp;
+; unsigned char tempcra;	
+; 	delayms(100);
+			; SOURCE LINE # 42
+	MOV  	R0,#01H
+	CLR  	A
+	MOV  	@R0,A
+	INC  	R0
+	MOV  	@R0,#064H
+	LCALL	delaymsg
+; 	CS_NMT=0;									   
+			; SOURCE LINE # 43
+	CLR  	P3_1
+; 	int_MT();
+			; SOURCE LINE # 44
+	LCALL	int_MT
+; 	setup_MT(0Xd2);
+			; SOURCE LINE # 45
+	MOV  	R7,#0D2H
+	LCALL	_setup_MT
+; 	tranmisDTMF(949109959,10);	  //39923571 ,01662576689
+			; SOURCE LINE # 46
+	MOV  	?_tranmisDTMF?BYTE+04H,#0AH
+	MOV  	R7,#0C7H
+	MOV  	R6,#044H
+	MOV  	R5,#092H
+	MOV  	R4,#038H
+	LCALL	_tranmisDTMF
+; //	Phi_MT=1;
+;   //  if(daocuc)bnhacmay=1;
+;  
+;   delayms(10000);			 //toi thieu sau 4485 giay thi ben kia nhan dc tin hieu
+			; SOURCE LINE # 50
+	MOV  	R0,#01H
+	MOV  	@R0,#027H
+	INC  	R0
+	MOV  	@R0,#010H
+	LCALL	delaymsg
+;   
+;   nhacmay=0;
+			; SOURCE LINE # 52
+	CLR  	nhacmay
+;   setup_MT(sbis(bcrab,TOUT));
+			; SOURCE LINE # 53
+	MOV  	A,bcrab
+	ORL  	A,#010H
+	MOV  	R7,A
+	LCALL	_setup_MT
+; //  nhacmay=0;
+; Phi_MT=1;
+			; SOURCE LINE # 55
+	SETB 	P3_3
+?C0001:
+; 	while(1);
+			; SOURCE LINE # 56
+	SJMP 	?C0001
+; END OF main
+
+; 	setup_MT(sbis(bcrab,CPNDTMF)); //kiem tra che do call process
+; 	 delayms(10000);
+; 	 nhacmay=0;
+; }
+; void int_MT()  // theo nha san xuat thoi cai nay chuan roi ko can chinh
+
+	RSEG  ?PR?int_MT?MT888
+int_MT:
+	USING	0
+			; SOURCE LINE # 61
+; {
+			; SOURCE LINE # 62
+; 	ReadDT_MT(0);
+			; SOURCE LINE # 63
+	CLR  	?ReadDT_MT?BIT
+	LCALL	ReadDT_MT
+; 	WriteDT_MT(0,0);  //cra hoac crb nhung sau do nhat dinh fai la cra
+			; SOURCE LINE # 64
+	LCALL	L?0027
+; 	WriteDT_MT(0,0); //cra
+			; SOURCE LINE # 65
+	LCALL	L?0027
+; 	WriteDT_MT(0x8,0);//cra sau lan nay la crb
+			; SOURCE LINE # 66
+	CLR  	?_WriteDT_MT?BIT
+	MOV  	R7,#08H
+	LCALL	_WriteDT_MT
+; 	WriteDT_MT(0,0);  //crb sau lan nay se tu quay ve cra
+			; SOURCE LINE # 67
+	LCALL	L?0028
+; 	ReadDT_MT(0);
+			; SOURCE LINE # 68
+	CLR  	?ReadDT_MT?BIT
+	LJMP 	ReadDT_MT
+; END OF int_MT
+
+; }
+; void setup_MT(unsigned char crab)  // setup theo tham so truyen vao, chuan ko can chinh nua
+
+	RSEG  ?PR?_setup_MT?MT888
+_setup_MT:
+	USING	0
+			; SOURCE LINE # 70
+	MOV  	crab?241,R7
+; {
+			; SOURCE LINE # 71
+; 	bcrab=crab;
+			; SOURCE LINE # 72
+	MOV  	bcrab,crab?241
+; 	WriteDT_MT((crab>>4)|8,0); //dcra phat tone, dtmf (ko fai cp), cho tao ngat( noi dung ngat do bit b1(test) cua rcb) ,lan sau ghi vao crb
+			; SOURCE LINE # 73
+	MOV  	A,crab?241
+	SWAP 	A
+	ANL  	A,#0FH
+	ORL  	A,#08H
+	MOV  	R7,A
+	CLR  	?_WriteDT_MT?BIT
+	LCALL	_WriteDT_MT
+; 	WriteDT_MT(crab&0xF,0); //0crb, hat da tone khong test chon phat burs 50/50
+			; SOURCE LINE # 74
+	MOV  	A,crab?241
+	ANL  	A,#0FH
+	MOV  	R7,A
+	CLR  	?_WriteDT_MT?BIT
+	LJMP 	_WriteDT_MT
+; END OF _setup_MT
+
+; }
+; unsigned char ReadDT_MT(bit dat)  //ham nay da ok, doi khi buon
+
+	RSEG  ?PR?ReadDT_MT?MT888
+ReadDT_MT:
+	USING	0
+			; SOURCE LINE # 76
+; {
+			; SOURCE LINE # 77
+; 	unsigned char temp;
+; 	Data_MT=(Data_MT&Mark_MT)|(~Mark_MT); //cho lam dau vao va che bit khac ngoai b0-->b3
+			; SOURCE LINE # 79
+	MOV  	A,P2
+	ANL  	A,#0F0H
+	ORL  	A,#0FH
+	MOV  	P2,A
+; 	RS0_MT=~dat;
+			; SOURCE LINE # 80
+	MOV  	C,dat?342
+	CPL  	C
+	MOV  	P3_2,C
+; 	RW_MT=1;
+			; SOURCE LINE # 81
+	SETB 	P3_0
+; 
+; 	Phi_MT=1;
+			; SOURCE LINE # 83
+	SETB 	P3_3
+; 	datain(temp);
+			; SOURCE LINE # 84
+;---- Variable 'temp?343' assigned to Register 'R7' ----
+	MOV  	R7,P2
+; 	Phi_MT=0;
+			; SOURCE LINE # 85
+	CLR  	P3_3
+; 
+; 		
+; 	return temp;
+			; SOURCE LINE # 88
+; }
+			; SOURCE LINE # 89
+?C0006:
+	RET  	
+; END OF ReadDT_MT
+
+; void WriteDT_MT(unsigned char temp,bit dat)		// ham nay cung da ok
+
+	RSEG  ?PR?_WriteDT_MT?MT888
+L?0027:
+	USING	0
+L?0028:
+	CLR  	?_WriteDT_MT?BIT
+	CLR  	A
+	MOV  	R7,A
+_WriteDT_MT:
+	USING	0
+			; SOURCE LINE # 90
+;---- Variable 'temp?444' assigned to Register 'R7' ----
+; {
+			; SOURCE LINE # 91
+; 	if(dat){nhacmay=1;}
+			; SOURCE LINE # 92
+	JNB  	dat?445,?C0007
+	SETB 	nhacmay
+?C0007:
+; 	RS0_MT=~dat;
+			; SOURCE LINE # 93
+	MOV  	C,dat?445
+	CPL  	C
+	MOV  	P3_2,C
+; 	RW_MT=0;
+			; SOURCE LINE # 94
+	CLR  	P3_0
+; 
+; 	Phi_MT=1;
+			; SOURCE LINE # 96
+	SETB 	P3_3
+; 	dataout(temp);
+			; SOURCE LINE # 97
+	MOV  	A,R7
+	ANL  	A,#0FH
+	MOV  	R7,A
+	MOV  	A,P2
+	ANL  	A,#0F0H
+	ORL  	A,R7
+	MOV  	P2,A
+; 	Phi_MT=0;
+			; SOURCE LINE # 98
+	CLR  	P3_3
+; 	if(dat){delayms(dedt);}
+			; SOURCE LINE # 99
+	JNB  	dat?445,?C0009
+	MOV  	R0,#01H
+	CLR  	A
+	MOV  	@R0,A
+	INC  	R0
+	MOV  	@R0,#06EH
+	LCALL	delaymsg
+; }
+			; SOURCE LINE # 100
+?C0009:
+	RET  	
+; END OF _WriteDT_MT
+
+; 
+; 
+; void tranmisDTMF(unsigned long digi,unsigned char scs)
+
+	RSEG  ?PR?_tranmisDTMF?MT888
+_tranmisDTMF:
+	USING	0
+			; SOURCE LINE # 103
+	MOV  	digi?546+03H,R7
+	MOV  	digi?546+02H,R6
+	MOV  	digi?546+01H,R5
+	MOV  	digi?546,R4
+; {
+			; SOURCE LINE # 104
+; 
+; 	 char temp;
+; 	 nhacmay=0;			//dap may truoc khi quay so moi
+			; SOURCE LINE # 107
+	CLR  	nhacmay
+; 	 delayms(tredapmay);
+			; SOURCE LINE # 108
+	MOV  	R0,#01H
+	CLR  	A
+	MOV  	@R0,A
+	INC  	R0
+	MOV  	@R0,#0DDH
+	LCALL	delaymsg
+; 	 nhacmay=1;
+			; SOURCE LINE # 109
+	SETB 	nhacmay
+; 	 delayms(300);		//nhac may sau 280ms thi quay so moi co nghia voi 11 so, 10 so yeu cau nho hon
+			; SOURCE LINE # 110
+	MOV  	R0,#01H
+	MOV  	@R0,#01H
+	INC  	R0
+	MOV  	@R0,#02CH
+	LCALL	delaymsg
+; 	if(scs==11)		 	//viet 0 vao dau so do neu la 11 so thi so dau luon la 0
+			; SOURCE LINE # 111
+	MOV  	A,scs?547
+	CJNE 	A,#0BH,?C0010
+; 		{
+			; SOURCE LINE # 112
+; 			WriteDT_MT(10,1);  //viet 0 vao dau so do neu la 11 so thi so dau luoon la 0
+			; SOURCE LINE # 113
+	SETB 	?_WriteDT_MT?BIT
+	MOV  	R7,#0AH
+	LCALL	_WriteDT_MT
+; 			scs--;
+			; SOURCE LINE # 114
+	DEC  	scs?547
+; 		}
+			; SOURCE LINE # 115
+?C0010:
+; 
+; 	  { 
+			; SOURCE LINE # 117
+; 	   	unsigned char str[10],j;
+; 		Number2bcd(str,scs,digi); //conver thanh chuoi so rieng biet luu trong mang str
+			; SOURCE LINE # 119
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (str?548)
+	MOV  	R1,#LOW (str?548)
+	MOV  	A,scs?547
+	MOV  	R5,A
+	MOV  	R4,#00H
+	MOV  	?_Number2bcd?BYTE+08H,digi?546+03H
+	MOV  	?_Number2bcd?BYTE+07H,digi?546+02H
+	MOV  	?_Number2bcd?BYTE+06H,digi?546+01H
+	MOV  	?_Number2bcd?BYTE+05H,digi?546
+	LCALL	_Number2bcd
+; 		for(j=0;j<scs;j++)
+			; SOURCE LINE # 120
+	CLR  	A
+	MOV  	j?549,A
+?C0011:
+	MOV  	A,j?549
+	CLR  	C
+	SUBB 	A,scs?547
+	JNC  	?C0014
+; 			{	
+			; SOURCE LINE # 121
+; 				WriteDT_MT(str[j],1);
+			; SOURCE LINE # 122
+	MOV  	A,#LOW (str?548)
+	ADD  	A,j?549
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	R7,A
+	SETB 	?_WriteDT_MT?BIT
+	LCALL	_WriteDT_MT
+; 			}
+			; SOURCE LINE # 123
+	INC  	j?549
+	SJMP 	?C0011
+; 	 }
+			; SOURCE LINE # 124
+; }
+			; SOURCE LINE # 125
+?C0014:
+	RET  	
+; END OF _tranmisDTMF
+
+; 
+; /*void tranmis1diDTMF(unsigned char so)
+; {
+; 		unsigned char temp;
+; 		nhacmay=1;
+; //		do{temp=ReadDT_MT(0); }while(!(temp&(1<<1)));
+; 		WriteDT_MT(so,1);  //viet 0 vao dau so do neu la 11 so thi so dau luoon la 0
+; }  */
+; 
+; unsigned char recDTMF(void)
+
+	RSEG  ?PR?recDTMF?MT888
+recDTMF:
+	USING	0
+			; SOURCE LINE # 135
+; {
+			; SOURCE LINE # 136
+?C0017:
+; 		unsigned char temp;
+; 		do{temp=ReadDT_MT(0);}while(!(temp&(1<<2)));  //kiem tra xem co ky tu moi chua
+			; SOURCE LINE # 138
+	CLR  	?ReadDT_MT?BIT
+	LCALL	ReadDT_MT
+;---- Variable 'temp?651' assigned to Register 'R7' ----
+	MOV  	A,R7
+	JNB  	ACC.2,?C0017
+; 		return ReadDT_MT(1);
+			; SOURCE LINE # 139
+	SETB 	?ReadDT_MT?BIT
+	LCALL	ReadDT_MT
+; }
+			; SOURCE LINE # 140
+?C0018:
+	RET  	
+; END OF recDTMF
+
+; 
+; void Number2bcd(unsigned char *tpr,scs,unsigned long x)	 //ham nay chuan roai
+
+	RSEG  ?PR?_Number2bcd?MT888
+_Number2bcd:
+	USING	0
+			; SOURCE LINE # 142
+	MOV  	tpr?752,R3
+	MOV  	tpr?752+01H,R2
+	MOV  	tpr?752+02H,R1
+	MOV  	scs?753,R4
+	MOV  	scs?753+01H,R5
+; {
+			; SOURCE LINE # 143
+; unsigned long temp=x;
+			; SOURCE LINE # 144
+	MOV  	temp?755+03H,x?754+03H
+	MOV  	temp?755+02H,x?754+02H
+	MOV  	temp?755+01H,x?754+01H
+	MOV  	temp?755,x?754
+; char k=0,pdu;
+			; SOURCE LINE # 145
+	CLR  	A
+	MOV  	k?756,A
+?C0021:
+; do{	
+			; SOURCE LINE # 146
+; 		   pdu=temp%10;
+			; SOURCE LINE # 147
+	CLR  	A
+	MOV  	R3,#0AH
+	MOV  	R2,A
+	MOV  	R1,A
+	MOV  	R0,A
+	MOV  	R7,temp?755+03H
+	MOV  	R6,temp?755+02H
+	MOV  	R5,temp?755+01H
+	MOV  	R4,temp?755
+	LCALL	?C?ULDIV
+	MOV  	R7,AR3
+	MOV  	pdu?757,R7
+; 		   temp=temp/10;
+			; SOURCE LINE # 148
+	MOV  	R7,temp?755+03H
+	MOV  	R6,temp?755+02H
+	MOV  	R5,temp?755+01H
+	MOV  	R4,temp?755
+	CLR  	A
+	MOV  	R3,#0AH
+	MOV  	R2,A
+	MOV  	R1,A
+	MOV  	R0,A
+	LCALL	?C?ULDIV
+	MOV  	temp?755+03H,R7
+	MOV  	temp?755+02H,R6
+	MOV  	temp?755+01H,R5
+	MOV  	temp?755,R4
+; 		   if(pdu==0){*(tpr+scs-k-1)=10;}else{*(tpr+scs-k-1)=pdu;}	
+			; SOURCE LINE # 149
+	MOV  	A,pdu?757
+	MOV  	R7,k?756
+	JNZ  	?C0022
+	MOV  	A,R7
+	RLC  	A
+	SUBB 	A,ACC
+	MOV  	R6,A
+	MOV  	R3,tpr?752
+	MOV  	A,tpr?752+02H
+	ADD  	A,scs?753+01H
+	MOV  	R1,A
+	MOV  	A,tpr?752+01H
+	ADDC 	A,scs?753
+	MOV  	R2,A
+	CLR  	C
+	MOV  	A,R1
+	SUBB 	A,R7
+	MOV  	R1,A
+	MOV  	A,R2
+	SUBB 	A,R6
+	MOV  	R2,A
+	MOV  	DPTR,#0FFFFH
+	MOV  	A,#0AH
+	SJMP 	?C0026
+?C0022:
+	MOV  	A,R7
+	RLC  	A
+	SUBB 	A,ACC
+	MOV  	R6,A
+	MOV  	R3,tpr?752
+	MOV  	A,tpr?752+02H
+	ADD  	A,scs?753+01H
+	MOV  	R1,A
+	MOV  	A,tpr?752+01H
+	ADDC 	A,scs?753
+	MOV  	R2,A
+	CLR  	C
+	MOV  	A,R1
+	SUBB 	A,R7
+	MOV  	R1,A
+	MOV  	A,R2
+	SUBB 	A,R6
+	MOV  	R2,A
+	MOV  	DPTR,#0FFFFH
+	MOV  	A,pdu?757
+?C0026:
+	LCALL	?C?CSTOPTR
+?C0023:
+; 		   k++;	
+			; SOURCE LINE # 150
+	INC  	k?756
+;   }while(k!=scs);
+			; SOURCE LINE # 151
+	MOV  	R7,k?756
+	MOV  	A,R7
+	RLC  	A
+	SUBB 	A,ACC
+	MOV  	R6,A
+	MOV  	A,R7
+	XRL  	A,scs?753+01H
+	JNZ  	?C0025
+	MOV  	A,R6
+	XRL  	A,scs?753
+?C0025:
+	JZ   	$ + 5H
+	LJMP 	?C0021
+; }			; SOURCE LINE # 152
+	RET  	
+; END OF _Number2bcd
+
+	END

@@ -1,0 +1,58 @@
+C51 COMPILER V9.01   MAIN                                                                  03/28/2011 00:25:00 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c LARGE BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          /***********************************************************************
+   2          Chuong trinh thu giao tiep UART
+   3          Tac gia   :   Bui Trung Hieu - Webmaster: http://www.khvt.com
+   4          Su dung   :   Co the su dung voi moi muc dich ma khong can xin phep 
+   5                  tac gia ve tac quyen, tac gia khong chiu moi trach nhiem ve 
+   6                  cac tac hai gay ra va khong doi hoi cac loi ich co the co
+   7          Khoi tao  : Ngay 31 thang 1 nam 2006 luc 9h15'PM
+   8          Hoan thanh  : Ngay 31 thang 1 nam 2006 luc 10h15'PM
+   9          ***********************************************************************/
+  10          
+  11          #include <P89V51Rx2.h>
+  12          #include "uart.h"
+  13          #include "stdio.h"
+  14          
+  15          void main (void)
+  16          {
+  17   1        //Khoi tao chuc nang UART
+  18   1        uart_init();
+  19   1        //Cho phep ngat chung
+  20   1        EA=1;
+  21   1        //Tich cuc co ngat phat
+  22   1        TI=1;
+  23   1        //In cac ki tu tren man hinh PC
+  24   1        printf("\n******************************************");
+  25   1        printf("\n        Hom qua tat nuoc dau dinh         ");
+  26   1        printf("\n     Bo quen cai ao tren canh hoa sen     ");
+  27   1        printf("\n        Em duoc thi cho anh xin           ");
+  28   1        printf("\n     Hay la em de lam tin trong nha?      ");
+  29   1        printf("\n****************************************** ");  
+  30   1        //Xoa co ngat phat, bao hieu khong truyen phat nua*/
+  31   1      //  TI=0;
+  32   1        //Vong lap vo tan, chuong trinh dung tai day!
+  33   1        while(1);{putchar(0x80);};
+  34   1      }
+  35          //End
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     63    ----
+   CONSTANT SIZE    =    265    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

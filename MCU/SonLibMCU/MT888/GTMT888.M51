@@ -1,0 +1,431 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        02/16/2011  17:54:58  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE MT888.obj, .\DelayUSMS.obj TO GTMT888 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  MT888.obj (MT888)
+  .\DelayUSMS.obj (DELAYUSMS)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CSTOPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?ULDIV)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  GTMT888 (MT888)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?MT888
+                    000AH     0016H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         ?BI?MT888
+            BIT     0020H.1   0000H.1   UNIT         _BIT_GROUP_
+                    0020H.2   0000H.6                *** GAP ***
+            DATA    0021H     0020H     UNIT         _DATA_GROUP_
+            IDATA   0041H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     00F0H     UNIT         ?C?LIB_CODE
+            CODE    00F3H     00A3H     UNIT         ?PR?_NUMBER2BCD?MT888
+            CODE    0196H     008CH     UNIT         ?C_C51STARTUP
+            CODE    0222H     0063H     UNIT         ?PR?_TRANMISDTMF?MT888
+            CODE    0285H     003AH     UNIT         ?PR?MAIN?MT888
+            CODE    02BFH     002EH     UNIT         ?PR?_WRITEDT_MT?MT888
+            CODE    02EDH     002AH     UNIT         ?PR?DELAYMSG?DELAYUSMS
+            CODE    0317H     001CH     UNIT         ?PR?_SETUP_MT?MT888
+            CODE    0333H     001AH     UNIT         ?PR?INT_MT?MT888
+            CODE    034DH     001AH     UNIT         ?PR?READDT_MT?MT888
+            CODE    0367H     000FH     UNIT         ?PR?RECDTMF?MT888
+            CODE    0376H     000FH     UNIT         ?PR?DELAYUSG?DELAYUSMS
+            CODE    0385H     0003H     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   GTMT888 (MT888)
+
+
+SEGMENT                           BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH     START    LENGTH
+------------------------------------------------------------------
+?C_C51STARTUP                  -----    -----      -----    -----
+  +--> ?PR?MAIN?MT888
+BL51 BANKED LINKER/LOCATER V6.22                                                      02/16/2011  17:54:58  PAGE 2
+
+
+  +--> ?C_INITSEG
+
+?PR?MAIN?MT888                 -----    -----      -----    -----
+  +--> ?PR?DELAYMSG?DELAYUSMS
+  +--> ?PR?INT_MT?MT888
+  +--> ?PR?_SETUP_MT?MT888
+  +--> ?PR?_TRANMISDTMF?MT888
+
+?PR?INT_MT?MT888               -----    -----      -----    -----
+  +--> ?PR?READDT_MT?MT888
+  +--> ?PR?_WRITEDT_MT?MT888
+
+?PR?READDT_MT?MT888            0020H.1  0000H.1    -----    -----
+
+?PR?_WRITEDT_MT?MT888          0020H.1  0000H.1    -----    -----
+  +--> ?PR?DELAYMSG?DELAYUSMS
+
+?PR?_SETUP_MT?MT888            -----    -----      0021H    0001H
+  +--> ?PR?_WRITEDT_MT?MT888
+
+?PR?_TRANMISDTMF?MT888         -----    -----      0021H    0011H
+  +--> ?PR?DELAYMSG?DELAYUSMS
+  +--> ?PR?_WRITEDT_MT?MT888
+  +--> ?PR?_NUMBER2BCD?MT888
+
+?PR?_NUMBER2BCD?MT888          -----    -----      0032H    000FH
+
+
+
+SYMBOL TABLE OF MODULE:  GTMT888 (MT888)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MT888
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:0080H.4       PUBLIC        P0_4
+  B:0080H.5       PUBLIC        P0_5
+  B:0080H.7       PUBLIC        P0_7
+  C:034DH         PUBLIC        ReadDT_MT
+  C:0285H         PUBLIC        main
+  C:02C3H         PUBLIC        _WriteDT_MT
+  C:0222H         PUBLIC        _tranmisDTMF
+  C:0317H         PUBLIC        _setup_MT
+  B:0020H.0       PUBLIC        bnhacmay
+  C:00F3H         PUBLIC        _Number2bcd
+  C:0333H         PUBLIC        int_MT
+  B:00B0H.7       PUBLIC        nhacmay
+  C:0367H         PUBLIC        recDTMF
+  D:0008H         PUBLIC        bcrabk
+  D:0009H         PUBLIC        bcrab
+  -------         PROC          MAIN
+  C:0285H         LINE#         37
+BL51 BANKED LINKER/LOCATER V6.22                                                      02/16/2011  17:54:58  PAGE 3
+
+
+  C:0285H         LINE#         38
+  C:0285H         LINE#         41
+  C:028FH         LINE#         42
+  C:0291H         LINE#         43
+  C:0294H         LINE#         44
+  C:0299H         LINE#         47
+  C:02A7H         LINE#         48
+  C:02B1H         LINE#         50
+  C:02B9H         LINE#         52
+  C:02BDH         LINE#         53
+  -------         ENDPROC       MAIN
+  -------         PROC          INT_MT
+  C:0333H         LINE#         61
+  C:0333H         LINE#         62
+  C:0333H         LINE#         63
+  C:0338H         LINE#         64
+  C:033BH         LINE#         65
+  C:033EH         LINE#         66
+  C:0345H         LINE#         67
+  C:0348H         LINE#         68
+  -------         ENDPROC       INT_MT
+  -------         PROC          _SETUP_MT
+  D:0021H         SYMBOL        crab
+  C:0317H         LINE#         70
+  C:0319H         LINE#         71
+  C:0319H         LINE#         72
+  C:031CH         LINE#         73
+  C:0329H         LINE#         74
+  -------         ENDPROC       _SETUP_MT
+  -------         PROC          READDT_MT
+  B:0020H.1       SYMBOL        dat
+  -------         DO            
+  D:0007H         SYMBOL        temp
+  -------         ENDDO         
+  C:034DH         LINE#         77
+  C:034DH         LINE#         78
+  C:034DH         LINE#         80
+  C:0355H         LINE#         81
+  C:035AH         LINE#         82
+  C:035CH         LINE#         84
+  C:035EH         LINE#         85
+  C:0364H         LINE#         86
+  C:0366H         LINE#         89
+  C:0366H         LINE#         90
+  -------         ENDPROC       READDT_MT
+  C:02BFH         SYMBOL        L?0030
+  -------         PROC          L?0029
+  -------         ENDPROC       L?0029
+  C:02BFH         SYMBOL        L?0030
+  -------         PROC          _WRITEDT_MT
+  D:0007H         SYMBOL        temp
+  B:0020H.1       SYMBOL        dat
+  C:02C3H         LINE#         91
+  C:02C3H         LINE#         92
+  C:02C3H         LINE#         93
+  C:02C8H         LINE#         94
+  C:02CDH         LINE#         95
+BL51 BANKED LINKER/LOCATER V6.22                                                      02/16/2011  17:54:58  PAGE 4
+
+
+  C:02CFH         LINE#         97
+  C:02D1H         LINE#         98
+  C:02DDH         LINE#         99
+  C:02DFH         LINE#         100
+  C:02ECH         LINE#         101
+  -------         ENDPROC       _WRITEDT_MT
+  -------         PROC          _TRANMISDTMF
+  D:0021H         SYMBOL        digi
+  D:0025H         SYMBOL        scs
+  -------         DO            
+  D:0026H         SYMBOL        temp
+  -------         DO            
+  D:0027H         SYMBOL        str
+  D:0031H         SYMBOL        j
+  -------         ENDDO         
+  -------         ENDDO         
+  C:0222H         LINE#         104
+  C:022AH         LINE#         105
+  C:022AH         LINE#         108
+  C:022CH         LINE#         109
+  C:0236H         LINE#         110
+  C:0238H         LINE#         111
+  C:0242H         LINE#         112
+  C:0247H         LINE#         113
+  C:0247H         LINE#         114
+  C:024EH         LINE#         115
+  C:0250H         LINE#         116
+  C:0250H         LINE#         118
+  C:0250H         LINE#         120
+  C:026AH         LINE#         121
+  C:0274H         LINE#         122
+  C:0274H         LINE#         123
+  C:0280H         LINE#         124
+  C:0284H         LINE#         125
+  C:0284H         LINE#         126
+  -------         ENDPROC       _TRANMISDTMF
+  -------         PROC          RECDTMF
+  -------         DO            
+  D:0007H         SYMBOL        temp
+  -------         ENDDO         
+  C:0367H         LINE#         136
+  C:0367H         LINE#         137
+  C:0367H         LINE#         139
+  C:0370H         LINE#         140
+  C:0375H         LINE#         141
+  -------         ENDPROC       RECDTMF
+  -------         PROC          _NUMBER2BCD
+  D:0032H         SYMBOL        tpr
+  D:0035H         SYMBOL        scs
+  D:0037H         SYMBOL        x
+  -------         DO            
+  D:003BH         SYMBOL        temp
+  D:003FH         SYMBOL        k
+  D:0040H         SYMBOL        pdu
+  -------         ENDDO         
+  C:00F3H         LINE#         143
+  C:00FDH         LINE#         144
+BL51 BANKED LINKER/LOCATER V6.22                                                      02/16/2011  17:54:58  PAGE 5
+
+
+  C:00FDH         LINE#         145
+  C:0109H         LINE#         146
+  C:010CH         LINE#         147
+  C:010CH         LINE#         148
+  C:0121H         LINE#         149
+  C:013AH         LINE#         150
+  C:017FH         LINE#         151
+  C:0181H         LINE#         152
+  C:0195H         LINE#         153
+  -------         ENDPROC       _NUMBER2BCD
+  -------         ENDMOD        MT888
+
+  -------         MODULE        DELAYUSMS
+  C:0376H         SEGMENT       ?PR?DELAYUSG?DELAYUSMS
+  C:02EDH         SEGMENT       ?PR?DELAYMSG?DELAYUSMS
+  C:02EDH         PUBLIC        DELAYMSG
+  C:0376H         PUBLIC        DELAYUSG
+  B:00D0H.6       SYMBOL        AC
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  B:00C8H.0       SYMBOL        CP_RL2
+  B:00D0H.7       SYMBOL        CY
+  B:00C8H.1       SYMBOL        C_T2
+  N:0000H         SYMBOL        DELAYUSMS
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  B:00A8H.7       SYMBOL        EA
+  B:00A8H.4       SYMBOL        ES
+  B:00A8H.1       SYMBOL        ET0
+  B:00A8H.3       SYMBOL        ET1
+  B:00A8H.5       SYMBOL        ET2
+  B:00A8H.0       SYMBOL        EX0
+  B:00A8H.2       SYMBOL        EX1
+  B:00C8H.3       SYMBOL        EXEN2
+  B:00C8H.6       SYMBOL        EXF2
+  B:00D0H.5       SYMBOL        F0
+  B:00D0H.1       SYMBOL        F1
+  D:00A8H         SYMBOL        IE
+  B:0088H.1       SYMBOL        IE0
+  B:0088H.3       SYMBOL        IE1
+  B:00B0H.2       SYMBOL        INT0
+  B:00B0H.3       SYMBOL        INT1
+  D:00B8H         SYMBOL        IP
+  B:0088H.0       SYMBOL        IT0
+  B:0088H.2       SYMBOL        IT1
+  C:02EDH         SYMBOL        LAP1
+  B:00D0H.2       SYMBOL        OV
+  B:00D0H.0       SYMBOL        P
+  D:0080H         SYMBOL        P0
+  B:0080H.0       SYMBOL        P0_0
+  B:0080H.1       SYMBOL        P0_1
+  B:0080H.2       SYMBOL        P0_2
+  B:0080H.3       SYMBOL        P0_3
+  B:0080H.4       SYMBOL        P0_4
+  B:0080H.5       SYMBOL        P0_5
+  B:0080H.6       SYMBOL        P0_6
+  B:0080H.7       SYMBOL        P0_7
+BL51 BANKED LINKER/LOCATER V6.22                                                      02/16/2011  17:54:58  PAGE 6
+
+
+  D:0090H         SYMBOL        P1
+  B:0090H.0       SYMBOL        P1_0
+  B:0090H.1       SYMBOL        P1_1
+  B:0090H.2       SYMBOL        P1_2
+  B:0090H.3       SYMBOL        P1_3
+  B:0090H.4       SYMBOL        P1_4
+  B:0090H.5       SYMBOL        P1_5
+  B:0090H.6       SYMBOL        P1_6
+  B:0090H.7       SYMBOL        P1_7
+  D:00A0H         SYMBOL        P2
+  B:00A0H.0       SYMBOL        P2_0
+  B:00A0H.1       SYMBOL        P2_1
+  B:00A0H.2       SYMBOL        P2_2
+  B:00A0H.3       SYMBOL        P2_3
+  B:00A0H.4       SYMBOL        P2_4
+  B:00A0H.5       SYMBOL        P2_5
+  B:00A0H.6       SYMBOL        P2_6
+  B:00A0H.7       SYMBOL        P2_7
+  D:00B0H         SYMBOL        P3
+  B:00B0H.0       SYMBOL        P3_0
+  B:00B0H.1       SYMBOL        P3_1
+  B:00B0H.2       SYMBOL        P3_2
+  B:00B0H.3       SYMBOL        P3_3
+  B:00B0H.4       SYMBOL        P3_4
+  B:00B0H.5       SYMBOL        P3_5
+  B:00B0H.6       SYMBOL        P3_6
+  B:00B0H.7       SYMBOL        P3_7
+  D:0087H         SYMBOL        PCON
+  B:00B8H.4       SYMBOL        PS
+  D:00D0H         SYMBOL        PSW
+  B:00B8H.1       SYMBOL        PT0
+  B:00B8H.3       SYMBOL        PT1
+  B:00B8H.5       SYMBOL        PT2
+  B:00B8H.0       SYMBOL        PX0
+  B:00B8H.2       SYMBOL        PX1
+  B:0098H.2       SYMBOL        RB8
+  D:00CBH         SYMBOL        RCAP2H
+  D:00CAH         SYMBOL        RCAP2L
+  B:00C8H.5       SYMBOL        RCLK
+  B:00B0H.7       SYMBOL        RD
+  B:0098H.4       SYMBOL        REN
+  B:0098H.0       SYMBOL        RI
+  B:00D0H.3       SYMBOL        RS0
+  B:00D0H.4       SYMBOL        RS1
+  B:00B0H.0       SYMBOL        RXD
+  D:0099H         SYMBOL        SBUF
+  D:0098H         SYMBOL        SCON
+  B:0098H.7       SYMBOL        SM0
+  B:0098H.6       SYMBOL        SM1
+  B:0098H.5       SYMBOL        SM2
+  D:0081H         SYMBOL        SP
+  B:00B0H.4       SYMBOL        T0
+  B:00B0H.5       SYMBOL        T1
+  B:0090H.0       SYMBOL        T2
+  D:00C8H         SYMBOL        T2CON
+  B:0090H.1       SYMBOL        T2EX
+  D:00C9H         SYMBOL        T2MOD
+BL51 BANKED LINKER/LOCATER V6.22                                                      02/16/2011  17:54:58  PAGE 7
+
+
+  B:0098H.3       SYMBOL        TB8
+  B:00C8H.4       SYMBOL        TCLK
+  D:0088H         SYMBOL        TCON
+  B:0088H.5       SYMBOL        TF0
+  B:0088H.7       SYMBOL        TF1
+  B:00C8H.7       SYMBOL        TF2
+  D:008CH         SYMBOL        TH0
+  D:008DH         SYMBOL        TH1
+  D:00CDH         SYMBOL        TH2
+  B:0098H.1       SYMBOL        TI
+  D:008AH         SYMBOL        TL0
+  D:008BH         SYMBOL        TL1
+  D:00CCH         SYMBOL        TL2
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  B:0088H.6       SYMBOL        TR1
+  B:00C8H.2       SYMBOL        TR2
+  B:00B0H.1       SYMBOL        TXD
+  B:00B0H.6       SYMBOL        WR
+  C:0376H         LINE#         147
+  C:0379H         LINE#         149
+  C:037BH         LINE#         151
+  C:037DH         LINE#         153
+  C:0380H         LINE#         155
+  C:0382H         LINE#         157
+  C:0384H         LINE#         161
+  C:02EDH         LINE#         180
+  C:02F0H         LINE#         182
+  C:02F3H         LINE#         184
+  C:02F6H         LINE#         186
+  C:02F8H         LINE#         188
+  C:02FAH         LINE#         190
+  C:02FDH         LINE#         192
+  C:02FFH         LINE#         194
+  C:0301H         LINE#         198
+  C:0302H         LINE#         200
+  C:0304H         LINE#         202
+  C:0306H         LINE#         204
+  C:0308H         LINE#         208
+  C:030AH         LINE#         210
+  C:030CH         LINE#         212
+  C:030EH         LINE#         216
+  C:0310H         LINE#         218
+  C:0312H         LINE#         220
+  C:0314H         LINE#         222
+  C:0316H         LINE#         226
+  -------         ENDMOD        DELAYUSMS
+
+  -------         MODULE        ?C?CSTOPTR
+  C:0003H         PUBLIC        ?C?CSTOPTR
+  -------         ENDMOD        ?C?CSTOPTR
+
+  -------         MODULE        ?C?ULDIV
+  C:0061H         PUBLIC        ?C?ULDIV
+  -------         ENDMOD        ?C?ULDIV
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+BL51 BANKED LINKER/LOCATER V6.22                                                      02/16/2011  17:54:58  PAGE 8
+
+
+    SEGMENT: ?PR?RECDTMF?MT888
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAYUSG?DELAYUSMS
+
+Program Size: data=43.2 xdata=0 code=904
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)

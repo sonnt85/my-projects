@@ -1,0 +1,124 @@
+C51 COMPILER V9.01   SULYMANGBIT                                                           05/29/2011 16:28:07 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE SULYMANGBIT
+OBJECT MODULE PLACED IN sulymangbit.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sulymangbit.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #define   sulymangbit__c
+   2          #include  <sulymangbit.h>
+   3          
+   4            unsigned char code pobior[8]={ 128, 64, 32, 16, 8, 4, 2, 1}   ; //dung trong set bit phep or
+   5            unsigned char code pobian[8]={~128,~64,~32,~16,~8,~4,~2,~1}   ;  //dung cho xoa bit phep and
+   6          
+   7          /*unsigned long nbit1positi(unsigned char  sobit,unsigned char vitri){
+   8                  unsigned char cou;
+   9                  unsigned long lval=0;
+  10                  for(cou=0;cou<sobit;cou++){
+  11                          lval=lval>>1;
+  12                          lval=lval|0x80000000;
+  13                  }
+  14                  lval=lval>>vitri;
+  15                  return lval;
+  16          }
+  17          unsigned long nbit0positi(unsigned char  sobit,vitri){
+  18                  return ~(nbit1positi(sobit,vitri));
+  19          }*/     
+  20                  
+  21          void clearbit(void *souce,unsigned char vitri){    //da test
+  22   1      /* clear bit thu i (>=0) cua mang bit mt[] len muc 1 */
+  23   1              unsigned char *mt;
+  24   1              mt=(unsigned char*)souce;
+  25   1              mt=mt+vitri/8; //tro vao vi tri byte chua bit cac xoa
+  26   1              vitri=vitri%8;
+  27   1              (*mt)&=pobian[vitri];   
+  28   1      }                                       
+  29          void setbit(void *souce,unsigned char vitri){   //datest
+  30   1              /* set bit thu i (>=0) cua mang bit mt[] len muc 1 */
+  31   1              
+  32   1              unsigned char *mt;
+  33   1              mt=(unsigned char*)souce;
+  34   1              mt=mt+vitri/8;//tro vao vi tri byte chua bit can set
+  35   1              vitri=vitri%8;
+  36   1              (*mt)|=pobior[vitri];   
+  37   1      }
+  38          bit getbit(void *souce,unsigned char vitri){       // da test
+  39   1              /*lay bit co stt i trong mang bit mt[]*/ 
+  40   1              unsigned char *mt;
+  41   1              mt=(unsigned char*)souce;
+  42   1              mt=mt+vitri/8;  
+  43   1              vitri=vitri%8;
+  44   1              return (*mt)&pobior[vitri];     
+  45   1      }
+  46          void setclearbit(void *souce,unsigned char vitri,unsigned char giatri){    // da test
+  47   1      /*lay bit co stt i trong mang bit mt[]*/
+  48   1              
+  49   1              unsigned char *mt;
+  50   1              mt=(unsigned char*)souce;
+  51   1              mt=mt+vitri/8;
+  52   1              vitri=vitri%8;
+  53   1              if(giatri){(*mt)|=pobior[vitri];}       else (*mt)&=pobian[vitri];      //ko xoa duoc
+  54   1      }
+  55          
+C51 COMPILER V9.01   SULYMANGBIT                                                           05/29/2011 16:28:07 PAGE 2   
+
+  56            
+  57          /*unsigned long getbits(void  *mt,unsigned char vitri,unsigned char sobit){      // da test
+  58                  //lay t bit tu mang bit mt[] bat dau tu bit thu i(>=0)
+  59                  
+  60                  unsigned char *mt;
+  61                  mt=(unsigned char*)souce;
+  62                  
+  63                  unsigned long getint;
+  64                  mt=mt+vitri/8;
+  65                  vitri=vitri%8;
+  66                  getint=(((unsigned long)*(mt))<<24)|(((unsigned long)*(mt+1))<<16)|(((unsigned long)*(mt+2))<<8)|((unsign
+             -ed long)*(mt+3));
+  67                  
+  68                  getint=getint<<(vitri);
+  69                  getint=getint>>(31-sobit+1);
+  70                  // getint=((unsigned long)*(mt))<<24|((unsigned long)*(mt+1))<<16;
+  71                  return getint;
+  72          }
+  73          
+  74          void putbits(unsigned char *souce,vitri,unsigned char sobit,unsigned long giatri){// da test  
+  75                  // ghi j bit chua trong x (byte) vao mang bit co mt[] co dia chi bat dau ghi la i
+  76                  
+  77                  unsigned long getint=0;
+  78                  unsigned char *mt;
+  79                  mt=(unsigned char*)souce;
+  80                  
+  81                  mt=mt+vitri/8;
+  82                  vitri=vitri%8;
+  83                  getint=(((unsigned long)*(mt))<<24)|(((unsigned long)*(mt+1))<<16)|(((unsigned long)*(mt+2))<<8)|((unsign
+             -ed long)*(mt+3));
+  84                  
+  85                  getint=getint&nbit0positi(sobit,vitri);
+  86                  
+  87                  giatri=giatri&nbit1positi(sobit,31-sobit+1);
+  88                  giatri=giatri<<(31-vitri-sobit+1);
+  89                  
+  90                  getint=getint|giatri;
+  91                  
+  92                  *(mt+3)=getint;
+  93                  *(mt+2)=getint>>8;
+  94                  *(mt+1)=getint>>16;
+  95                  *mt=getint>>24;
+  96          }
+  97          */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    147    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       8
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

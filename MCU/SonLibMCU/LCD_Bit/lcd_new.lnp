@@ -1,0 +1,5 @@
+"test_lcd.obj",
+"lcd.obj",
+"delay.obj" 
+TO "lcd_new" 
+RAMSIZE(256) 

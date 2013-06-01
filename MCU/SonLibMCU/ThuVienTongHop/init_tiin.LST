@@ -1,0 +1,152 @@
+C51 COMPILER V9.01   INIT_TIIN                                                             05/29/2011 16:28:04 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE INIT_TIIN
+OBJECT MODULE PLACED IN init_tiin.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE init_tiin.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #define         init_tiin__c
+   2          #include        <init_tiin.h >
+*** WARNING C322 IN LINE 16 OF delay.h: unknown identifier
+*** WARNING C322 IN LINE 13 OF init_tiin.h: unknown identifier
+   3          void init_tiin(){
+   4   1              // FST|=*EDC_;
+   5   1              //CAI DAT TIME0
+   6   1              TR0=0; 
+   7   1              //TMOD|=0x01; //16 bit time0, MODE 1 che do  dem c/t=0, khong chiu anh huong chan ngoai t0
+   8   1              TMOD=TMOD &(~T0_GATE_)&(~T0_CT_)&(~T0_M1_)|(T0_M0_);//tuong duong lenh duoi, lenh nay ro hon ve cau truc 
+             -fan cung
+   9   1              
+  10   1              TH0=((-(unsigned int)((us2cycles(60000000L-cycles2us(18)))/cou1min))>>8);
+*** ERROR C202 IN LINE 10 OF INIT_TIIN.C: 'xtal': undefined identifier
+  11   1              TL0=-((us2cycles(60000000L-cycles2us(18)))/cou1min); 
+*** ERROR C202 IN LINE 11 OF INIT_TIIN.C: 'xtal': undefined identifier
+  12   1              
+  13   1              PT0=1; //cai dat uu tien ngat
+  14   1              ET0=1;//cho ngat time 0
+  15   1              TR0=1; // cho bo dem chay
+  16   1              
+  17   1              //CAI DAT TIME2
+  18   1              t2autoreload(delaytime2us) ;  //HAM NAY CHUAN
+  19   1              //CAI DAT CONG NOI TIEP
+  20   1              com_init_ti1 (9600);// dung time1 //HAM NAY CHUAN 
+  21   1              //   t2baud(9600);
+  22   1              //CAI NGAT NGOAI X CHI CAN CAI EXX VA ITX(LOAI NGAT MUC SUON) LA XONG
+  23   1              EA=1; // cho ngat toan cuc
+  24   1      }/*
+  25          void ouputtime2f(unsigned long f){
+  26                  TR2=0;
+  27                  TCLK=0;RCLK=0;//2 bit nay phai bang 0 neu ko phai tao baut
+  28                  T2MOD|=T2OE_; //set che do ouput xung
+  29                  C_T2=0;//dat che do time ko fai dem
+  30                  // RL2=0;// ko can quan tam bit nay
+  31                  EXEN2=1;//bo chan ngat reload T2EX HOAC KICH HOAT 
+  32                  // con 1 bit tmod trong pcon lam tang baud
+  33                  RCAP2L=-((xtal*modex2/4)/f);
+  34                  RCAP2H=(unsigned int)(-((xtal*modex2/4)/f))>>8;
+  35                  TR2=1;
+  36                  ET2=1;  // cho ngat ngoai time 2 dong thoi ngat time tran cung kich hoat, tru khi rclk hoac tclk set thi 
+             -se ko co ngat tran time
+  37                  RCLK=1; //muc dich bo ngat tran timer neu khong no se cu bi tran
+  38          }
+  39          
+  40          unsigned int  t2capture(){ //HAM NAY CHUAN ngat ngoai capture do chant2ex 1-0 do do rong xung +
+  41                  //ko tao ngat ma cho
+  42                  TR2=0;
+  43                  TCLK=0;RCLK=0;//2 bit nay phai bang 0 neu ko phai tao baut
+  44                  T2MOD&=(~T2OE_); //bo che do ouput neu da cai
+  45                  
+  46                  C_T2=0;//lay xung trong dem thoi gian
+  47                  RL2=1;// dat che do capture
+  48                  EXEN2=1;//se load bo dem vao rcap2 khi co ngat 1-0 tai T2EX dong thoi tao ngat EXF2, bat buoc
+  49                  
+C51 COMPILER V9.01   INIT_TIIN                                                             05/29/2011 16:28:04 PAGE 2   
+
+  50                  //co ngat xay ra ta vao doc gia tri rcap2 chinh la so xung dem dc ke tu luc set
+  51                  while(!T2EX);//bat dau co tin hieu suon len thi set cho tr2 chay co bo dao cho chan vao t2ex de roi la 0
+  52                  TR2=1; // khi t2ex=0 co suon xuong thi co ngat exf2
+  53                  while(!EXF2); //exf2 luc nay ko tao ngat no s
+  54                  EXF2=0;//co ngat time2 tf2 se van dat khi trao bo dem
+  55                  // ET2=1; //dung ngata bat capture neu muon
+  56                  TR2=0;
+  57                  return (RCAP2L+(unsigned int)RCAP2H<<8)/modex2;
+  58          }
+  59          
+  60          void t2baud(unsigned int baud)////HAM NAY CHUAN {
+  61                  TR2=0;
+  62                  TCLK=1;RCLK=1;//ca thu phat uart dung time 2 tao baut cac che do khac se tu ko hoat dong
+  63                  T2MOD=T2MOD&(~T2OE_)&(~DCEN_); //bo nap ra t2, bo che do tu nap lai dcen-0( o anh huong chan ngoai)
+  64                  //DCEN_ =0 dem tang fai quan tam vi neu truoc do cho bo dem giam la loi ngay
+  65                  EXEN2=0;//bo chan ngat reload T2EX neu dat bang 1 thi co ngat nhung cung ko bi reload
+  66                  C_T2=0; //bat buoc clear bit nay bao cho dung time
+  67                  //  PCON&=(~SMOD_);
+  68                  //  if(PCON&(SMOD_)) baud/=2; ko phu thuoc smod_ chi co time 1 fu thuoc ma thoi
+  69                  baud=-xtal*modex2/32/baud;
+  70                  
+  71                  RCAP2L=baud;
+  72                  RCAP2H=baud>>8;
+  73                  //  RCAP2H=0xFF;
+  74                  //      RCAP2L=0xD9;
+  75                  
+  76                  ET2=1;//
+  77                  
+  78                  TR2=1;
+  79          }*/
+  80          void t2autoreload(unsigned int us){   //HAM NAY CHUAN 
+  81   1              TR2=0;
+  82   1              TCLK=0;RCLK=0;//2 bit nay phai bang 0 neu ko phai tao baut
+  83   1              T2MOD&=(~T2OE_); //bo nap ra t2, bo che do tu nap lai dcen-0( o anh huong chan ngoai)
+  84   1              T2MOD&=(~DCEN_); // =0 dem tang nhu binh thuong ko fu thuoc t2ex
+  85   1              EXEN2=0;//bo chan ngat reload T2EX neu khong se tu loat khi chua tran neu fat hien xung 1-->0 tai chan t2
+             -ex
+  86   1              
+  87   1              C_T2=0;//lay xung trong bo dao dong 
+  88   1              RL2=0;//de che do autoreload khi tran time tf2
+  89   1              us=-us2cycles(us);;
+*** ERROR C202 IN LINE 89 OF INIT_TIIN.C: 'xtal': undefined identifier
+  90   1              RCAP2L=us;//thay 50000 bang so chu ky may mong muon
+  91   1              RCAP2H=us>>8;
+  92   1              
+  93   1              //EXF2 se tu dong togle khi co trao time 2--> ko can quan tam bit nay trong ngat vi no ko tao ra ngat (ko
+             - can xoa)
+  94   1              PT2=0; //dat uu tien
+  95   1              TR2=1;
+  96   1              ET2=1;// cho ngat time 2
+  97   1       }
+  98          void com_init_ti1 (unsigned int baud){ // dung time1 //HAM NAY CHUAN    
+  99   1              TR1 = 0;                // Configure timer 1 as a baud rate generator
+ 100   1              TCLK=0;RCLK=0;//tao baud thu fat deu dung time 1 mac dinh la 00 luon
+ 101   1              PCON |=(SMOD_); // bo che do double baud; 0x80=SMOD: set serial baudrate doubler chi tac dung voi time 1
+ 102   1              //PCON &=(~SMOD_); //
+ 103   1              TMOD=TMOD &(~T1_GATE_)&(~T1_CT_)|(T1_M1_)&(~T1_M0_);//tuong duong lenh duoi, lenh nay ro hon ve cau truc 
+             -fan cung
+ 104   1              //TMOD |= 0x20;                                  // put timer 1 into MODE 2
+ 105   1              if(PCON&SMOD_)baud/=2;
+ 106   1              baud/=modex2; //do time c0 anh huong toi
+*** ERROR C202 IN LINE 106 OF INIT_TIIN.C: 'modex2': undefined identifier
+C51 COMPILER V9.01   INIT_TIIN                                                             05/29/2011 16:28:04 PAGE 3   
+
+ 107   1              baud=-((xtal/384 )/ baud);
+*** ERROR C202 IN LINE 107 OF INIT_TIIN.C: 'xtal': undefined identifier
+ 108   1              TH1 =baud; 
+ 109   1              TR1 = 1;                                // start timer 1
+ 110   1              //khoi lenh nay tuong duong lenh duoi nhung ro net hon
+ 111   1              /* {
+ 112   1              RI   = 1;//set khi co ngat thu phai set de co the thu dc ban dau
+ 113   1              TI   = 1;//set khi co ngat phat phai set de co the phat duoc ban dau
+ 114   1              RB8  = 0;//ko cho thu bit 8 chi set khi multi
+ 115   1              TB8  = 0;//ko cho truyen bit 8 chi set khi multi
+ 116   1              REN  = 1;//cho phep thu
+ 117   1              SM2  = 0;//ko phai che do multy
+ 118   1              SM1  = 1;
+ 119   1              SM0  = 0;  
+ 120   1              }*/
+ 121   1              SCON=0x53;// serial port MODE 1, enable serial receiver
+ 122   1              //PS=1;//uu tien ngat noi tiep do co che do thu ngay nhien
+ 123   1              //ET1=0;//ko ngat time 1 mac dinh la vay
+ 124   1              //ES =1;// enable serial interrupts
+ 125   1      }
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  5 ERROR(S)

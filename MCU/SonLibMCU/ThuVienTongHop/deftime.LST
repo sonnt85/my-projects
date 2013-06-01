@@ -1,0 +1,99 @@
+C51 COMPILER V9.01   DEFTIME                                                               08/03/2012 10:24:31 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DEFTIME
+OBJECT MODULE PLACED IN E:\Nguyen Thanh Son\WORK\Code VDK_MoPhong\8051\KeilC\Library\ThuVienTongHop\deftime.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe E:\Nguyen Thanh Son\WORK\Code VDK_MoPhong\8051\KeilC\Library\ThuVienTongHop
+                    -\deftime.h
+
+line level    source
+
+   1          #ifndef __deftime__
+   2          #define __deftime__
+   3          
+   4          typedef struct{        
+   5                  unsigned char gio; 
+   6                  unsigned char phut; 
+   7                  unsigned char giay;
+   8          }def_time;       //dinh nghia cau truc kieu thoi gian gio phut giay 
+   9          //*******************************************************************
+  10          typedef struct{ 
+  11                  //unsigned char thu:3;    //1(cn) 2-3-4-5-6-7 
+  12                  unsigned int  nam;    //00-1-2-3.......6
+  13                  unsigned char thang; 
+  14                  unsigned char ngay;   //1-2-3-.........31
+  15          }def_date;            //dinh nghia cau truc kieu moi ngay thang nam
+  16          //*******************************************************************
+  17          typedef struct{ 
+  18                  def_date    date;                                                                    
+  19                  def_time    time;
+  20          }thoigian;                     // khai bao kieu union cho thoi gian
+  21          // DINH NGHIA CAC MACRO TRUY CAP VAO CAU TRUC
+  22          
+  23          #define   thoigiangio(poit)             ((poit).time.gio)  
+  24          #define   thoigianphut(poit)    ((poit).time.phut) 
+  25          #define   thoigiangiay(poit)    ((poit).time.giay)
+  26          #define   thoigianngay(poit)    ((poit).date.ngay)
+  27          #define   thoigianthang(poit)   ((poit).date.thang)
+  28          #define   thoigiannam(poit)     ((poit).date.nam)
+  29          
+  30          #define   setthoigian(poit,gio,phut,giay,ngay,thang,nam)\
+  31                    thoigiangio(poit)=gio;\
+  32                    thoigianphut(poit)=phut;\
+  33                    thoigiangiay(poit)=giay;\
+  34                    thoigianngay(poit)=ngay;\
+  35                    thoigianthang(poit)=thang;\
+  36                    thoigiannam(poit)=nam;
+  37                    
+  38          #define   timegio(poit)         ((poit).gio)  
+  39          #define   timephut(poit)        ((poit).phut) 
+  40          #define   timegiay(poit)        ((poit).giay)
+  41          #define   datengay(poit)        ((poit).ngay)
+  42          #define   datethang(poit)       ((poit).thang)
+  43          #define   datenam(poit)         ((poit).nam)
+  44                    
+  45          #define   getthoigian(poit,gio,phut,giay,ngay,thang,nam) \
+  46                    gio=thoigiangio(poit);\
+  47                    phut=thoigianphut(poit);\
+  48                    giay=thoigiangiay(poit);\
+  49                    ngay=thoigianngay(poit);\
+  50                    thang=thoigianthang(poit);\
+  51                    nam=thoigiannam(poit);
+  52                    
+  53          #define   gettime(poit,gio,phut,giay) \
+  54                    gio=timegio(poit);\
+C51 COMPILER V9.01   DEFTIME                                                               08/03/2012 10:24:31 PAGE 2   
+
+  55                    phut=timephut(poit);\
+  56                    giay=timegiay(poit);
+  57                    
+  58          #define   settime(poit,gio,phut,giay) \
+  59                    timegio(poit)=gio;\
+  60                    timephut(poit)=phut;\
+  61                    timegiay(poit)=giay;
+  62          
+  63          #define   getdate(poit,ngay,thang,nam) \
+  64                    ngay=datengay(poit);\
+  65                    thang=datethang(poit);\
+  66                    nam=datenam(poit);
+  67                    
+  68          #define   setdate(poit,ngay,thang,nam) \
+  69                    datengay(poit)=ngay;\
+  70                    datethang(poit)=thang;\
+  71                    datenam(poit)=nam; 
+  72                  /////////////////////////////////////////////
+  73          #endif
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

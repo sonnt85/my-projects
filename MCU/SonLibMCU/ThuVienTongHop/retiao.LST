@@ -1,0 +1,24 @@
+C51 COMPILER V9.01   RETIAO                                                                05/29/2011 16:28:06 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE RETIAO
+OBJECT MODULE PLACED IN retiao.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE retiao.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #define  retiao__c
+   2          #include  <retiao.h >
+   3          void retiao(){
+   4   1          #pragma asm
+*** ERROR C272 IN LINE 4 OF RETIAO.C: 'asm/endasm' requires src-control to be active
+   5   1          sjmp backupaddlongjmp;
+   6   1          goiretiao:
+   7   1          reti;
+   8   1          backupaddlongjmp:
+   9   1          acall goiretiao;
+  10   1          #pragma endasm;
+*** ERROR C272 IN LINE 10 OF RETIAO.C: 'asm/endasm' requires src-control to be active
+  11   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  2 ERROR(S)

@@ -1,0 +1,155 @@
+C51 COMPILER V9.01   MODULESERIAL                                                          05/29/2011 16:28:06 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MODULESERIAL
+OBJECT MODULE PLACED IN moduleserial.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE moduleserial.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #include <stdio.h>
+   3          
+   4          #define    XTAL 11059200                         // CPU Oscillator Frequency
+   5          #define    baudrate 9600                         // 9600 bps communication baudrate
+   6          
+   7          #define    OLEN  4                      // size of serial transmission buffer
+   8          unsigned   char  ostart;                         // transmission buffer start index
+   9                                               // ostart++ & (OLEN-1) xoa va tang boi ham nay o phuc vu ngat
+  10          unsigned   char  oend;                   // transmission buffer end index
+  11                                              //oend++ & (OLEN-1) xoa va tang boi ham nay trong ham putbuf
+  12          char idata outbuf[OLEN];                         // storage for transmission buffer
+  13          
+  14          #define    ILEN  4                      // size of serial receiving buffer
+  15          unsigned   char  istart;                         // receiving buffer start index
+  16                                               //(istart + ILEN != iend) xoa va tang boi ham nay trong phuc vu ngat
+  17          unsigned   char  iend;                   // receiving buffer end index
+  18                                             //[iend++ & (ILEN-1)] xoa va tang boi ham nay trong phuc vu ngat
+  19          char idata inbuf[ILEN];                          // storage for receiving buffer
+  20          
+  21          bit sendfull;                            // flag: marks transmit buffer full
+  22                                        //ostart != oend la chua full kiem tra bang ham ngat
+  23                                        //set boi ham putbuf xoa boi ham ngat moi khi gui 1 kytu thi buff het full
+  24          bit sendactive;                                  // flag: marks transmitter active
+  25                                          //co nay xoa khi ostart == oend, kiem tra bang ham nggat
+  26          /*
+  27           * Serial Interrupt Service Routine
+  28           */
+  29          static void com_isr (void) interrupt 4 using 1 {
+  30   1      char c;
+  31   1      
+  32   1      /*----- Received data interrupt. ----------------------------------------*/
+  33   1      if (RI) {
+  34   2        c = SBUF;                               // read character
+  35   2        RI = 0; // clear interrupt request flag
+  36   2        if (istart + ILEN != iend) {
+  37   3          inbuf[iend++ & (ILEN-1)] = c;                 // but character into buffer
+  38   3        }
+  39   2      }
+  40   1      
+  41   1      /*------ Transmitted data interrupt. ------------------------------------*/
+  42   1        if (TI != 0) {
+  43   2          TI = 0;                             // clear interrupt request flag
+  44   2          if (ostart != oend) {                        // if characters in buffer and
+  45   3            SBUF = outbuf[ostart++ & (OLEN-1)];       // transmit character
+  46   3            sendfull = 0;                     // clear 'sendfull' flag
+  47   3          }
+  48   2          else {                              // if all characters transmitted
+  49   3            sendactive = 0;                   // clear 'sendactive'
+  50   3          }
+  51   2        }
+  52   1      }
+  53          
+  54          /*
+  55           * Function to initialize the serial port and the UART baudrate.
+C51 COMPILER V9.01   MODULESERIAL                                                          05/29/2011 16:28:06 PAGE 2   
+
+  56           */
+  57          void com_initialize (void) {
+  58   1        istart = 0;                            // empty transmit buffers
+  59   1        iend = 0;
+  60   1        ostart = 0;                            // empty transmit buffers
+  61   1        oend = 0;
+  62   1        sendactive = 0;                                // transmitter is not active
+  63   1        sendfull = 0;                                  // clear 'sendfull' flag
+  64   1      
+  65   1                                                    // Configure timer 1 as a baud rate generator
+  66   1        PCON |= 0x80;                                  // 0x80=SMOD: set serial baudrate doubler
+  67   1        TMOD |= 0x20;                                  // put timer 1 into MODE 2
+  68   1        TH1 = (unsigned char) (256 - (xtal / (16L * 12L * baudrate)));
+*** ERROR C202 IN LINE 68 OF MODULESERIAL.C: 'xtal': undefined identifier
+  69   1        TR1 = 1;                              // start timer 1
+  70   1        
+  71   1        SCON = 0x50;                           // serial port MODE 1, enable serial receiver
+  72   1        ES = 1;                               // enable serial interrupts
+  73   1      }
+  74          
+  75          /*
+  76           * putbuf: write a character to SBUF or transmission buffer
+  77           */
+  78          
+  79          void putbuf (char c) {
+  80   1        if (!sendfull) {                      // transmit only if buffer not full
+  81   2          if (!sendactive) {                   // if transmitter not active:
+  82   3            sendactive = 1;                   // transfer first character direct
+  83   3            SBUF = c;                                  // to SBUF to start transmission
+  84   3          }
+  85   2          else {
+  86   3            ES = 0;                           // disable serial interrupts during buffer update
+  87   3            outbuf[oend++ & (OLEN-1)] = c;    // put char to transmission buffer
+  88   3            if (((oend ^ ostart) & (OLEN-1)) == 0) {
+  89   4               sendfull = 1;
+  90   4            }                                          // set flag if buffer is full
+  91   3            ES = 1;                           // enable serial interrupts again
+  92   3          }
+  93   2        }
+  94   1      }
+  95          
+  96          /*
+  97           * Replacement routine for the standard library putchar routine.
+  98           * The printf function uses putchar to output a character.
+  99           */
+ 100          
+ 101          char putchar (char c) {
+ 102   1        if (c == '\n') {                      // expand new line character:
+ 103   2          while (sendfull);                   // wait until there is space in buffer
+ 104   2          putbuf (0x0D);                      // send CR before LF for <new line>
+ 105   2        }
+ 106   1        while (sendfull);                     // wait until there is space in buffer
+ 107   1        putbuf (c);                            // place character into buffer
+ 108   1        return (c);
+ 109   1      }
+ 110          
+ 111          /*
+ 112           * Replacement routine for the standard library _getkey routine.
+ 113           * The getchar and gets functions uses _getkey to read a character.
+ 114           */
+ 115          
+ 116          char _getkey (void) {
+C51 COMPILER V9.01   MODULESERIAL                                                          05/29/2011 16:28:06 PAGE 3   
+
+ 117   1        char c;
+ 118   1        while (iend == istart) {
+ 119   2           ;                                   // wait until there are characters
+ 120   2        }
+ 121   1        ES = 0;                               // disable serial interrupts during buffer update
+ 122   1        c = inbuf[istart++ & (ILEN-1)];
+ 123   1        ES = 1;                               // enable serial interrupts again
+ 124   1        return (c);
+ 125   1      }
+ 126          
+ 127          /*
+ 128           * Main C function that start the interrupt-driven serial I/O.
+ 129           */
+ 130          
+ 131          void main1 (void) {
+ 132   1        EA = 1;                                      /* enable global interrupts */
+ 133   1        com_initialize ();                           /* initialize interrupt driven serial I/O */
+ 134   1        while (1) {
+ 135   2          char c;
+ 136   2          c = getchar ();
+ 137   2          printf ("\nYou typed the character %c.\n", c);
+ 138   2        }
+ 139   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

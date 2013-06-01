@@ -1,0 +1,88 @@
+C51 COMPILER V9.01   OUTPUTDEVICE                                                          05/29/2011 16:28:06 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE OUTPUTDEVICE
+OBJECT MODULE PLACED IN outputdevice.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE outputdevice.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          #define  outputdevice__c 
+   3          #include <allfuntion.h>
+*** WARNING C322 IN LINE 174 OF typedef.h: unknown identifier
+*** ERROR C129 IN LINE 282 OF TYPEDEF.H: missing ';' before 'code'
+*** ERROR C301 IN LINE 4 OF 24c3264.h: identifier expected
+*** WARNING C322 IN LINE 16 OF delay.h: unknown identifier
+*** WARNING C315 IN LINE 9 OF digi2text.h: unknown #directive 'endifs'
+*** WARNING C317 IN LINE 8 OF checktimeout.h: attempt to redefine macro 'adee_env'
+   4          #include <outputdevice.h>
+   5          #include <typedef.h>
+   6          #include <iodevice.h>
+   7          
+   8          void outputdevice(unsigned char idata *ptr)       //ham nay dung moi trong kiem tra tat bat dinh ky      ham nay d
+             -a chek
+   9          {
+  10          #ifdef ghidich
+  11            unsigned char data i=sochip4094,countbit=8,temp;
+  12          //  EOS=1;
+  13            STRS=1;
+  14            ptr+=(i-1); 
+  15            while(i--){
+  16              temp=*ptr;
+  17              countbit=8;
+  18              while(countbit--){
+  19                    CPS=0; //bit du lieu tu bit7 truyen sang o'
+  20                    DSS=temp&0x80;//nhap bien dich vao day
+  21                    CPS=1;   //day du lieu ra DSS
+  22          
+  23                    DSS=1; // cho dss=1 de chuan bi day bit7 moi( tu b6 chuyen sang) ra o'
+  24                //    CPS=0;
+  25                    temp<<=1;
+  26                }
+  27             ptr--;                          
+  28            } 
+  29            STRS=0;    //cps=1;dss=1
+  30          #else
+              P1=*ptr;
+              P3=ptr[1];      
+              #endif
+  34          }
+  35          
+  36          /*void shiffbit(unsigned char bits)
+  37          {       //trang thai roi cps=1, dss=1,strs=0
+  38            STRS=1; 
+  39          
+  40            CPS=0;
+  41            DSS=bits;//nhap bien dich vao day
+  42            CPS=1;   //day du lieu ra DSS
+  43            
+  44            DSS=1; // cho dss=1 de chuan bi day bit7 moi( tu b6 chuyen sang) ra o'
+  45            CPS=0;  // bit 7 moi dc day ra
+  46          
+  47            STRS=0;
+  48            CPS=1;    //trang thai roi cps=DSS=1, strs=0
+C51 COMPILER V9.01   OUTPUTDEVICE                                                          05/29/2011 16:28:06 PAGE 2   
+
+  49          
+  50          }
+  51          void shiffbyte(unsigned char varin)       //ham nay dung moi trong kiem tra tat bat dinh ky      ham nay da chek
+  52          {
+  53            register unsigned char countbit=8;
+  54            EOS=1;
+  55            STRS=1;
+  56              while(countbit--)
+  57                {
+  58                    CPS=0;         //bit du lieu tu bit7 truyen sang o'
+  59                    DSS=varin&0x80;//nhap bien dich vao day
+  60                    CPS=1;   //day du lieu ra DSS
+  61                    DSS=1; // cho dss=1 de chuan bi day bit7 moi( tu b6 chuyen sang) ra o'
+  62                //    CPS=0;
+  63                    varin<<=1;
+  64                }
+  65             STRS=0;    //cps=1;dss=1
+  66          }*/
+  67          
+*** WARNING C316 IN LINE 67 OF outputdevice.c: unterminated conditionals
+
+C51 COMPILATION COMPLETE.  5 WARNING(S),  2 ERROR(S)

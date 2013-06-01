@@ -1,0 +1,79 @@
+C51 COMPILER V9.01   DIGI2TEXT                                                             05/29/2011 16:28:03 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DIGI2TEXT
+OBJECT MODULE PLACED IN digi2text.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE digi2text.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #define   digi2text__c
+   2          #include  <digi2text.h >
+*** WARNING C315 IN LINE 9 OF digi2text.h: unknown #directive 'endifs'
+   3          unsigned char digi2text(void *tprg,unsigned char coso,unsigned long temp){  //tra lai so ohan tu trong chu
+             -oi tru null
+   4   1              char k=0,pdu=0,*tpr=(char *)tprg;
+   5   1              do{     
+   6   2                      pdu=temp%coso;
+   7   2                      temp=temp/coso;
+   8   2                      switch (pdu){
+   9   3                              case 10:*(tpr+k)='A';
+  10   3                              break;
+  11   3                              case 11:*(tpr+k)='B';
+  12   3                              break;
+  13   3                              case 12:*(tpr+k)='C';
+  14   3                              break;
+  15   3                              case 13:*(tpr+k)='D';
+  16   3                              break;
+  17   3                              case 14:*(tpr+k)='E';
+  18   3                              break;
+  19   3                              case 15:*(tpr+k)='F';
+  20   3                              break;
+  21   3                              case 16:*(tpr+k)='G';
+  22   3                              break;
+  23   3                              case 17:*(tpr+k)='H';
+  24   3                              break;
+  25   3                              case 18:*(tpr+k)='I';
+  26   3                              break;
+  27   3                              case 19:*(tpr+k)='J';
+  28   3                              break;
+  29   3                              case 20:*(tpr+k)='K';
+  30   3                              break;
+  31   3                              case 21:*(tpr+k)='L';
+  32   3                              break;
+  33   3                              case 22:*(tpr+k)='O';
+  34   3                              break;
+  35   3                              default: *(tpr+k)=0x30+pdu;
+  36   3                              break;
+  37   3                      }
+  38   2                      k++;
+  39   2              }while(temp);
+  40   1              *(tpr+k)=0;
+  41   1              k--;
+  42   1              for(pdu=0;pdu<=(k/2);pdu++)     {
+  43   2                      temp=*(tpr+pdu)  ;
+  44   2                      *(tpr+pdu)=*(tpr+k-pdu);
+  45   2                      *(tpr+k-pdu)=temp;
+  46   2              }
+  47   1              return (++k);
+  48   1      }
+  49          unsigned int xpowy(unsigned char x,unsigned char y){
+  50   1              unsigned char i;
+  51   1              long temp=1;
+  52   1              for(i=0;i<y;i++)temp=temp*x;
+  53   1              return temp;
+C51 COMPILER V9.01   DIGI2TEXT                                                             05/29/2011 16:28:03 PAGE 2   
+
+  54   1      }
+  55          void digi2textbin(void *tpr,unsigned char len,unsigned long x){
+  56   1              unsigned char temp=digi2text(tpr,2,x);//co the temp=len
+  57   1              if(len>=temp){memmove((uchar*)tpr+len-temp,tpr,temp+1);memset(tpr,'0',len-temp);}
+*** ERROR C202 IN LINE 57 OF DIGI2TEXT.C: 'uchar': undefined identifier
+*** ERROR C141 IN LINE 57 OF DIGI2TEXT.C: syntax error near ')'
+*** ERROR C141 IN LINE 57 OF DIGI2TEXT.C: syntax error near ')'
+  58   1              else memmove(tpr,(uchar*)tpr+temp-len,len+1);   
+  59   1      }
+  60           
+*** WARNING C316 IN LINE 60 OF digi2text.c: unterminated conditionals
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  3 ERROR(S)

@@ -1,0 +1,35 @@
+/***********************************************************************
+Chuong trinh thu giao tiep UART
+Tac gia		: 	Bui Trung Hieu - Webmaster: http://www.khvt.com
+Su dung		:   Co the su dung voi moi muc dich ma khong can xin phep 
+				tac gia ve tac quyen, tac gia khong chiu moi trach nhiem ve 
+				cac tac hai gay ra va khong doi hoi cac loi ich co the co
+Khoi tao	:	Ngay 31 thang 1 nam 2006 luc 9h15'PM
+Hoan thanh	:	Ngay 31 thang 1 nam 2006 luc 10h15'PM
+***********************************************************************/
+
+#include <P89V51Rx2.h>
+#include "uart.h"
+#include "stdio.h"
+
+void main (void)
+{
+	//Khoi tao chuc nang UART
+	uart_init();
+	//Cho phep ngat chung
+	EA=1;
+	//Tich cuc co ngat phat
+	TI=1;
+	//In cac ki tu tren man hinh PC
+/*	printf("\n******************************************");
+	printf("\n        Hom qua tat nuoc dau dinh         ");
+	printf("\n     Bo quen cai ao tren canh hoa sen     ");
+	printf("\n        Em duoc thi cho anh xin           ");
+	printf("\n     Hay la em de lam tin trong nha?      ");
+	printf("\n****************************************** ");	
+	//Xoa co ngat phat, bao hieu khong truyen phat nua*/
+//	TI=0;
+	//Vong lap vo tan, chuong trinh dung tai day!
+	while(1){putchar(0x80);};
+}
+//End

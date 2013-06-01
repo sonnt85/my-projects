@@ -1,0 +1,364 @@
+C51 COMPILER V9.01   LCD                                                                   05/29/2011 16:28:05 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE LCD
+OBJECT MODULE PLACED IN lcd.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE lcd.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          
+   3          //NHOM CHAN DIEU KHIEN NOI VOI 1 PORT
+   4          //#define K_LCD  P2_4    //THUTU CHAN NOI DEN NEN
+   5          /*#define _BV(bit) (1<<(bit))
+   6          #define sbi(sfr,bit) sfr|=_BV(bit)
+   7          #define cbi(sfr,bit) sfr&=(~(_BV(bit)))
+   8          #define bit_is_clear(sfr,xbit) (!((bit)(sfr&(1<<(xbit)))))
+   9          #define bit_is_set(sfr,xbit) ((bit)(sfr&(1<<(xbit))))  */
+  10          #define lcd__c
+  11          #define         BF_LCD   (1<<7)                            //phu thuoc vao nguoc bit ko va dung bit htap hay cao de noi, dung cho chek
+             - bf
+  12          #include        <lcd.h>
+*** WARNING C322 IN LINE 16 OF delay.h: unknown identifier
+*** ERROR C129 IN LINE 21 OF LCD.H: missing ';' before 'lcd_wait'
+  13          uchar           lcd_waitg();
+  14          char    checknewline(); 
+  15          unsigned char lcdcode=0;
+  16          //enum {chuyendong_=0x1,sulycach_=0x02};
+  17          enum {daudong0=0,         daudong1=0x40,           daudong2=nuli,           daudong3=0x40+nuli,\
+  18                cuoidong0=nuli-1,   cuoidong1=0x40+nuli-1,   cuoidong2=nuli+nuli-1,   cuoidong3=0x40+nuli+nuli-1} ;
+  19          uchar code daudong[]={daudong0,daudong1,daudong2,daudong3};
+  20          #if lines==4
+  21           #define daudongcuoi daudong3
+  22          #elif lines==2 
+               #define daudongcuoi daudong1
+              #else
+               #error "Chua Khai Bao So Dong LCD"
+              #endif
+  27          
+  28          //BINH THUONG CHAN RS=X; RW=0(VIET TOI LCD DO WAIT VIET) EN=0(DO READ, WRITE 2NIB VIET;
+  29          
+  30          char  Data_LCD_In(){
+  31             return( ((char)D4_LCD<<0)|((char)D5_LCD<<1)|((char)D6_LCD<<2)|((char)D7_LCD<<3));
+  32          }
+  33          void Data_LCD_Out(char dlieu){
+  34                  D4_LCD=((dlieu)&1); 
+  35                  D5_LCD=((dlieu)&2);
+  36                  D6_LCD=((dlieu)&4);
+  37                  D7_LCD=((dlieu)&8);
+  38          }
+  39          
+  40          void lcd_write_nibble(char dlieu){
+  41                  SetDataOut();
+  42                  RW_LCD=0;       //Ghi(CMU->LCD
+  43              EN_LCD = 1;
+  44                  Data_LCD_Out(dlieu);
+  45                  EN_LCD = 0;
+  46          }
+  47          
+  48          char read_char(){
+  49                  char HNib,LNib;
+  50                  lcd_waitg();//RS=1; RW=0
+  51                  RW_LCD=1;       // doc LCD->MCU
+  52                  RS_LCD=0;       // IR
+C51 COMPILER V9.01   LCD                                                                   05/29/2011 16:28:05 PAGE 2   
+
+  53                  SetDataIn();    // CHO DATA LAM DAU VAO
+  54                  
+  55                  EN_LCD=1;       //enable LCD BIET DAY LA DOC NEN LAY DU LIEU RA
+  56                  HNib=Data_LCD_In();//lay 4 bit cao cua datalcd, 4 bit cao=0
+  57                  EN_LCD=0;       //disable
+  58                  HNib<<=4; 
+  59                  
+  60                  EN_LCD=1; //enable LCD BIET DAY LA DOC NEN LAY DU LIEU RA
+  61                  LNib=Data_LCD_In()  ; 
+  62                  EN_LCD=0; //disable
+  63                  
+  64                  return (HNib|LNib);
+  65          }
+  66          
+  67          void lcd_write_char(char chr){// viet du lieu toi lcd
+  68                  lcd_waitg();     //WDR
+  69                  SetDataOut();
+  70                  RS_LCD=1; 
+  71                  lcd_write_nibble(chr>>4);
+  72                  lcd_write_nibble(chr);
+  73          }
+  74          
+  75          void lcd_writecmd(char chr){
+  76                  lcd_waitg();    //RS=1; RW=0
+  77                  SetDataOut();
+  78                  RS_LCD=0;   //IR
+  79                  lcd_write_nibble(chr>>4);
+  80                  lcd_write_nibble(chr);
+  81          }
+  82          
+  83          void lcd_writecmdnw(char chr){
+  84                  SetDataOut();
+  85                  RS_LCD=0;   //IR
+  86                  lcd_write_nibble(chr>>4);
+  87                  lcd_write_nibble(chr);
+  88          }
+  89          
+  90          uchar lcd_waitg(){     // sau ham nay thi WDR MCU-->LCD cur_, blin_ 
+  91                  char  temp_hi=0,temp_low=0;
+  92                  unsigned int cout=0;
+  93                  SetDataIn(); //dat 4 bit cao lam dau vao,4 BIT THAP KO DOI
+  94                  RS_LCD=0; //chon thanh ghi lenh  ok
+  95                  RW_LCD=1; //chon doc tu lcd             ok
+  96                  //      delay_ms(2);
+  97                  do{
+  98                          EN_LCD=1;     
+  99                          temp_hi=Data_LCD_In();
+ 100                          EN_LCD=0;
+ 101                          
+ 102                          EN_LCD=1;
+ 103                          temp_low=Data_LCD_In();
+ 104                          EN_LCD=0;
+ 105                          temp_hi=(temp_hi<<4)|temp_low;
+ 106                          cout++;
+ 107                  }while((temp_hi&BF_LCD)&&cout);
+ 108                  RS_LCD=1; // DR
+ 109                  RW_LCD=0; // MCU-->LCD
+ 110                  // if(temp_hi==(0xf+1)){lcd_gotoxynw(0,1);temp_hi=0x4f;}
+ 111                  // else if(temp_hi==(0x4f+1)){lcd_gotoxynw(0,0);temp_hi=0;}
+ 112                  return temp_hi;
+ 113          }
+ 114          
+C51 COMPILER V9.01   LCD                                                                   05/29/2011 16:28:05 PAGE 3   
+
+ 115          char gotoline(char y){ //tra lai toa do con tro dang dung o dau dong moi
+ 116                  uchar x=lcd_waitg();
+ 117                  if(y>=lines)y=lines-1;
+ 118                  #if lines==2
+                      switch (y){
+                              case 0: lcd_writecmdnw(x=daudong0|0x80);
+                              break;
+                              case 1: lcd_writecmdnw(x=daudong1|0x80);
+                              break;
+                      }       
+                      #elif lines==4  
+ 126                  switch (y){
+ 127                          case 0:lcd_writecmdnw(x=daudong0|0x80);
+ 128                          break;
+ 129                          case 1: lcd_writecmdnw(x=daudong1|0x80);
+ 130                          break;
+ 131                          case 2: lcd_writecmdnw(x=daudong2|0x80);
+ 132                          break;
+ 133                          case 3:lcd_writecmdnw(x=daudong3|0x80);
+ 134                          break;
+ 135                  }
+ 136                  #endif  
+ 137                  return x&(~0x80);
+ 138          }
+ 139          
+ 140          char gotohome(char y){ //tra lai toa do dau dong hien tai
+ 141                  uchar x=lcd_waitg();
+ 142                  #if lines==2
+                              if((x>=daudong0)&&(x<=cuoidong0))x=daudong0; 
+                              else if((x>=daudong1)&&(x<=cuoidong1))x=daudong1;               
+                      #elif lines==4
+ 146                          if     ((x>=daudong0)&&(x<=cuoidong0))x=daudong0; 
+ 147                          else if((x>=daudong1)&&(x<=cuoidong1))x=daudong1; 
+ 148                          else if((x>=daudong2)&&(x<=(cuoidong2)))x=daudong2; 
+ 149                          else if((x>=daudong3)&&(x<=(cuoidong3)))x=daudong3;             
+ 150                  #endif
+ 151                  if(y)lcd_writecmd(x|0x80);
+ 152                  return x;
+ 153          }
+ 154          char checkhome(){
+ 155                  uchar x=lcd_wait();
+ 156                  #if lines==2
+                              if((x==daudong0)||(x==daudong1))return 1; 
+                              else return 0;  
+                      #elif lines==4
+ 160                          if ((x==daudong0)||(x==daudong1)||(x==daudong2)||(x==daudong3))return 1; 
+ 161                          else return 0;
+ 162                  #endif
+ 163          }
+ 164          
+ 165          void  lcd_init(){       
+ 166                  led_lcd=0;
+ 167                  RW_LCD=0;   // W
+ 168                  RS_LCD=0;   // IR
+ 169                  setuppincontrol();
+ 170                  delay_ms(45);
+ 171                  //Function set------------------------------------------------------------------------------
+ 172                  lcd_write_nibble(0x3); //ko co wati 
+ 173                  delay_us(5000);
+ 174                  lcd_write_nibble(0x3); //ko co wati 
+ 175                  delay_us(5000);
+ 176                  lcd_write_nibble(0x3); //ko co wati 
+C51 COMPILER V9.01   LCD                                                                   05/29/2011 16:28:05 PAGE 4   
+
+ 177                  delay_us(5000);
+ 178                  lcd_write_nibble(0x2); //ko co wati 
+ 179                  lcd_writecmd(0x28);//4 bit mode, 2 line, 5x8 font  // toi day da ok  2c fong 5x10
+ 180                  
+ 181                  //Display control------------------------------------------------------------------------- 
+ 182                  lcd_writecmd(0x0C);     //hien thi man hinh, con tro ko nhap nhay      0eco tro nhay
+ 183                  //Entry mode set------------------------------------------------------------------------
+ 184                  lcd_writecmd(0x06);        //ko dich man hinh, con tro tang moi lan doc hoac ghi (VIET TU TRAI QUA FAI)
+ 185                  lcd_writecmd(0x01);                //font so dong ko thay doi duoc sau lenh nay tru khi mat dien
+ 186          }
+ 187          char lcd_gotoxy(uchar x,uchar y){
+ 188                  if(x>=nuli)x=nuli-1;    //vi tri xa nhat
+ 189                  if(y>=lines)y=daudongcuoi; else y=daudong[y]; //dong lon nhat
+ 190                  lcd_writecmd(0x80+x+y);
+ 191                  lcdcode&=(~chuyendong_);
+ 192                  return read_char();//
+ 193          }
+ 194          
+ 195          void lcd_goto(x){           
+ 196                  lcd_writecmd(x|0x80);
+ 197                  lcdcode&=(~chuyendong_);          //sai lam neu xoa cai nay vi neu dung
+ 198          }
+ 199          
+ 200          void lcd_puts(char *str){
+ 201                  char   pos,temp;
+ 202                  while(*str){ 
+ 203                          if(*str==' '){
+ 204                                  if(lcdcode&chuyendong_){
+ 205                                          lcd_writecmd(checknewline());
+ 206                                          lcdcode&=(~chuyendong_);
+ 207                                  }
+ 208                                  if((pos=lcd_waitg())==gotohome(0)){
+ 209                                          if(*(str+1)!=' '){str++;continue;}
+ 210                                  }//neu la dau dong thi ko put dau cach ra
+ 211                                  else {//vi tri hien tai ko fai dau dong
+ 212                                          if((*(str+1)!=' ')&&(*(str+1)!=0)&&(*(str+1)!='\n')){
+ 213                                                  pos=strpos(str+1,' ');//chinh la so phan tu them vao ke tu sau dau cach dau
+ 214                                                  temp=strpos(str+1,'\n');
+ 215                                                  if(pos==temp)pos=strlen(str+1); //chi bang khi ca hai =-1
+ 216                                                  else if((pos==-1) || ((pos>=0)&&(temp>=0)&&(temp<pos))) pos=temp;                                       
+ 217                                                  if((lcd_waitg()-gotohome(0)+pos)>=nuli){
+ 218                                                          lcd_putchar('\n'); //xuong dong
+ 219                                                          str++; continue;
+ 220                                              }
+ 221                                          }
+ 222                             }
+ 223                          } 
+ 224                          lcd_putchar(*str);
+ 225                          str++;
+ 226                  }
+ 227          }
+ 228          /*void move_CGRAM(unsigned char sttchar) // chuyen tro ve dau vi tri vung ram co ma asski la    sttchar roi 
+             -viet 8 dlieu lien tiep
+ 229          {
+ 230                 unsigned char Ad;                           //sttchar tu 0-->7
+ 231                     if(sttchar>0x40-1)Ad=0x40;else Ad=sttchar*8+0x40; // tinh toa do bat dau tu 0
+ 232                     lcd_writecmd(Ad);
+ 233          }
+ 234          void PutChar_CGRAM(unsigned char chr)  //viet toi cgram la du lieu
+ 235          { 
+ 236                 WriteChr(chr);
+ 237          }  */
+C51 COMPILER V9.01   LCD                                                                   05/29/2011 16:28:05 PAGE 5   
+
+ 238          
+ 239          /*void lcd_make_font(char *str,unsigned char sttchar)   // sao chep phon toi cgram, sttchar la stt ma ascii 
+             -(ty 0 den 7)
+ 240          { 
+ 241                 unsigned char i;
+ 242                     if(sttchar>7)i=0x40;else i=sttchar*8+0x40; // tinh toa do bat dau tu 0
+ 243               lcd_waitg();
+ 244                     lcd_writecmd(i);
+ 245          
+ 246                 for (i=0; i<7; i++)      //khong ghi dlieu 8 vi dlieu nay la lua chon con tro
+ 247                  {
+ 248               lcd_waitg(); 
+ 249                           lcd_write_char(str[i]); //ghi tung dlieu vao cgram
+ 250                          }
+ 251          }*/
+ 252          char checknewline(){ //moi khi put cha can kiem tra ham nay     tra lai toa do chuyen doi xuong dong
+ 253                  char temp=lcd_waitg();
+ 254                  #if (lines==4)
+ 255                          if      (temp==daudong2)   return 0x80|daudong1;
+ 256                          else if (temp==daudong3)   return 0x80|daudong2;
+ 257                          else if (temp==(cuoidong2+1))return 0x80|daudong3;
+ 258                          else if (temp==(cuoidong3+1)) return 0x80|daudong0;
+ 259                          else return 0;
+ 260                  #elif (lines==2)
+                              if      (temp==daudong2)   return 0x80|daudong1;
+                              else if (temp==daudong3)   return 0x80|daudong0;
+                              else return 0;
+                      #endif 
+ 265          }
+ 266          
+ 267          void lcd_putchar(char a){
+ 268                  uchar temp;
+ 269                  led_lcd=0;
+ 270                  if(lcdcode&chuyendong_){
+ 271                          lcd_writecmd(checknewline()); //co dong moi thi chuyen dong moi
+ 272                          lcdcode&=(~chuyendong_); 
+ 273                          if(a!='\n')lcd_write_char(a);//neu khac cuong dong thi put ky tu ra dau dong
+ 274                  }else{
+ 275                          //  lcdcode&=(~chuyendong_);
+ 276                          if(a=='\n'){
+ 277                                  temp=gotohome(0);//ko co dong moi
+ 278                                  #if lines==4
+ 279                                          if      (temp==daudong0)   gotoline(1);
+ 280                                          else if (temp==daudong1)   gotoline(2);
+ 281                                          else if (temp==daudong2)   gotoline(3);
+ 282                                          else if (temp==daudong3)   gotoline(0);
+ 283                                  #elif lines==2
+                                              if      (temp==daudong2)   gotoline(1);
+                                              else if (temp==daudong3)   gotoline(0);
+                                      #endif
+ 287                          }else{
+ 288                                  lcd_write_char(a);
+ 289                                  if(checknewline())lcdcode|=chuyendong_;
+ 290                          }//else bang 0 san ro
+ 291                  }
+ 292          }
+ 293          
+ 294          void lcd_putcharxy(char a, uchar b, uchar c){    //toa do bc ky tu a
+ 295               lcd_gotoxy(b,c);
+ 296               lcd_putchar(a);
+ 297          }
+ 298          
+C51 COMPILER V9.01   LCD                                                                   05/29/2011 16:28:05 PAGE 6   
+
+ 299          void lcd_putsxy(char *a, uchar b, uchar c){
+ 300                lcd_gotoxy(b,c);
+ 301                lcd_puts(a); 
+ 302          }
+ 303          
+ 304          void lcd_vsprintf(char *fmt, ...) {  
+ 305                  if(strlen(fmt)>=sizeof(lcd_buff)){
+ 306                          lcd_clr(lines);
+ 307                          lcd_puts("Loi Tran Bo Dem lcd_buff. Loi Nay Nguy Hiem Vo Cung...");
+ 308                          bell=lockbell;
+ 309                          ring=0;
+ 310                          delay_ms(10000);
+ 311                          bell=offbell;
+ 312                  }
+ 313                  else{   
+ 314                          va_list arg_ptr;
+ 315                          va_start (arg_ptr, fmt); /* format string arg_ptr=&fmt+sizeof(fmt) tro toi tiep theo sau fmt*/
+ 316                          vsprintf (lcd_buff, fmt, arg_ptr);//
+ 317                          va_end (arg_ptr);
+ 318                          lcd_puts(lcd_buff);
+ 319                  }  
+ 320          }
+ 321          
+ 322          void lcd_clr(uchar x){
+ 323                  char i;
+ 324                  if(x>=lines)lcd_writecmd(0x01);//lon hon so dong lcd thi xoa toan bo man hinh va tro ve dau
+ 325                  else {
+ 326                          lcd_writecmd(x=(daudong[x]|0x80));
+ 327                          for(i=0;i<nuli;i++)lcd_write_char(' ');
+ 328                          lcd_writecmd(x);
+ 329                  }
+ 330                  lcdcode&=(~chuyendong_);
+ 331          }
+ 332          
+ 333          uchar lcd_wait()        {     // sau ham nay thi WDR MCU-->LCD cur_, blin_ 
+ 334                  if(lcdcode&chuyendong_)return checknewline();
+ 335                  else return (lcd_waitg()|0x80); //co dong moi thi chuyen dong moi
+ 336          }
+ 337          
+ 338          
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  1 ERROR(S)

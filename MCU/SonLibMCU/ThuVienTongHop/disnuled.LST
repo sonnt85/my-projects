@@ -1,0 +1,74 @@
+C51 COMPILER V9.01   DISNULED                                                              05/29/2011 16:28:08 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DISNULED
+OBJECT MODULE PLACED IN disnuled.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE disnuled.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //led noi voi port2 va p0_4,5,6,7
+   2          #define disnuled__c
+   3          #include <disnuled.h>
+*** ERROR C308 IN LINE 6 OF disnuled.h: invalid integer const expression
+   4          unsigned char   code toledhexa[16]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x83,0xc6,0xa1,0x
+             -86,0x8e};
+   5          unsigned char   code toledhexk[16]={~0xc0,~0xf9,~0xa4,~0xb0,~0x99,~0x92,~0x82,~0xf8,~0x80,~0x90,~0x88,~0x83,
+             -~0xc6,~0xa1,~0x86,~0x8e};
+   6          void hienthihex(unsigned int n){
+   7   1              unsigned char   dv,ch,tr,ng;
+   8   1              static  unsigned        char    bdts;
+   9   1              ng=n/(coso*coso*coso);
+*** ERROR C202 IN LINE 9 OF DISNULED.C: 'coso': undefined identifier
+  10   1              n=n%(coso*coso*coso);
+*** ERROR C202 IN LINE 10 OF DISNULED.C: 'coso': undefined identifier
+  11   1              tr=n/(coso*coso);
+*** ERROR C202 IN LINE 11 OF DISNULED.C: 'coso': undefined identifier
+  12   1              n=n%(coso*coso);
+*** ERROR C202 IN LINE 12 OF DISNULED.C: 'coso': undefined identifier
+  13   1              ch=n/coso       ;
+*** ERROR C202 IN LINE 13 OF DISNULED.C: 'coso': undefined identifier
+  14   1              dv=n%coso;
+*** ERROR C202 IN LINE 14 OF DISNULED.C: 'coso': undefined identifier
+  15   1              switch (bdts){
+  16   2                      case 0:{comled1=off;comled2=off;comled3=off;bdts++;portled=toledhexa[dv];comled0=on;break;}
+*** ERROR C202 IN LINE 16 OF DISNULED.C: 'comled1': undefined identifier
+*** ERROR C202 IN LINE 16 OF DISNULED.C: 'comled2': undefined identifier
+*** ERROR C202 IN LINE 16 OF DISNULED.C: 'comled3': undefined identifier
+*** ERROR C202 IN LINE 16 OF DISNULED.C: 'portled': undefined identifier
+*** ERROR C202 IN LINE 16 OF DISNULED.C: 'comled0': undefined identifier
+  17   2                      case 1:{comled0=off;comled2=off;comled3=off;bdts++;portled=toledhexa[ch];comled1=on;break;}
+*** ERROR C202 IN LINE 17 OF DISNULED.C: 'comled0': undefined identifier
+*** ERROR C202 IN LINE 17 OF DISNULED.C: 'comled2': undefined identifier
+*** ERROR C202 IN LINE 17 OF DISNULED.C: 'comled3': undefined identifier
+*** ERROR C202 IN LINE 17 OF DISNULED.C: 'portled': undefined identifier
+*** ERROR C202 IN LINE 17 OF DISNULED.C: 'comled1': undefined identifier
+  18   2                      case 2:{comled0=off;comled1=off;comled3=off;bdts++;portled=toledhexa[tr];comled2=on;break;}
+*** ERROR C202 IN LINE 18 OF DISNULED.C: 'comled0': undefined identifier
+*** ERROR C202 IN LINE 18 OF DISNULED.C: 'comled1': undefined identifier
+*** ERROR C202 IN LINE 18 OF DISNULED.C: 'comled3': undefined identifier
+*** ERROR C202 IN LINE 18 OF DISNULED.C: 'portled': undefined identifier
+*** ERROR C202 IN LINE 18 OF DISNULED.C: 'comled2': undefined identifier
+  19   2                      case 3:{comled0=off;comled1=off;comled2=off;bdts=0;portled=toledhexa[ng];comled3=on;break;}
+*** ERROR C202 IN LINE 19 OF DISNULED.C: 'comled0': undefined identifier
+*** ERROR C202 IN LINE 19 OF DISNULED.C: 'comled1': undefined identifier
+*** ERROR C202 IN LINE 19 OF DISNULED.C: 'comled2': undefined identifier
+*** ERROR C202 IN LINE 19 OF DISNULED.C: 'portled': undefined identifier
+*** ERROR C202 IN LINE 19 OF DISNULED.C: 'comled3': undefined identifier
+  20   2                      default:bdts=0;
+  21   2              }        
+  22   1      }
+  23          unsigned int   tobcd(unsigned int n){
+  24   1              unsigned char   dv,ch,tr,ng;
+  25   1              ng=n/1000;
+  26   1              n=n%(1000);
+C51 COMPILER V9.01   DISNULED                                                              05/29/2011 16:28:08 PAGE 2   
+
+  27   1              tr=n/(100);
+  28   1              n=n%(100);
+  29   1              ch=n/10 ;
+  30   1              dv=n%10;
+  31   1              return  ((((int)dv|((int)ch<<4))|((int)tr<<8))|((int)ng<<12));
+  32   1      }  
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  27 ERROR(S)

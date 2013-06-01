@@ -1,0 +1,123 @@
+C51 COMPILER V9.01   24C3264                                                               05/29/2011 16:28:01 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE 24C3264
+OBJECT MODULE PLACED IN 24c3264.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 24c3264.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #define   24c3264__c
+*** ERROR C301 IN LINE 1 OF 24c3264.c: identifier expected
+   2          #include <24c3264.h>
+*** ERROR C301 IN LINE 4 OF 24c3264.h: identifier expected
+*** ERROR C202 IN LINE 23 OF I2C.H: 'P0': undefined identifier
+*** ERROR C202 IN LINE 24 OF I2C.H: 'P0': undefined identifier
+   3          #define bypa  32
+   4          void eeprom_init(){
+   5   1              unsigned char i;
+   6   1              i2c_init();
+   7   1              for (i=0;i<9;i++){
+   8   2                      ival2=10;
+*** ERROR C202 IN LINE 8 OF 24C3264.C: 'ival2': undefined identifier
+   9   2                      sclout(1);
+*** ERROR C202 IN LINE 9 OF 24C3264.C: 'SCL': undefined identifier
+  10   2                      sclout(0);
+*** ERROR C202 IN LINE 10 OF 24C3264.C: 'SCL': undefined identifier
+  11   2              }
+  12   1              i2c_start();  
+  13   1      }
+  14          void ack_polling(){
+  15   1              loighi|=bocheckloighi_;
+  16   1              do{i2c_start();}while(!i2c_write(EEPROM_BUS_ADDRESS | 1)); 
+  17   1              loighi&=(~bocheckloighi_);
+  18   1              i2c_read(0);
+  19   1              i2c_stop();  
+  20   1      }
+  21          char eeprom_read(unsigned int address) {
+  22   1              char dlieu;
+  23   1              //address=((address/32)<<5)&(address%32);
+  24   1              ack_polling();
+  25   1              i2c_start();
+  26   1              i2c_write(EEPROM_BUS_ADDRESS);
+  27   1              i2c_write((unsigned int)address>>8);
+  28   1              i2c_write((unsigned char)address);
+  29   1              i2c_start();
+  30   1              i2c_write(EEPROM_BUS_ADDRESS | 1);
+  31   1              dlieu=i2c_read(0);
+  32   1              i2c_stop();
+  33   1              return dlieu;
+  34   1      }
+  35          /* write a byte to the EEPROM */
+  36          void eeprom_reads(unsigned int address,unsigned int length,void  *dest) {
+  37   1              unsigned char i,*ptr;
+  38   1              ptr=(unsigned char*)dest;
+  39   1              //address=((address/32)<<5)&(address%32);
+  40   1              readagain:
+  41   1              ack_polling();
+  42   1              i2c_start();
+  43   1              i2c_write(EEPROM_BUS_ADDRESS);
+  44   1              i2c_write(address>>8);
+  45   1              i2c_write(address);  //dumpy write
+  46   1              i2c_start();
+  47   1              i2c_write(EEPROM_BUS_ADDRESS | 1);
+  48   1              for(i=0;i<length-1;i++){
+C51 COMPILER V9.01   24C3264                                                               05/29/2011 16:28:01 PAGE 2   
+
+  49   2                      if(!((address+1)%bypa)){
+  50   3                      *ptr=i2c_read(0);
+  51   3                      i2c_stop();
+  52   3                      ptr++;
+  53   3                      address++;
+  54   3                      length=length-i-1;
+  55   3                      //     ack_polling();
+  56   3                      goto readagain;
+  57   3                      }
+  58   2                      *ptr=i2c_read(1);
+  59   2                      address++;   
+  60   2                      ptr++;
+  61   2              }
+  62   1              *ptr=i2c_read(0);
+  63   1              i2c_stop();
+  64   1      }
+  65          
+  66          void eeprom_write(unsigned int address, char dlieu){
+  67   1      //address=((address/32)<<5)&(address%32);
+  68   1              ack_polling();
+  69   1              i2c_start();
+  70   1              i2c_write(EEPROM_BUS_ADDRESS);
+  71   1              i2c_write((unsigned int)address>>8);
+  72   1              i2c_write((unsigned char)address);
+  73   1              i2c_write(dlieu);
+  74   1              i2c_stop();
+  75   1              /* 10ms delay to complete the write operation */
+  76   1      }
+  77          
+  78          void eeprom_writes(unsigned int address,unsigned int length,void  *soure) {
+  79   1              unsigned char i,*ptr;
+  80   1              ptr=(unsigned char*)soure;
+  81   1              writeagain:
+  82   1              ack_polling();
+  83   1              i2c_start();
+  84   1              i2c_write(EEPROM_BUS_ADDRESS);
+  85   1              i2c_write(address>>8);
+  86   1              i2c_write(address);
+  87   1              for(i=0;i<length;i++){
+  88   2                      if(!((address+1)%bypa)){
+  89   3                              i2c_write(*ptr);
+  90   3                              i2c_stop();
+  91   3                              ptr++;
+  92   3                              address++;
+  93   3                              length=length-i-1;
+  94   3                              //    ack_polling();
+  95   3                              goto writeagain;
+  96   3                      }          
+  97   2                      i2c_write(*ptr);
+  98   2                      ptr++;
+  99   2                      address++;
+ 100   2              }
+ 101   1              i2c_stop(); 
+ 102   1      //ack_polling();
+ 103   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  7 ERROR(S)

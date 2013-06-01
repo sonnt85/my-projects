@@ -1,0 +1,91 @@
+C51 COMPILER V9.01   DELAYUSMS                                                             02/16/2011 17:54:57 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DELAYUSMS
+NO OBJECT MODULE REQUESTED
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\LIB_THANHSON\DELAY\DelayUSMS.c BROWSE DEBUG OBJECTEXTEND PRINT(.\DelayUS
+                    -MS.lst) SRC(.\DelayUSMS.SRC)
+
+line level    source
+
+   1          #include <REGX52.H>       //bat buoc vi dung den dinh nghia cac thanh ghi
+   2          //extern unsigned char   AR1,AR2;
+   3          #include <DelayUSMS_NTS.h>
+   4          
+   5          
+   6          void delayusg(void)      //ham tao tre don vi thoi gian micro giay (174-->
+   7          
+   8          {
+   9   1      //tre tinh theo miligiay, toi da 65535ms 
+  10   1      
+  11   1      #pragma asm
+  12   1      using   0
+  13   1      ORL     TMOD,#010H
+  14   1      CLR     TF1
+  15   1      SETB    TR1
+  16   1      JNB     TF1,$
+  17   1      CLR     TF1
+  18   1      CLR     TR1
+  19   1      #pragma endasm 
+  20   1      }
+  21          void delaymsg(void)//tre tinh theo miligiay, toi da 65535ms 
+  22          {
+  23   1      #pragma asm
+  24   1      USING   0
+  25   1      LAP1:
+  26   1      
+  27   1      MOV     TL1,#low 64558
+  28   1      MOV     Th1,#high 64558
+  29   1      ORL     TMOD,#010H
+  30   1      CLR     TF1
+  31   1      SETB    TR1
+  32   1      JNB     TF1,$
+  33   1      CLR     TF1
+  34   1      CLR     TR1
+  35   1      
+  36   1      CLR             C
+  37   1      MOV     A,AR2
+  38   1      SUBB    A,#1
+  39   1      MOV     AR2,A
+  40   1      
+  41   1      MOV             A,AR1
+  42   1      SUBB    A,#0
+  43   1      MOV             AR1,A
+  44   1      
+  45   1      MOV             A,AR2
+  46   1      JNZ     LAP1
+  47   1      MOV             A,AR1
+  48   1      JNZ             LAP1
+  49   1      #pragma endasm 
+  50   1      }
+  51          
+  52          /*unsigned int demus(void)       //ham tao tre don vi thoi gian micro giay (174-->
+  53          {
+  54                  TMOD=TMOD|0x90; //chon che do dinh thoi 16 bit CUA TIME 1 dieu khien ngoai gate1=1,ct=0 dung xung dong ho
+C51 COMPILER V9.01   DELAYUSMS                                                             02/16/2011 17:54:57 PAGE 2   
+
+             - trong, m01m00=1 che do 16 bit 
+  55                  TH1=0;
+  56                  TL1=0;
+  57                  TF1=0;  //xoa co tran TF0
+  58                  TR1=1; //cho bo dem time 1 duoc chay
+  59          //      ET1=1;// cho phep ngat time 1
+  60                  while(T1==1);           //T1 thay bang chan nao do cua vi dieu khien, co the do xug + hoac am
+  61                  TR1=0;
+  62                  TF1=0;
+  63                  return (((unsigned int)TH1<<8)+((unsigned int)TL1));   return 0;
+  64          }       */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     98    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

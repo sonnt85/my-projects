@@ -1,0 +1,212 @@
+C51 COMPILER V9.01   MAU                                                                   08/31/2010 03:14:50 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAU
+OBJECT MODULE PLACED IN mau.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE mau.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          void init()
+   4          {
+   5   1      delay (5000);
+*** WARNING C206 IN LINE 5 OF MAU.C: 'delay': missing function-prototype
+*** ERROR C267 IN LINE 5 OF MAU.C: 'delay': requires ANSI-style prototype
+   6   1      P2=0xFF;delay(200);
+   7   1      CS=0;
+*** ERROR C202 IN LINE 7 OF MAU.C: 'CS': undefined identifier
+   8   1      delay(200);
+   9   1      P2=0xE0;delay(200);
+  10   1      CS=0;
+*** ERROR C202 IN LINE 10 OF MAU.C: 'CS': undefined identifier
+  11   1      delay(200);
+  12   1      P2=0xE0;delay(200);
+  13   1      CS=0;
+*** ERROR C202 IN LINE 13 OF MAU.C: 'CS': undefined identifier
+  14   1      delay(200);
+  15   1      P2=0xE8;delay(200);
+  16   1      CS=0;
+*** ERROR C202 IN LINE 16 OF MAU.C: 'CS': undefined identifier
+  17   1      delay(200);
+  18   1      P2=0xE0;delay(200);
+  19   1      CS=0;
+*** ERROR C202 IN LINE 19 OF MAU.C: 'CS': undefined identifier
+  20   1      delay(200);
+  21   1      P2=0xFF;delay(200);
+  22   1      CS=0;
+*** ERROR C202 IN LINE 22 OF MAU.C: 'CS': undefined identifier
+  23   1      delay(200);
+  24   1      CS=1;
+*** ERROR C202 IN LINE 24 OF MAU.C: 'CS': undefined identifier
+  25   1      delay(200);
+  26   1      }
+  27          
+  28          //================================================== ===================
+  29          
+  30          void ngat()
+  31          {
+  32   1      P2=0xE4;
+  33   1      delay(200);
+  34   1      CS=0;
+*** ERROR C202 IN LINE 34 OF MAU.C: 'CS': undefined identifier
+  35   1      delay(7000);
+  36   1      CS=1;
+*** ERROR C202 IN LINE 36 OF MAU.C: 'CS': undefined identifier
+  37   1      delay(200);
+  38   1      }
+  39          
+  40          //================================================== ===================
+  41          
+  42          void setup()
+  43          {
+  44   1      P2=0xE9;
+C51 COMPILER V9.01   MAU                                                                   08/31/2010 03:14:50 PAGE 2   
+
+  45   1      delay(200);
+  46   1      CS=0;
+*** ERROR C202 IN LINE 46 OF MAU.C: 'CS': undefined identifier
+  47   1      delay(200);
+  48   1      P2=0xEB;
+  49   1      delay(200);
+  50   1      CS=0;
+*** ERROR C202 IN LINE 50 OF MAU.C: 'CS': undefined identifier
+  51   1      delay(200);
+  52   1      CS=1;
+*** ERROR C202 IN LINE 52 OF MAU.C: 'CS': undefined identifier
+  53   1      delay(200);
+  54   1      }
+  55          
+  56          //================================================== ===================
+  57          
+  58          void mot()
+  59          {
+  60   1      setup();
+  61   1      
+  62   1      P2=0xC1;
+  63   1      delay(200);
+  64   1      CS=0;
+*** ERROR C202 IN LINE 64 OF MAU.C: 'CS': undefined identifier
+  65   1      delay(15000);
+  66   1      CS=1;
+*** ERROR C202 IN LINE 66 OF MAU.C: 'CS': undefined identifier
+  67   1      delay(200);
+  68   1      
+  69   1      ngat();
+  70   1      }
+  71          
+  72          //================================================== ===================
+  73          
+  74          void hai()
+  75          {
+  76   1      setup();
+  77   1      
+  78   1      P2=0xC2;
+  79   1      delay(200);
+  80   1      CS=0;
+*** ERROR C202 IN LINE 80 OF MAU.C: 'CS': undefined identifier
+  81   1      delay(15000);
+  82   1      CS=1;
+*** ERROR C202 IN LINE 82 OF MAU.C: 'CS': undefined identifier
+  83   1      delay(200);
+  84   1      
+  85   1      ngat();
+  86   1      }
+  87          
+  88          //================================================== ===================
+  89          
+  90          void ba()
+  91          {
+  92   1      setup();
+  93   1      
+  94   1      P2=0xC3;
+  95   1      delay(200);
+  96   1      CS=0;
+*** ERROR C202 IN LINE 96 OF MAU.C: 'CS': undefined identifier
+  97   1      delay(15000);
+  98   1      CS=1;
+C51 COMPILER V9.01   MAU                                                                   08/31/2010 03:14:50 PAGE 3   
+
+*** ERROR C202 IN LINE 98 OF MAU.C: 'CS': undefined identifier
+  99   1      delay(200);
+ 100   1      
+ 101   1      ngat();
+ 102   1      }
+ 103          
+ 104          //================================================== ===================
+ 105          
+ 106          void bon()
+ 107          {
+ 108   1      setup();
+ 109   1      
+ 110   1      P2=0xC4;
+ 111   1      delay(200);
+ 112   1      CS=0;
+*** ERROR C202 IN LINE 112 OF MAU.C: 'CS': undefined identifier
+ 113   1      delay(15000);
+ 114   1      CS=1;
+*** ERROR C202 IN LINE 114 OF MAU.C: 'CS': undefined identifier
+ 115   1      delay(200);
+ 116   1      
+ 117   1      ngat();
+ 118   1      }
+ 119          
+ 120          //================================================== ===================
+ 121          
+ 122          void nam()
+ 123          {
+ 124   1      setup();
+ 125   1      
+ 126   1      P2=0xC5;
+ 127   1      delay(200);
+ 128   1      CS=0;
+*** ERROR C202 IN LINE 128 OF MAU.C: 'CS': undefined identifier
+ 129   1      delay(15000);
+ 130   1      CS=1;
+*** ERROR C202 IN LINE 130 OF MAU.C: 'CS': undefined identifier
+ 131   1      delay(200);
+ 132   1      
+ 133   1      ngat();
+ 134   1      }
+ 135          
+ 136          //================================================== ===================
+ 137          
+ 138          void sau()
+ 139          {
+ 140   1      setup();
+ 141   1      
+ 142   1      P2=0xC6;
+ 143   1      delay(200);
+ 144   1      CS=0;
+*** ERROR C202 IN LINE 144 OF MAU.C: 'CS': undefined identifier
+ 145   1      delay(15000);
+ 146   1      CS=1;
+*** ERROR C202 IN LINE 146 OF MAU.C: 'CS': undefined identifier
+ 147   1      delay(200);
+ 148   1      
+ 149   1      ngat();
+ 150   1      }
+ 151          
+ 152          //================================================== ===================
+ 153          
+C51 COMPILER V9.01   MAU                                                                   08/31/2010 03:14:50 PAGE 4   
+
+ 154          void bay()
+ 155          {
+ 156   1      setup();
+ 157   1      
+ 158   1      P2=0xC7;
+ 159   1      delay(200);
+ 160   1      CS=0;
+*** ERROR C202 IN LINE 160 OF MAU.C: 'CS': undefined identifier
+ 161   1      delay(15000);
+ 162   1      CS=1;
+*** ERROR C202 IN LINE 162 OF MAU.C: 'CS': undefined identifier
+ 163   1      delay(200);
+ 164   1      
+ 165   1      ngat();
+ 166   1      }
+ 167          
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  27 ERROR(S)

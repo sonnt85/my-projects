@@ -1,0 +1,182 @@
+C51 COMPILER V9.01   MT888                                                                 02/16/2011 02:58:51 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MT888
+OBJECT MODULE PLACED IN MT888.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE MT888.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include <MT888_NTS.H>
+   3          #include <DelayUSMS_NTS.h>
+   4          //#define SPK P0_1
+   5          #define dedt  110
+   6          #define tredapmay  221                            //toi thieu 210ms
+   7          
+   8          //#define dgbitthap
+   9          #define sbis(sfr,bit) ((sfr)|(1<<(bit)))
+  10          #define cbis(sfr,bit) ((sfr)&(~(1<<(bit))))
+  11          //unsigned char code phimso[]={10,1,2,3,4,5,6,7,8,9,
+  12          void WriteDT_MT(unsigned char temp,bit dat);
+  13          unsigned char ReadDT_MT(bit dat);
+  14          bit bnhacmay=0;
+  15          sbit nhacmay=P3^7 ;
+  16          sbit daocuc=P1^1 ;
+  17          //#pragma OT(11)
+  18           
+  19          enum {BURST,TEST,SND,CNR,TOUT,CPNDTMF,IRQ,RSEL} bcrab; 
+  20          union 
+  21          {
+  22                          struct  
+  23                          {
+  24                            unsigned char  BURST          :1  ;
+  25                            unsigned char  TEST           :1  ;
+  26                        unsigned char  SND                :1  ;     
+  27                            unsigned char  CNR            :1  ;
+  28                            unsigned char  TOUT           :1  ;
+  29                            unsigned char  CPNDTMF        :1      ;
+  30                            unsigned char  IRQ            :1      ;
+  31                            unsigned char  RSEL           :1      ;
+  32                          } abbit;
+  33                          unsigned char abreg;
+  34          
+  35          }bcrabk;
+  36          
+  37          void main(void)
+  38          { 
+  39   1      //bit btemp;
+  40   1      //unsigned char tempcra;        
+  41   1              delayms(100);
+  42   1              CS_NMT=0;                                                                          
+  43   1              int_MT();
+  44   1              setup_MT(0Xd2);
+  45   1      //      setup_MT(cbis(bcrab,TOUT));
+  46   1      //      setup_MT(sbis(bcrab,CPNDTMF));
+  47   1              tranmisDTMF(949109985,10);        //39923571 ,01662576689
+  48   1        delayms(10000);                        //toi thieu sau 4485 giay thi ben kia nhan dc tin hieu
+  49   1       //     setup_MT(cbis(bcrab,TOUT));
+  50   1              setup_MT(sbis(bcrab,CPNDTMF));
+  51   1      
+  52   1        nhacmay=0;Phi_MT=1;
+  53   1        while(1);
+  54   1        {P0=ReadDT_MT(0);delayms(1000);}
+  55   1        nhacmay=0;
+C51 COMPILER V9.01   MT888                                                                 02/16/2011 02:58:51 PAGE 2   
+
+  56   1        
+  57   1      Phi_MT=1;
+  58   1              while(1);
+  59   1              setup_MT(sbis(bcrab,CPNDTMF)); //kiem tra che do call process
+  60   1      }
+  61          void int_MT()  // theo nha san xuat thoi cai nay chuan roi ko can chinh
+  62          {
+  63   1              ReadDT_MT(0);
+  64   1              WriteDT_MT(0,0);  //cra hoac crb nhung sau do nhat dinh fai la cra
+  65   1              WriteDT_MT(0,0); //cra
+  66   1              WriteDT_MT(0x8,0);//cra sau lan nay la crb
+  67   1              WriteDT_MT(0,0);  //crb sau lan nay se tu quay ve cra
+  68   1              ReadDT_MT(0);
+  69   1      }
+  70          void setup_MT(unsigned char crab)  // setup theo tham so truyen vao, chuan ko can chinh nua
+  71          {
+  72   1              bcrab=crab;
+  73   1              WriteDT_MT((crab>>4)|8,0); //dcra phat tone, dtmf (ko fai cp), cho tao ngat( noi dung ngat do bit b1(test
+             -) cua rcb) ,lan sau ghi vao crb
+  74   1              WriteDT_MT(crab&0xF,0); //0crb, hat da tone khong
+  75   1      //       test chon phat burs 50/50
+  76   1      }
+  77          unsigned char ReadDT_MT(bit dat)  //ham nay da ok, doi khi buon
+  78          {
+  79   1              unsigned char temp;
+  80   1              Data_MT=(Data_MT&Mark_MT)|(~Mark_MT); //cho lam dau vao va che bit khac ngoai b0-->b3
+  81   1              RS0_MT=~dat;
+  82   1              RW_MT=1;
+  83   1      
+  84   1              Phi_MT=1;
+  85   1              datain(temp);
+  86   1              Phi_MT=0;
+  87   1      
+  88   1                      
+  89   1              return temp;
+  90   1      }
+  91          void WriteDT_MT(unsigned char temp,bit dat)             // ham nay cung da ok
+  92          {
+  93   1              if(dat){nhacmay=1;}
+  94   1              RS0_MT=~dat;
+  95   1              RW_MT=0;
+  96   1      
+  97   1              Phi_MT=1;
+  98   1              dataout(temp);
+  99   1              Phi_MT=0;
+ 100   1              if(dat){delayms(dedt);}
+ 101   1      }
+ 102          
+ 103          
+ 104          void tranmisDTMF(unsigned long digi,unsigned char scs)
+ 105          {
+ 106   1      
+ 107   1               char temp;
+ 108   1               nhacmay=0;                     //dap may truoc khi quay so moi
+ 109   1               delayms(tredapmay);
+ 110   1               nhacmay=1;
+ 111   1               delayms(300);          //nhac may sau 280ms thi quay so moi co nghia voi 11 so, 10 so yeu cau nho hon
+ 112   1              if(scs==11)                     //viet 0 vao dau so do neu la 11 so thi so dau luon la 0
+ 113   1                      {
+ 114   2                              WriteDT_MT(10,1);  //viet 0 vao dau so do neu la 11 so thi so dau luoon la 0
+ 115   2                              scs--;
+ 116   2                      }
+C51 COMPILER V9.01   MT888                                                                 02/16/2011 02:58:51 PAGE 3   
+
+ 117   1      
+ 118   1                { 
+ 119   2                      unsigned char str[10],j;
+ 120   2                      Number2bcd(str,scs,digi); //conver thanh chuoi so rieng biet luu trong mang str
+ 121   2                      for(j=0;j<scs;j++)
+ 122   2                              {       
+ 123   3                                      WriteDT_MT(str[j],1);
+ 124   3                              }
+ 125   2               }
+ 126   1      }
+*** WARNING C280 IN LINE 107 OF MT888.C: 'temp': unreferenced local variable
+ 127          
+ 128          /*void tranmis1diDTMF(unsigned char so)
+ 129          {
+ 130                          unsigned char temp;
+ 131                          nhacmay=1;
+ 132          //              do{temp=ReadDT_MT(0); }while(!(temp&(1<<1)));
+ 133                          WriteDT_MT(so,1);  //viet 0 vao dau so do neu la 11 so thi so dau luoon la 0
+ 134          }  */
+ 135          
+ 136          unsigned char recDTMF(void)
+ 137          {
+ 138   1                      unsigned char temp;
+ 139   1                      do{temp=ReadDT_MT(0);}while(!(temp&(1<<2)));  //kiem tra xem co ky tu moi chua
+ 140   1                      return ReadDT_MT(1);
+ 141   1      }
+ 142          
+ 143          void Number2bcd(unsigned char *tpr,scs,unsigned long x)  //ham nay chuan roai
+ 144          {
+ 145   1      unsigned long temp=x;
+ 146   1      char k=0,pdu;
+ 147   1      do{     
+ 148   2                         pdu=temp%10;
+ 149   2                         temp=temp/10;
+ 150   2                         if(pdu==0){*(tpr+scs-k-1)=10;}else{*(tpr+scs-k-1)=pdu;}      
+ 151   2                         k++; 
+ 152   2        }while(k!=scs);
+ 153   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    461    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2      33
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1       2
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

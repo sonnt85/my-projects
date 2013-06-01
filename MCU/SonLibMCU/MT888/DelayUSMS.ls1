@@ -1,0 +1,383 @@
+A51 MACRO ASSEMBLER  DELAYUSMS                                                            02/16/2011 17:54:58 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN .\DelayUSMS.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE .\DelayUSMS.src PR(.\DelayUSMS.ls1) EP DEBUG
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; .\DelayUSMS.SRC generated from: ..\LIB_THANHSON\DELAY\DelayUSMS.c
+                       2     ; COMPILER INVOKED BY:
+                       3     ;        C:\Keil\C51\BIN\C51.EXE ..\LIB_THANHSON\DELAY\DelayUSMS.c BROWSE DEBUG OBJECTEXTEN
+                             D PRINT(.\DelayUSMS.lst) SRC(.\DelayUSMS.SRC)
+                       4     
+                       5     $nomod51 
+                       6     
+                       7     NAME    DELAYUSMS
+                       8     
+  0080                 9     P0      DATA    080H
+  0090                10     P1      DATA    090H
+  00A0                11     P2      DATA    0A0H
+  00B0                12     P3      DATA    0B0H
+  00D6                13     AC      BIT     0D0H.6
+  00B4                14     T0      BIT     0B0H.4
+  00B5                15     T1      BIT     0B0H.5
+  00AF                16     EA      BIT     0A8H.7
+  0090                17     T2      BIT     090H.0
+  00A8                18     IE      DATA    0A8H
+  0080                19     P0_0    BIT     080H.0
+  0090                20     P1_0    BIT     090H.0
+  0081                21     P0_1    BIT     080H.1
+  00A0                22     P2_0    BIT     0A0H.0
+  0091                23     P1_1    BIT     090H.1
+  0082                24     P0_2    BIT     080H.2
+  00B0                25     P3_0    BIT     0B0H.0
+  00A1                26     P2_1    BIT     0A0H.1
+  0092                27     P1_2    BIT     090H.2
+  0083                28     P0_3    BIT     080H.3
+  00B1                29     P3_1    BIT     0B0H.1
+  00A2                30     P2_2    BIT     0A0H.2
+  0093                31     P1_3    BIT     090H.3
+  0084                32     P0_4    BIT     080H.4
+  00B2                33     P3_2    BIT     0B0H.2
+  00A3                34     P2_3    BIT     0A0H.3
+  0094                35     P1_4    BIT     090H.4
+  0085                36     P0_5    BIT     080H.5
+  00CE                37     EXF2    BIT     0C8H.6
+  00B7                38     RD      BIT     0B0H.7
+  00B3                39     P3_3    BIT     0B0H.3
+  00A4                40     P2_4    BIT     0A0H.4
+  0095                41     P1_5    BIT     090H.5
+  0086                42     P0_6    BIT     080H.6
+  00B4                43     P3_4    BIT     0B0H.4
+  00A5                44     P2_5    BIT     0A0H.5
+  0096                45     P1_6    BIT     090H.6
+  0087                46     P0_7    BIT     080H.7
+  00B5                47     P3_5    BIT     0B0H.5
+  00AC                48     ES      BIT     0A8H.4
+  00A6                49     P2_6    BIT     0A0H.6
+  0097                50     P1_7    BIT     090H.7
+  00B6                51     P3_6    BIT     0B0H.6
+  00A7                52     P2_7    BIT     0A0H.7
+  00B8                53     IP      DATA    0B8H
+  00B7                54     P3_7    BIT     0B0H.7
+  0098                55     RI      BIT     098H.0
+  00D7                56     CY      BIT     0D0H.7
+  00B2                57     INT0    BIT     0B0H.2
+A51 MACRO ASSEMBLER  DELAYUSMS                                                            02/16/2011 17:54:58 PAGE     2
+
+  00B3                58     INT1    BIT     0B0H.3
+  0099                59     TI      BIT     098H.1
+  00CB                60     RCAP2H  DATA    0CBH
+  00BC                61     PS      BIT     0B8H.4
+  0081                62     SP      DATA    081H
+  0091                63     T2EX    BIT     090H.1
+  00D2                64     OV      BIT     0D0H.2
+  00CA                65     RCAP2L  DATA    0CAH
+  00C9                66     C_T2    BIT     0C8H.1
+  00B6                67     WR      BIT     0B0H.6
+  00CD                68     RCLK    BIT     0C8H.5
+  00CC                69     TCLK    BIT     0C8H.4
+  0099                70     SBUF    DATA    099H
+  0087                71     PCON    DATA    087H
+  0098                72     SCON    DATA    098H
+  0089                73     TMOD    DATA    089H
+  0088                74     TCON    DATA    088H
+  0089                75     IE0     BIT     088H.1
+  008B                76     IE1     BIT     088H.3
+  00F0                77     B       DATA    0F0H
+  00C8                78     CP_RL2  BIT     0C8H.0
+  00E0                79     ACC     DATA    0E0H
+  00A9                80     ET0     BIT     0A8H.1
+  00AB                81     ET1     BIT     0A8H.3
+  008D                82     TF0     BIT     088H.5
+  00AD                83     ET2     BIT     0A8H.5
+  008F                84     TF1     BIT     088H.7
+  00CF                85     TF2     BIT     0C8H.7
+  009A                86     RB8     BIT     098H.2
+  008C                87     TH0     DATA    08CH
+  00A8                88     EX0     BIT     0A8H.0
+  0088                89     IT0     BIT     088H.0
+  008D                90     TH1     DATA    08DH
+  00AA                91     EX1     BIT     0A8H.2
+  009B                92     TB8     BIT     098H.3
+  008A                93     IT1     BIT     088H.2
+  00CD                94     TH2     DATA    0CDH
+  00D0                95     P       BIT     0D0H.0
+  009F                96     SM0     BIT     098H.7
+  008A                97     TL0     DATA    08AH
+  009E                98     SM1     BIT     098H.6
+  008B                99     TL1     DATA    08BH
+  009D               100     SM2     BIT     098H.5
+  00CC               101     TL2     DATA    0CCH
+  00B9               102     PT0     BIT     0B8H.1
+  00D3               103     RS0     BIT     0D0H.3
+  00BB               104     PT1     BIT     0B8H.3
+  00D4               105     RS1     BIT     0D0H.4
+  00BD               106     PT2     BIT     0B8H.5
+  008C               107     TR0     BIT     088H.4
+  008E               108     TR1     BIT     088H.6
+  00CA               109     TR2     BIT     0C8H.2
+  00B8               110     PX0     BIT     0B8H.0
+  00BA               111     PX1     BIT     0B8H.2
+  0083               112     DPH     DATA    083H
+  0082               113     DPL     DATA    082H
+  00CB               114     EXEN2   BIT     0C8H.3
+  009C               115     REN     BIT     098H.4
+  00C9               116     T2MOD   DATA    0C9H
+  00C8               117     T2CON   DATA    0C8H
+  00B0               118     RXD     BIT     0B0H.0
+  00B1               119     TXD     BIT     0B0H.1
+  00D5               120     F0      BIT     0D0H.5
+  00D1               121     F1      BIT     0D0H.1
+  00D0               122     PSW     DATA    0D0H
+                     123     ?PR?delayusg?DELAYUSMS                   SEGMENT CODE 
+A51 MACRO ASSEMBLER  DELAYUSMS                                                            02/16/2011 17:54:58 PAGE     3
+
+                     124     ?PR?delaymsg?DELAYUSMS                   SEGMENT CODE 
+                     125             PUBLIC  delaymsg
+                     126             PUBLIC  delayusg
+                     127     ; #include <REGX52.H>     //bat buoc vi dung den dinh nghia cac thanh ghi
+                     128     ; //extern unsigned char   AR1,AR2;
+                     129     ; #include <DelayUSMS_NTS.h>
+                     130     ; 
+                     131     ; 
+                     132     ; void delayusg(void)    //ham tao tre don vi thoi gian micro giay (174-->
+                     133     
+----                 134             RSEG  ?PR?delayusg?DELAYUSMS
+0000                 135     delayusg:
+                     136             USING   0
+                     137                             ; SOURCE LINE # 6
+                     138     ; 
+                     139     ; {
+                     140                             ; SOURCE LINE # 8
+                     141     ; //tre tinh theo miligiay, toi da 65535ms 
+                     142     ; 
+                     143     ; #pragma asm
+                     144     ; using   0
+                     145               using   0
+                     146     ; ORL   TMOD,#010H
+0000 438910          147               ORL   TMOD,#010H
+                     148     ; CLR   TF1
+0003 C28F            149               CLR   TF1
+                     150     ; SETB    TR1
+0005 D28E            151               SETB    TR1
+                     152     ; JNB   TF1,$
+0007 308FFD          153               JNB   TF1,$
+                     154     ; CLR   TF1
+000A C28F            155               CLR   TF1
+                     156     ; CLR   TR1
+000C C28E            157               CLR   TR1
+                     158     ; #pragma endasm 
+                     159     ; }
+                     160                             ; SOURCE LINE # 20
+000E 22              161             RET     
+                     162     ; END OF delayusg
+                     163     
+                     164     ; void delaymsg(void)//tre tinh theo miligiay, toi da 65535ms 
+                     165     
+----                 166             RSEG  ?PR?delaymsg?DELAYUSMS
+0000                 167     delaymsg:
+                     168             USING   0
+                     169                             ; SOURCE LINE # 21
+                     170     ; {
+                     171                             ; SOURCE LINE # 22
+                     172     ; #pragma asm
+                     173     ; USING         0
+                     174               USING         0
+                     175     ; LAP1:
+0000                 176               LAP1:
+                     177     ; 
+                     178               
+                     179     ; MOV     TL1,#low 64558
+0000 758B2E          180               MOV     TL1,#low 64558
+                     181     ; MOV     Th1,#high 64558
+0003 758DFC          182               MOV     Th1,#high 64558
+                     183     ; ORL   TMOD,#010H
+0006 438910          184               ORL   TMOD,#010H
+                     185     ; CLR   TF1
+0009 C28F            186               CLR   TF1
+                     187     ; SETB  TR1
+000B D28E            188               SETB  TR1
+                     189     ; JNB   TF1,$
+A51 MACRO ASSEMBLER  DELAYUSMS                                                            02/16/2011 17:54:58 PAGE     4
+
+000D 308FFD          190               JNB   TF1,$
+                     191     ; CLR   TF1
+0010 C28F            192               CLR   TF1
+                     193     ; CLR   TR1
+0012 C28E            194               CLR   TR1
+                     195     ; 
+                     196               
+                     197     ; CLR           C
+0014 C3              198               CLR           C
+                     199     ; MOV     A,AR2
+0015 E502            200               MOV     A,AR2
+                     201     ; SUBB    A,#1
+0017 9401            202               SUBB    A,#1
+                     203     ; MOV     AR2,A
+0019 F502            204               MOV     AR2,A
+                     205     ; 
+                     206               
+                     207     ; MOV           A,AR1
+001B E501            208               MOV           A,AR1
+                     209     ; SUBB  A,#0
+001D 9400            210               SUBB  A,#0
+                     211     ; MOV           AR1,A
+001F F501            212               MOV           AR1,A
+                     213     ; 
+                     214               
+                     215     ; MOV           A,AR2
+0021 E502            216               MOV           A,AR2
+                     217     ; JNZ           LAP1
+0023 70DB            218               JNZ           LAP1
+                     219     ; MOV           A,AR1
+0025 E501            220               MOV           A,AR1
+                     221     ; JNZ           LAP1
+0027 70D7            222               JNZ           LAP1
+                     223     ; #pragma endasm 
+                     224     ; }
+                     225                             ; SOURCE LINE # 50
+0029 22              226             RET     
+                     227     ; END OF delaymsg
+                     228     
+                     229             END
+A51 MACRO ASSEMBLER  DELAYUSMS                                                            02/16/2011 17:54:58 PAGE     5
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                 T Y P E  V A L U E   ATTRIBUTES
+
+?PR?DELAYMSG?DELAYUSMS  C SEG    002AH       REL=UNIT
+?PR?DELAYUSG?DELAYUSMS  C SEG    000FH       REL=UNIT
+AC . . . . . . . . . .  B ADDR   00D0H.6 A   
+ACC. . . . . . . . . .  D ADDR   00E0H   A   
+AR1. . . . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . . . .  D ADDR   0002H   A   
+B. . . . . . . . . . .  D ADDR   00F0H   A   
+CP_RL2 . . . . . . . .  B ADDR   00C8H.0 A   
+CY . . . . . . . . . .  B ADDR   00D0H.7 A   
+C_T2 . . . . . . . . .  B ADDR   00C8H.1 A   
+DELAYMSG . . . . . . .  C ADDR   0000H   R   SEG=?PR?DELAYMSG?DELAYUSMS
+DELAYUSG . . . . . . .  C ADDR   0000H   R   SEG=?PR?DELAYUSG?DELAYUSMS
+DELAYUSMS. . . . . . .  N NUMB   -----       
+DPH. . . . . . . . . .  D ADDR   0083H   A   
+DPL. . . . . . . . . .  D ADDR   0082H   A   
+EA . . . . . . . . . .  B ADDR   00A8H.7 A   
+ES . . . . . . . . . .  B ADDR   00A8H.4 A   
+ET0. . . . . . . . . .  B ADDR   00A8H.1 A   
+ET1. . . . . . . . . .  B ADDR   00A8H.3 A   
+ET2. . . . . . . . . .  B ADDR   00A8H.5 A   
+EX0. . . . . . . . . .  B ADDR   00A8H.0 A   
+EX1. . . . . . . . . .  B ADDR   00A8H.2 A   
+EXEN2. . . . . . . . .  B ADDR   00C8H.3 A   
+EXF2 . . . . . . . . .  B ADDR   00C8H.6 A   
+F0 . . . . . . . . . .  B ADDR   00D0H.5 A   
+F1 . . . . . . . . . .  B ADDR   00D0H.1 A   
+IE . . . . . . . . . .  D ADDR   00A8H   A   
+IE0. . . . . . . . . .  B ADDR   0088H.1 A   
+IE1. . . . . . . . . .  B ADDR   0088H.3 A   
+INT0 . . . . . . . . .  B ADDR   00B0H.2 A   
+INT1 . . . . . . . . .  B ADDR   00B0H.3 A   
+IP . . . . . . . . . .  D ADDR   00B8H   A   
+IT0. . . . . . . . . .  B ADDR   0088H.0 A   
+IT1. . . . . . . . . .  B ADDR   0088H.2 A   
+LAP1 . . . . . . . . .  C ADDR   0000H   R   SEG=?PR?DELAYMSG?DELAYUSMS
+OV . . . . . . . . . .  B ADDR   00D0H.2 A   
+P. . . . . . . . . . .  B ADDR   00D0H.0 A   
+P0 . . . . . . . . . .  D ADDR   0080H   A   
+P0_0 . . . . . . . . .  B ADDR   0080H.0 A   
+P0_1 . . . . . . . . .  B ADDR   0080H.1 A   
+P0_2 . . . . . . . . .  B ADDR   0080H.2 A   
+P0_3 . . . . . . . . .  B ADDR   0080H.3 A   
+P0_4 . . . . . . . . .  B ADDR   0080H.4 A   
+P0_5 . . . . . . . . .  B ADDR   0080H.5 A   
+P0_6 . . . . . . . . .  B ADDR   0080H.6 A   
+P0_7 . . . . . . . . .  B ADDR   0080H.7 A   
+P1 . . . . . . . . . .  D ADDR   0090H   A   
+P1_0 . . . . . . . . .  B ADDR   0090H.0 A   
+P1_1 . . . . . . . . .  B ADDR   0090H.1 A   
+P1_2 . . . . . . . . .  B ADDR   0090H.2 A   
+P1_3 . . . . . . . . .  B ADDR   0090H.3 A   
+P1_4 . . . . . . . . .  B ADDR   0090H.4 A   
+P1_5 . . . . . . . . .  B ADDR   0090H.5 A   
+P1_6 . . . . . . . . .  B ADDR   0090H.6 A   
+P1_7 . . . . . . . . .  B ADDR   0090H.7 A   
+P2 . . . . . . . . . .  D ADDR   00A0H   A   
+P2_0 . . . . . . . . .  B ADDR   00A0H.0 A   
+P2_1 . . . . . . . . .  B ADDR   00A0H.1 A   
+P2_2 . . . . . . . . .  B ADDR   00A0H.2 A   
+P2_3 . . . . . . . . .  B ADDR   00A0H.3 A   
+A51 MACRO ASSEMBLER  DELAYUSMS                                                            02/16/2011 17:54:58 PAGE     6
+
+P2_4 . . . . . . . . .  B ADDR   00A0H.4 A   
+P2_5 . . . . . . . . .  B ADDR   00A0H.5 A   
+P2_6 . . . . . . . . .  B ADDR   00A0H.6 A   
+P2_7 . . . . . . . . .  B ADDR   00A0H.7 A   
+P3 . . . . . . . . . .  D ADDR   00B0H   A   
+P3_0 . . . . . . . . .  B ADDR   00B0H.0 A   
+P3_1 . . . . . . . . .  B ADDR   00B0H.1 A   
+P3_2 . . . . . . . . .  B ADDR   00B0H.2 A   
+P3_3 . . . . . . . . .  B ADDR   00B0H.3 A   
+P3_4 . . . . . . . . .  B ADDR   00B0H.4 A   
+P3_5 . . . . . . . . .  B ADDR   00B0H.5 A   
+P3_6 . . . . . . . . .  B ADDR   00B0H.6 A   
+P3_7 . . . . . . . . .  B ADDR   00B0H.7 A   
+PCON . . . . . . . . .  D ADDR   0087H   A   
+PS . . . . . . . . . .  B ADDR   00B8H.4 A   
+PSW. . . . . . . . . .  D ADDR   00D0H   A   
+PT0. . . . . . . . . .  B ADDR   00B8H.1 A   
+PT1. . . . . . . . . .  B ADDR   00B8H.3 A   
+PT2. . . . . . . . . .  B ADDR   00B8H.5 A   
+PX0. . . . . . . . . .  B ADDR   00B8H.0 A   
+PX1. . . . . . . . . .  B ADDR   00B8H.2 A   
+RB8. . . . . . . . . .  B ADDR   0098H.2 A   
+RCAP2H . . . . . . . .  D ADDR   00CBH   A   
+RCAP2L . . . . . . . .  D ADDR   00CAH   A   
+RCLK . . . . . . . . .  B ADDR   00C8H.5 A   
+RD . . . . . . . . . .  B ADDR   00B0H.7 A   
+REN. . . . . . . . . .  B ADDR   0098H.4 A   
+RI . . . . . . . . . .  B ADDR   0098H.0 A   
+RS0. . . . . . . . . .  B ADDR   00D0H.3 A   
+RS1. . . . . . . . . .  B ADDR   00D0H.4 A   
+RXD. . . . . . . . . .  B ADDR   00B0H.0 A   
+SBUF . . . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . . . .  D ADDR   0098H   A   
+SM0. . . . . . . . . .  B ADDR   0098H.7 A   
+SM1. . . . . . . . . .  B ADDR   0098H.6 A   
+SM2. . . . . . . . . .  B ADDR   0098H.5 A   
+SP . . . . . . . . . .  D ADDR   0081H   A   
+T0 . . . . . . . . . .  B ADDR   00B0H.4 A   
+T1 . . . . . . . . . .  B ADDR   00B0H.5 A   
+T2 . . . . . . . . . .  B ADDR   0090H.0 A   
+T2CON. . . . . . . . .  D ADDR   00C8H   A   
+T2EX . . . . . . . . .  B ADDR   0090H.1 A   
+T2MOD. . . . . . . . .  D ADDR   00C9H   A   
+TB8. . . . . . . . . .  B ADDR   0098H.3 A   
+TCLK . . . . . . . . .  B ADDR   00C8H.4 A   
+TCON . . . . . . . . .  D ADDR   0088H   A   
+TF0. . . . . . . . . .  B ADDR   0088H.5 A   
+TF1. . . . . . . . . .  B ADDR   0088H.7 A   
+TF2. . . . . . . . . .  B ADDR   00C8H.7 A   
+TH0. . . . . . . . . .  D ADDR   008CH   A   
+TH1. . . . . . . . . .  D ADDR   008DH   A   
+TH2. . . . . . . . . .  D ADDR   00CDH   A   
+TI . . . . . . . . . .  B ADDR   0098H.1 A   
+TL0. . . . . . . . . .  D ADDR   008AH   A   
+TL1. . . . . . . . . .  D ADDR   008BH   A   
+TL2. . . . . . . . . .  D ADDR   00CCH   A   
+TMOD . . . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . . . .  B ADDR   0088H.6 A   
+TR2. . . . . . . . . .  B ADDR   00C8H.2 A   
+TXD. . . . . . . . . .  B ADDR   00B0H.1 A   
+WR . . . . . . . . . .  B ADDR   00B0H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

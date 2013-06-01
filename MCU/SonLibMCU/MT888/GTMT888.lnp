@@ -1,0 +1,4 @@
+"MT888.obj",
+".\DelayUSMS.obj" 
+TO "GTMT888" 
+RAMSIZE(256) 

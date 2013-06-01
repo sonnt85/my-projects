@@ -1,0 +1,104 @@
+C51 COMPILER V9.01   INTERUP                                                               05/29/2011 16:28:05 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE INTERUP
+OBJECT MODULE PLACED IN interup.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE interup.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #define  interup__c
+   2          #include <AT89X52.H>
+   3          #include < delay.h >
+*** WARNING C322 IN LINE 16 OF delay.h: unknown identifier
+   4          #include <sulythoigian.h>
+*** ERROR C141 IN LINE 13 OF SULYTHOIGIAN.H: syntax error near '*', expected ')'
+*** ERROR C141 IN LINE 14 OF SULYTHOIGIAN.H: syntax error near '*', expected ')'
+*** ERROR C141 IN LINE 17 OF SULYTHOIGIAN.H: syntax error near '*', expected ')'
+*** ERROR C141 IN LINE 18 OF SULYTHOIGIAN.H: syntax error near '*', expected ')'
+*** ERROR C141 IN LINE 19 OF SULYTHOIGIAN.H: syntax error near '*', expected ')'
+*** ERROR C141 IN LINE 20 OF SULYTHOIGIAN.H: syntax error near '*', expected ')'
+   5          #include < typedef.h >
+*** WARNING C322 IN LINE 174 OF typedef.h: unknown identifier
+*** ERROR C221 IN LINE 272 OF TYPEDEF.H: non-constant case/dim expression
+*** ERROR C129 IN LINE 282 OF TYPEDEF.H: missing ';' before 'code'
+   6          #include <retiao.h>
+   7          #include <checktimeout.h >
+*** WARNING C317 IN LINE 8 OF checktimeout.h: attempt to redefine macro 'adee_env'
+   8          #include <sulythietbi.h>
+   9          #define  cou1sec      (1000000L/cycles2us(-trandemphut))
+  10          #define  trandemphut  ((-us2cycles(60000000L-cycles2us(18)))/cou1min)
+  11          //static unsigned int demphut;
+  12           unsigned char idata unitbell,demgiay,demtime2,checktatbell;
+  13          void ngattime0(void) interrupt TF0_VECTOR // ngat dung cho dong ho he thong hoi lang phi nhung phai chap n
+             -han 
+  14          {        
+  15            TR0=0; 
+  16            TH0=trandemphut>>8;
+  17            TL0=trandemphut; 
+  18            TR0=1;//tu luc vao ngat den khi bat lai bi dem TR0mat 10 chu ky may
+  19           if(!sensorct&&(cousensorct!=nosensor)&&(cousensorct)){cousensorct++;}
+  20            ++demphut;
+  21          //  ++demgiay;
+  22              if(flagstatus&chongat_){  
+  23                if(demphut>=cou1min){demphut-=cou1min;phutmoi++;}//phut moi luu so phut da troi qua ma ham ngat time
+             -2 chua kip su ly
+  24           //     if(demgiay>=cou1sec){demgiay-=cou1sec;giay++;}
+  25              }
+  26          }
+  27          void ngattime2(void) interrupt TF2_VECTOR{ //ham ngat nay 20ms say ra mot lan
+  28                                                    //ham nay phuc vu hien thi va kiem tra cac thong so dinh ky 
+  29             TF2=0;// phai xoa co tran do ham ngat ko tu xoa co nay
+  30             EXF2=0;
+  31          if((++unitbell)==(50000/delaytime2us)){
+  32                  if((bell!=offbell)&&!IRIN){
+  33                      if(++checktatbell==2){
+  34                                  bell=offbell;
+  35                                  if(!IRIN){bell=offbell;}
+  36                                  checktatbell=0;
+  37                          }
+  38                  }else checktatbell=0;   
+  39                  unitbell=0;checkbellauto();
+  40          }//bell la bien global
+  41          if(flagstatus&chongat_){
+  42                    if(!cousensorct) goto uiuy;
+C51 COMPILER V9.01   INTERUP                                                               05/29/2011 16:28:05 PAGE 2   
+
+  43                    //sulytudongthietbi(); //co bao dong kiem tra truoc
+  44                while(phutmoi){
+  45                                    led_lcd=1;//tat man lcd
+  46                            flagstatus|=ngat2_; 
+  47                            nhichkim(&timesys); //de phong bi tre do may ham duoi qua dai
+  48                                    uiuy:
+  49                            sulytudongthietbi();
+  50                                    if(!phutmoi)break;
+  51                                    phutmoi--;
+  52                  //          if(!(--phutmoi)){if(!(flagstatus&nodis_)&&(timesys.time.phut%30==0))hienthithoigian(&timesys)
+             -;}
+  53                    }
+  54          //      if(flagstatus&bilink_){if(giay%2){lcd_putcharxy(':',nuli-3,lines-2);}else lcd_putcharxy(' ',nuli-3
+             -,lines-2);lcd_vsprintf("%02bu",giay);}
+  55                if(flagtimeout_&flagstatus) if(++demtime2==unittioutms(5000)){ demtime2=0;checktimeout();}  //s chec
+             -k 1 lan 
+  56          }
+  57           flagstatus&=(~ngat2_);
+  58          }
+  59          
+  60          void ngatngoai0(void) interrupt IE0_VECTOR{
+  61          //lcd_clr();lcd_puts("ngat ngoai 0");
+  62          
+  63          //longjmp(env,221);
+  64          }
+  65          
+  66          void ngatngoai1(void) interrupt IE1_VECTOR{
+  67          //longjmp(env,221);
+  68          //lcd_clr();lcd_puts("ngat ngoai 1");
+  69          }
+  70          
+  71          void ngatnoitiep(void) interrupt SIO_VECTOR{
+  72          //lcd_clr();lcd_puts("ngat ngoai noi tiep");
+  73          
+  74          //longjmp(env,221);
+  75          }
+
+C51 COMPILATION COMPLETE.  3 WARNING(S),  8 ERROR(S)
