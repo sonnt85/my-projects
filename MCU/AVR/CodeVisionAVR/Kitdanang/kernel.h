@@ -25,4 +25,5 @@ unsigned char _wait_semaphore(unsigned int ticks);
 unsigned char _query_task();
 
 void _set_task_status(unsigned char state);
+void _set_taskn_status(unsigned char taskno, unsigned char state);
 #endif 

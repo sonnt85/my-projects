@@ -263,3 +263,10 @@ void _set_task_status(unsigned char state){
         _task_switch(); 
     }
 }
+void _set_taskn_status(unsigned char taskno, unsigned char state){
+    if (taskno < _task_count){
+        #asm("CLI");
+        _task_status[taskno] = state;
+        _task_switch(); 
+    }
+}
