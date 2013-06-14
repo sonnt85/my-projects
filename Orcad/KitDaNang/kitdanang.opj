@@ -81,23 +81,20 @@
   (GlobalState
     (FileView
       (Path "Design Resources")
-      (Path "Outputs"))
+      (Path "Design Resources"
+         "E:\Nguyen Thanh Son\WORK\Orcad\KitDaNang\kitdanang.dsn")
+      (Path "Design Resources"
+         "E:\Nguyen Thanh Son\WORK\Orcad\KitDaNang\kitdanang.dsn" "SCHEMATIC1")
+      (Path "Outputs")
+      (Select "Design Resources"
+         "E:\Nguyen Thanh Son\WORK\Orcad\KitDaNang\kitdanang.dsn" "SCHEMATIC1"
+         "PAGE1"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
       (Frame
         (Placement "44 0 1 160 642 -8 -30 97 763 302 525"))
-      (Tab 0))
-    (Doc
-      (Type "COrSchematicDoc")
-      (Frame
-        (Placement "44 2 3 -1 -1 -8 -30 -171 995 173 646")
-        (Scroll "0 0")
-        (Zoom "31")
-        (Occurrence "/"))
-      (Path "E:\NGUYEN THANH SON\WORK\ORCAD\KITDANANG\KITDANANG.DSN")
-      (Schematic "SCHEMATIC1")
-      (Page "PAGE1")))
+      (Tab 0)))
   (PartMRUSelector
     (8051
       (FullPartName "8051.Normal")
