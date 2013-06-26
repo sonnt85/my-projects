@@ -66,7 +66,8 @@
     (BOM_One_Part_Per_Line "FALSE")
     (Open_BOM_in_Excel "TRUE")
     (BOM_View_Output "FALSE")
-    (FALSE))
+    (FALSE)
+    ( "TRUE"))
   (Folder "Outputs"
     (File ".\kitdanang.drc"
       (Type "Report"))
@@ -94,8 +95,29 @@
       (Type "COrCapturePMDoc")
       (Frame
         (Placement "44 0 1 160 642 -8 -30 97 763 302 525"))
-      (Tab 0)))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 2 3 -1 -1 -8 -30 50 1216 50 523")
+        (Scroll "50 0")
+        (Zoom "23")
+        (Occurrence "/"))
+      (Path "E:\NGUYEN THANH SON\WORK\ORCAD\KITDANANG\KITDANANG.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "PAGE1")))
   (PartMRUSelector
+    (TranNPN
+      (FullPartName "TranNPN.Normal")
+      (LibraryName "E:\NGUYEN THANH SON\WORK\ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
+      (DeviceIndex "0"))
+    (NPN
+      (FullPartName "NPN.Normal")
+      (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\ST_MICRO.OLB")
+      (DeviceIndex "0"))
+    (GND
+      (LibraryName "C:\ORCAD\ORCAD_10.5\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
     (8051
       (FullPartName "8051.Normal")
       (LibraryName
@@ -108,9 +130,6 @@
     (JUM2
       (FullPartName "JUM2.Normal")
       (LibraryName "D:\LIBRARY\SONLIBORCAD\SONCAPTURE.OLB")
-      (DeviceIndex "0"))
-    (GND
-      (LibraryName "C:\ORCAD\ORCAD_10.5\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
       (DeviceIndex "0"))
     (CON2
       (FullPartName "CON2.Normal")
@@ -136,10 +155,6 @@
     (74ACT02/SO
       (FullPartName "74ACT02/SO.Normal")
       (LibraryName "C:\ORCAD\ORCAD_10.5\TOOLS\CAPTURE\LIBRARY\GATE.OLB")
-      (DeviceIndex "0"))
-    (TranNPN
-      (FullPartName "TranNPN.Normal")
-      (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
       (DeviceIndex "0"))
     ("MOTOR SERVO"
       (FullPartName "MOTOR SERVO.Normal")
@@ -191,10 +206,6 @@
       (DeviceIndex "0"))
     (AT89S52
       (FullPartName "AT89S52.Normal")
-      (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
-      (DeviceIndex "0"))
-    (BAT
-      (FullPartName "BAT.Normal")
       (LibraryName "E:\LIBRARY\THU VIEN ORCAD\SONLIBORCAD\SONCAPTURE.OLB")
       (DeviceIndex "0")))
   (LastUsedLibraryBrowseDirectory "E:\LIBRARY\Thu vien Orcad\SonLibOrcad"))
